@@ -18,12 +18,12 @@ namespace CK2Editor
         /// <summary>
         /// Gets the values that this editor can edit
         /// </summary>
-        IDictionary<string, object> GetValues();
+        IDictionary<string, string> GetValues();
         /// <summary>
         /// Sets a value this parser can edit
         /// </summary>
         /// <param name="name">The name of the value to set</param>
         /// <param name="value">The new value to set</param>
-        void setValue(string name, object value);
+        void setValue(string name, string value);
     }
 }
