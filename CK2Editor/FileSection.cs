@@ -6,14 +6,27 @@ using System.Threading.Tasks;
 
 namespace CK2Editor
 {
+    /// <summary>
+    /// Represents a section of a mutable file, which can be independentley edited
+    /// </summary>
     class FileSection : IEnumerable<char>
     {
+        /// <summary>
+        /// The global StringBulder object shared by all FileSections of the same file
+        /// </summary>
         protected StringBuilder gscope;
-        //start index
+        /// <summary>
+        /// The global index in <c>gscope</c> where this file section starts
+        /// </summary>
         protected virtual int si { get; protected set; }
-        //end index
+        /// <summary>
+        /// The global index in <c>gscope</c> where this file section ends (inclusive)
+        /// </summary>
         protected virtual int ei { get; protected set; }
 
+        /// <summary>
+        /// The parent section of this FileSection. <c>NullFileSection</c> if this is the top section (see <see cref="CK2Editor.NullFileSection"/>)
+        /// </summary>
         public FileSection Parent { get; set; }
 
         public char this[int index]
@@ -27,6 +40,9 @@ namespace CK2Editor
             set { gscope[Parent.si + ResolveNegativeIndex(index)] = value; }
         }
 
+        /// <summary>
+        /// The length of this FileSection
+        /// </summary>
         public virtual int Length { get { return ei - si + 1; } }
 
         public FileSection(string s, int startIndex, int endIndex) : this(new StringBuilder(s), startIndex, endIndex) { }
@@ -60,6 +76,10 @@ namespace CK2Editor
 
         protected FileSection();
 
+        /// <summary>
+        /// Turns negtaive indexes (counted from the end of this FileSection) into the equivalent positive indexes. Returns <paramref name="index"/> if already positive
+        /// </summary>
+        /// <param name="index">The index to resolve</param>
         private int ResolveNegativeIndex(int index)
         {
             return Util.ResolveNegativeIndex(index, this.Length);
@@ -67,10 +87,10 @@ namespace CK2Editor
 
         /// <summary>
         /// Checks the index is within bounds, and if not, throws an IndexOutOfRangeException
-        /// <para>Note: this method does not resolve negative indexes. If these are accepted you should use <c>ResolveNegativeIndex</c> on <c>index</c> beforehand</para>
+        /// <para>Note: this method does not resolve negative indexes. If these are accepted you should use <c>ResolveNegativeIndex</c> on <paramref name="index"/> beforehand</para>
         /// </summary>
         /// <param name="index">The index to validate. an exception will be thrown if it's not a valid index for this <c>FileSection</c></param>
-        /// <exception cref="System.IndexOutOfRangeException">Thrown if the index is below zero or greater or equal to <c>this.Length</c></exception>
+        /// <exception cref="System.IndexOutOfRangeException">Thrown if the index is below zero or greater or equal to <see cref="this.Length"/></exception>
         protected void ValidateIndex(int index)
         {
             if (index < 0)
@@ -116,7 +136,7 @@ namespace CK2Editor
             return GetEnumerator();
         }
 
-        public override virtual string ToString(int index, int index2)
+        public override virtual string ToString(int index = 0, int index2 = -1)
         {
             index = ResolveNegativeIndex(index);
             index2 = ResolveNegativeIndex(index2);
@@ -126,6 +146,9 @@ namespace CK2Editor
         }
     }
 
+    /// <summary>
+    /// A dummy FileSection, to serve as the parent of root FileSections.
+    /// </summary>
     class NullFileSection : FileSection
     {
         protected override int si
