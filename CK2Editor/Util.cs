@@ -19,8 +19,10 @@ namespace CK2Editor
         {
             if (index < 0)
             {
+                //check valadity
                 if (-index > length)
                     throw new IndexOutOfRangeException("The index was negative and it's absuloute value was greater than the length");
+                //since index is negative, this is like length - Math.Abs(index)
                 return length + index;
             }
             return index;
@@ -38,6 +40,7 @@ namespace CK2Editor
             int index;
             int length = value.Length;
 
+            //stop the search at this index
             int maxSearchLength = (ResolveNegativeIndex(maxIndex, sb.Length) - length) + 1;
 
             if (ignoreCase)
@@ -62,6 +65,7 @@ namespace CK2Editor
             {
                 if (sb[i] == value[0])
                 {
+                    //if theres a match of the first character, check if the rest matches
                     index = 1;
                     while ((index < length) && (sb[i + index] == value[index]))
                         ++index;
@@ -92,6 +96,12 @@ namespace CK2Editor
             return -1;
         }
 
+        /// <summary>
+        /// Extracts a FileSection of the file delimited by curly brackets and identified by <paramref name="identifier"/>
+        /// </summary>
+        /// <param name="scope">The FileSection to search</param>
+        /// <param name="identifier">The section's identifier, including the equals sign (<c>=</c>)</param>
+        /// <returns>A new <c>FileSection</c> which is a child of <paramref name="scope"/> and contains the delimited area, without the brackets</returns>
         public static FileSection ExtractDelimited(FileSection scope, string identifier)
         {
             int iindex = scope.IndexOf(identifier);
@@ -99,17 +109,23 @@ namespace CK2Editor
             int cbrackets = 0;
             char inp = scope[i];
             int i2 = i;
+            //advances through the file until it reaches the closing bracket (while ignoring brackets of lower scopes)
             while ((inp != '}' || cbrackets > 0) && i2 < scope.Length - 1)
             {
                 i2++;
                 if (inp == '{')
                     cbrackets++;
-                i++;
-                inp = scope[i];
+                inp = scope[i2];
             }
             return new FileSection(scope, i, i2);
         }
 
+        /// <summary>
+        /// Returns a string value delimited by two parentheses and preceded an identifier
+        /// </summary>
+        /// <param name="scope">The <c>FileSection</c> to search</param>
+        /// <param name="name">The identifier of the value, including the equals sign (<c>=</c>)</param>
+        /// <returns>The value without the parentheses</returns>
         public static string ExtractStringValue(FileSection scope, string name)
         {
             int index = scope.IndexOf(name) + name.Length + 1;
@@ -117,6 +133,12 @@ namespace CK2Editor
             return scope.ToString(index, index2);
         }
 
+        /// <summary>
+        /// Returns a non-string value preceded by an identifier
+        /// </summary>
+        /// <param name="scope">The <c>FileSection</c> to search</param>
+        /// <param name="name">The identifier of the value, including the equals sign (<c>=</c>)</param>
+        /// <returns>The value</returns>
         public static string ExtractValue(FileSection scope, string name)
         {
             int index = scope.IndexOf(name) + name.Length;
@@ -124,6 +146,12 @@ namespace CK2Editor
             return scope.ToString(index, index2);
         }
 
+        /// <summary>
+        /// Replaces a string value delimited by two parentheses and preceded by an identifier
+        /// </summary>
+        /// <param name="scope">The <c>FileSection</c> to search</param>
+        /// <param name="name">The identifier of the value, including the equals sign (<c>=</c>)</param>
+        /// <param name="value">The string value to replace the existing value with</param>
         public static void ReplaceStringValue(FileSection scope, string name, string value)
         {
             int index = scope.IndexOf(name) + name.Length + 1;
@@ -132,6 +160,12 @@ namespace CK2Editor
             scope.Insert(value, index);
         }
 
+        /// <summary>
+        /// Replaces a non-string value preceded by an identifier
+        /// </summary>
+        /// <param name="scope">The <c>FileSection</c> to search</param>
+        /// <param name="name">The identifier of the value, including the equals sign (<c>=</c>)</param>
+        /// <param name="value">The non-string value to replace the existing value with</param>
         public static void ReplaceValue(FileSection scope, string name, string value)
         {
             int index = scope.IndexOf(name) + name.Length;
