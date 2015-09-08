@@ -9,13 +9,13 @@ namespace CK2Editor
 {
     public class FileEditor : IEditor
     {
-        private StringBuilder file;
+        private FileSection file;
 
         public FileEditor(string path)
         {
             try
             {
-                file = new StringBuilder(File.ReadAllText(path));
+                file = new FileSection(File.ReadAllText(path));
             }
             catch (FileNotFoundException e)
             {
@@ -34,7 +34,7 @@ namespace CK2Editor
 
         public string GetPlayerId()
         {
-            string playerScope = Util.ExtractDelimited(file, "player=");
+            FileSection playerScope = Util.ExtractDelimited(file, "player=");
             return Util.ExtractValue(playerScope, "id=");
         }
 

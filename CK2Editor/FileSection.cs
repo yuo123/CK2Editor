@@ -45,13 +45,31 @@ namespace CK2Editor
         /// </summary>
         public virtual int Length { get { return ei - si + 1; } }
 
-        public FileSection(string s, int startIndex, int endIndex) : this(new StringBuilder(s), startIndex, endIndex) { }
+        /// <summary>
+        /// Creates a new root <c>FileSection</c> from the specified string, starting at <paramref name="startIndex"/> and ending at <paramref name="endIndex"/> of the string
+        /// </summary>
+        /// <param name="s">the string to base this FileSection on</param>
+        /// <param name="startIndex">The index of <paramref name="s"/> this FileSection will start at</param>
+        /// <param name="endIndex">The index of <paramref name="s"/> this FileSection will end at</param>
+        public FileSection(string s, int startIndex = 0, int endIndex = -1) : this(new StringBuilder(s), startIndex, endIndex) { }
 
+        /// <summary>
+        /// Creates a new root <c>FileSection</c> from the specified <c>StringBuilder</c>, starting at <paramref name="startIndex"/> and ending at <paramref name="endIndex"/> of the string
+        /// </summary>
+        /// <param name="sb">the <c>StringBuilder</c> to base this FileSection on</param>
+        /// <param name="startIndex">The index of <paramref name="sb"/> this FileSection will start at</param>
+        /// <param name="endIndex">The index of <paramref name="sb"/> this FileSection will end at</param>
         public FileSection(StringBuilder sb, int startIndex = 0, int endIndex = -1)
         {
             Initialize(sb, startIndex, endIndex);
         }
 
+        /// <summary>
+        /// Creates a new child FileSection with the specified parent, starting at <paramref name="startIndex"/> and ending at <paramref name="endIndex"/> of the string
+        /// </summary>
+        /// <param name="parent">The parent FileSection of this FileSection</param>
+        /// <param name="startIndex">The index of <paramref name="parent"/> this FileSection will start at</param>
+        /// <param name="endIndex">The index of <paramref name="parent"/> this FileSection will end at</param>
         public FileSection(FileSection parent, int startIndex, int endIndex)
         {
             Initialize(parent.gscope, startIndex, endIndex, parent);
@@ -74,6 +92,9 @@ namespace CK2Editor
             }
         }
 
+        /// <summary>
+        /// An empty costructor for use of special derived FileSections
+        /// </summary>
         protected FileSection();
 
         /// <summary>
@@ -99,24 +120,50 @@ namespace CK2Editor
                 throw new IndexOutOfRangeException("The index cannot be equal to or greater than the length of the file section (argument index was " + index + ")");
         }
 
+        /// <summary>
+        /// Returns the index of the start of <paramref name="value"/> in this FileSection
+        /// </summary>
+        /// <param name="value">The value to look for</param>
+        /// <param name="startIndex">The index to start the search in. Negative indexes possible</param>
+        /// <param name="endIndex">The index to stop the search in. Negative indexes possible</param>
+        /// <param name="ignoreCase">Whether the search will be case insensitive or not</param>
+        /// <returns>The first index of the first occurance of <paramref name="value"/></returns>
         public int IndexOf(string value, int startIndex = 0, int endIndex = -1, bool ignoreCase = false)
         {
             return gscope.IndexOf(value, startIndex + this.si, this.si + Math.Min(this.ResolveNegativeIndex(endIndex), this.Length - 1), ignoreCase);
         }
 
+        /// <summary>
+        /// Returns the index of <paramref name="value"/> in this FileSection
+        /// </summary>
+        /// <param name="value">The value to look for</param>
+        /// <param name="startIndex">The index to start the search in. Negative indexes possible</param>
+        /// <param name="endIndex">The index to stop the search in. Negative indexes possible</param>
+        /// <param name="ignoreCase">Whether the search will be case insensitive or not</param>
+        /// <returns>The index of the first occurance of <paramref name="value"/></returns>
         public int IndexOfAny(char[] values, int startIndex = 0, int endIndex = -1)
         {
             return gscope.IndexOfAny(values, startIndex + this.si, this.si + Math.Min(this.ResolveNegativeIndex(endIndex), this.Length - 1));
         }
 
-        public void Insert(int index, string value)
+        /// <summary>
+        /// Inserts a string value into a specified position of this FileSection
+        /// </summary>
+        /// <param name="index">The index to insert the <paramref name="value"/> in</param>
+        /// <param name="value">The string value to insert</param>
+        public void Insert(string value, int index = 0)
         {
             index = ResolveNegativeIndex(index);
             ValidateIndex(index);
             gscope.Insert(si + index, value);
         }
 
-        public void Remove(int index, int length)
+        /// <summary>
+        /// Removes a specified number of characters from this FileSection in a specified position
+        /// </summary>
+        /// <param name="index"></param>
+        /// <param name="length"></param>
+        public void Remove(int index = 0, int length = -1)
         {
             index = ResolveNegativeIndex(index);
             ValidateIndex(index);
@@ -165,6 +212,9 @@ namespace CK2Editor
             protected set;
         }
 
+        /// <summary>
+        /// Creates a new <c>NullFileSection</c> with a specified dummy length
+        /// </summary>
         public NullFileSection(int length)
         {
             ei = length - 1;

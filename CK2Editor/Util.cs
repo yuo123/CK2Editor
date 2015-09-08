@@ -8,6 +8,13 @@ namespace CK2Editor
 {
     public static class Util
     {
+        /// <summary>
+        /// Turns a negative index in a length context into an equivalent positive one
+        /// </summary>
+        /// <param name="index">The index to resolve, positive or negative</param>
+        /// <param name="length">The length of the collection <paramref name="index"/> operates in</param>
+        /// <returns>The equivalent positive index if <paramref name="index"/> is negative, or <c>index</c> itself if positive</returns>
+        /// <exception cref="System.IndexOutOfRangeException">Thrown when <paramref name="index"/> is negative and its absolute value is greater than <paramref name="length"/></exception>
         public static int ResolveNegativeIndex(int index, int length)
         {
             if (index < 0)
@@ -122,7 +129,7 @@ namespace CK2Editor
             int index = scope.IndexOf(name) + name.Length + 1;
             int index2 = scope.IndexOf("\"", index);
             scope.Remove(index, index2 - index);
-            scope.Insert(index, value);
+            scope.Insert(value, index);
         }
 
         public static void ReplaceValue(FileSection scope, string name, string value)
@@ -130,7 +137,7 @@ namespace CK2Editor
             int index = scope.IndexOf(name) + name.Length;
             int index2 = scope.IndexOfAny(new char[] { ' ', '\n' }, index);
             scope.Remove(index, index2 - index);
-            scope.Insert(index, value);
+            scope.Insert(value, index);
         }
     }
 }
