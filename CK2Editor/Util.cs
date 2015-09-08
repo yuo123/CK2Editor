@@ -34,7 +34,7 @@ namespace CK2Editor
         /// <param name="value">The string to find</param>
         /// <param name="startIndex">The starting index.</param>
         /// <param name="ignoreCase">if set to <c>true</c> it will ignore case</param>
-        /// <returns></returns>
+        /// <returns>The first index of the first occurance of <paramref name="value"/>, or -1 if not found</returns>
         public static int IndexOf(this StringBuilder sb, string value, int startIndex = 0, int maxIndex = -1, bool ignoreCase = false)
         {
             int index;
@@ -117,7 +117,7 @@ namespace CK2Editor
                     cbrackets++;
                 inp = scope[i2];
             }
-            return new FileSection(scope, i, i2);
+            return new FileSection(scope, i, i2 - 1);
         }
 
         /// <summary>
@@ -142,6 +142,8 @@ namespace CK2Editor
         public static string ExtractValue(FileSection scope, string name)
         {
             int index = scope.IndexOf(name) + name.Length;
+            if (index == name.Length)
+                return "";
             int index2 = scope.IndexOfAny(new char[] { ' ', '\n' }, index);
             return scope.ToString(index, index2);
         }

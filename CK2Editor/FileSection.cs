@@ -9,7 +9,7 @@ namespace CK2Editor
     /// <summary>
     /// Represents a section of a mutable file, which can be independentley edited
     /// </summary>
-    class FileSection : IEnumerable<char>
+    public class FileSection : IEnumerable<char>
     {
         /// <summary>
         /// The global StringBulder object shared by all FileSections of the same file
@@ -18,11 +18,11 @@ namespace CK2Editor
         /// <summary>
         /// The global index in <c>gscope</c> where this file section starts
         /// </summary>
-        protected virtual int si { get; protected set; }
+        protected virtual int si { get; set; }
         /// <summary>
         /// The global index in <c>gscope</c> where this file section ends (inclusive)
         /// </summary>
-        protected virtual int ei { get; protected set; }
+        protected virtual int ei { get; set; }
 
         /// <summary>
         /// The parent section of this FileSection. <c>NullFileSection</c> if this is the top section (see <see cref="CK2Editor.NullFileSection"/>)
@@ -35,9 +35,9 @@ namespace CK2Editor
             {
                 if (index < 0 || index >= this.Length)
                     throw new IndexOutOfRangeException("Tried to acces index " + index + ", which is out of this FileSection's bounds");
-                return gscope[Parent.si + ResolveNegativeIndex(index)];
+                return gscope[si + ResolveNegativeIndex(index)];
             }
-            set { gscope[Parent.si + ResolveNegativeIndex(index)] = value; }
+            set { gscope[si + ResolveNegativeIndex(index)] = value; }
         }
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace CK2Editor
         /// <summary>
         /// An empty costructor for use of special derived FileSections
         /// </summary>
-        protected FileSection();
+        protected FileSection() { }
 
         /// <summary>
         /// Turns negtaive indexes (counted from the end of this FileSection) into the equivalent positive indexes. Returns <paramref name="index"/> if already positive
@@ -130,7 +130,7 @@ namespace CK2Editor
         /// <returns>The first index of the first occurance of <paramref name="value"/></returns>
         public int IndexOf(string value, int startIndex = 0, int endIndex = -1, bool ignoreCase = false)
         {
-            return gscope.IndexOf(value, startIndex + this.si, this.si + Math.Min(this.ResolveNegativeIndex(endIndex), this.Length - 1), ignoreCase);
+            return gscope.IndexOf(value, startIndex + this.si, this.si + Math.Min(this.ResolveNegativeIndex(endIndex), this.Length - 1), ignoreCase) - si;
         }
 
         /// <summary>
@@ -143,7 +143,7 @@ namespace CK2Editor
         /// <returns>The index of the first occurance of <paramref name="value"/></returns>
         public int IndexOfAny(char[] values, int startIndex = 0, int endIndex = -1)
         {
-            return gscope.IndexOfAny(values, startIndex + this.si, this.si + Math.Min(this.ResolveNegativeIndex(endIndex), this.Length - 1));
+            return gscope.IndexOfAny(values, startIndex + this.si, this.si + Math.Min(this.ResolveNegativeIndex(endIndex), this.Length - 1)) - si;
         }
 
         /// <summary>
@@ -183,20 +183,25 @@ namespace CK2Editor
             return GetEnumerator();
         }
 
-        public override virtual string ToString(int index = 0, int index2 = -1)
+        public override string ToString()
+        {
+            return ToString();
+        }
+
+        public string ToString(int index = 0, int index2 = -1)
         {
             index = ResolveNegativeIndex(index);
             index2 = ResolveNegativeIndex(index2);
             ValidateIndex(index);
             ValidateIndex(index2);
-            return gscope.ToString(index, index2 - index);
+            return gscope.ToString(index + si, index2 - index);
         }
     }
 
     /// <summary>
     /// A dummy FileSection, to serve as the parent of root FileSections.
     /// </summary>
-    class NullFileSection : FileSection
+    public class NullFileSection : FileSection
     {
         protected override int si
         {
@@ -204,12 +209,12 @@ namespace CK2Editor
             {
                 return 0;
             }
-            protected set { }
+            set { }
         }
         protected override int ei
         {
             get;
-            protected set;
+            set;
         }
 
         /// <summary>
