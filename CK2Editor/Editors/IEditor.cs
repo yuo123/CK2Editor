@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CK2Editor
+namespace CK2Editor.Editors
 {
     /// <summary>
     /// A CK2 save parsing conmponent. Each IParser handles a certian section or a reccuring structure in the save file.

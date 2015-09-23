@@ -39,9 +39,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FileEditor.cs" />
+    <Compile Include="Editors\DynamicTitleEditor.cs" />
+    <Compile Include="Editors\Editor.cs" />
+    <Compile Include="Editors\EditorList.cs" />
+    <Compile Include="Editors\EditorListAttribute.cs" />
+    <Compile Include="Editors\FileEditor.cs" />
+    <Compile Include="Editors\EditorValueAttribute.cs" />
     <Compile Include="FileSection.cs" />
-    <Compile Include="IEditor.cs" />
+    <Compile Include="Editors\IEditor.cs" />
+    <Compile Include="Editors\IEditorList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util.cs" />
   </ItemGroup>
