@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<File>
+  <version name="Game Version" type="string" />
+  <date name="Current Date" type="string" />
+  <player_realm name="Player's Realm" type="string" />
+  <player name="Player Data">
+    <id name="Id" type="number" link="[ROOT]/characters/[VALUE]"/>
+    <type name="Type" type="number" />
+  </player>
+  <rebel name="rebel (Unknown Use)" type="number" />
+  <unit name="unit (Unknown Use)" type="number" />
+  <sub_unit name="sub_unit (Unknown Use)" type="number" />
+  <start_date name="Starting Date" type="string" />
+
+  <flags name="Historical Events (&quot;flags&quot;)">
+    <game_start_charlemagne name="game_start_charlemagne" />
+    <ogier_spawned name="Ogier spawned" />
+    <roland_spawned name="Roland Spawned" />
+    <fall_of_lombard_kingdom name="The Fall of The Lombard Kingdom" />
+    <charlemagne_spain_intervention name="Charlemgane Spain Intervention" />
+    <avar_khaganate_renamed name="Avar Khaganate Renamed" />
+    <viking_age_started name="Viking Age Started" />
+    <varangian_guard_founded name="Varangian Guard Founded" />
+    <demon_child_born name="Demon Child Born" />
+    <muslim_jihads_unlocked name="Jihads Era Started" />
+    <christian_crusades_unlocked name="Crusades Era started" />
+    <seljuk_spawned name="Seljuk Spawned" />
+    <seljuk_spawned_by_event name="Seljuk Spawned by Event" />
+    <sabuktigin_spawned name="Sabuktigin Spawned" />
+    <sabuktigin_spawned_by_event name="Sabuktigin Spawned by Event" />
+  </flags>
+  
+  <dyn_title name="Dynamic Title" multiple="same">
+    <title name="Title" type="string" />
+    <is_dynamic name="Is Dynamic" type="boolean" />
+  </dyn_title>
+
+  <dynasties name="Dynasties">
+    <DYNASTY multiple="number" name="[NAME]">
+      <name name="Name" type="string" />
+      <culture name="Culture" type="string" />
+      <religion name="Religion" type="string" link="[ROOT]/religion/[VALUE]" />
+      <coat_of_arms name="Coat of Arms">
+        <religion name="Religion" type="string" link="[ROOT]/religion/[VALUE]" />
+        <data name="Data" type="series" />
+      </coat_of_arms>
+    </DYNASTY>
+  </dynasties>
+</File>
