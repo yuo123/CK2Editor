@@ -12,18 +12,22 @@ namespace CK2Editor.Editors
     public interface IEditor
     {
         /// <summary>
-        /// Gets the editors for all the sub-sections of the section that this editors edits
+        /// List of editors for all the sub-sections of the section that this editors edits
         /// </summary>
-        IDictionary<string, IEditor> GetSections();
+        IList<SectionEntry> Sections { get; set; }
         /// <summary>
-        /// Gets the values that this editor can edit
+        /// List of values that this editor can edit
         /// </summary>
-        IDictionary<string, string> GetValues();
+        IList<ValueEntry> Values { get; set; }
+
         /// <summary>
-        /// Sets a value this parser can edit
+        /// The raw text this editor is based upon
         /// </summary>
-        /// <param name="name">The name of the value to set</param>
-        /// <param name="value">The new value to set</param>
-        void setValue(string name, string value);
+        string RawText { get; }
+
+        /// <summary>
+        /// Make the changes to <c>Sections</c> and <c>Values</c> reflect in <c>RawText</c>
+        /// </summary>
+        void Save();
     }
 }
