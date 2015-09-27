@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using CK2Editor.Editors;
+
 namespace CK2Editor
 {
     public partial class MainForm : Form
@@ -21,6 +23,16 @@ namespace CK2Editor
         {
             saveSelector.SelectedIndex = 0;
             fileChooser.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Paradox Interactive\Crusader Kings II\save games";
+
+            string path = @"D:\USERS\איל\Desktop\C# Projects\CK2Editor\Abyssinia999_05_08.ck2";
+            FileEditor editor = new FileEditor(path);
+            for (int i = 0; i < 1; i++)
+            {
+                foreach (System.Collections.Generic.KeyValuePair<string, string> pair in editor.GetValues())
+                {
+                    Console.WriteLine(pair.Key + ": " + pair.Value);
+                }
+            }
         }
 
         private void loadSaveButton_Click(object sender, EventArgs e)

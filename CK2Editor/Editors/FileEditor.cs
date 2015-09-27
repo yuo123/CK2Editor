@@ -28,20 +28,15 @@ namespace CK2Editor.Editors
             }
         }
 
-        public string GetVersion()
+        [EditorValue]
+        public string PlayerId
         {
-            return Util.ExtractStringValue(source, "version=");
-        }
-
-        public string GetPlayerId()
-        {
-            FileSection playerScope = Util.ExtractDelimited(source, "player=");
-            return Util.ExtractValue(playerScope, "id=");
-        }
-
-        public void SetVersion(string value)
-        {
-            Util.ReplaceStringValue(source, "version=", value);
+            get
+            {
+                FileSection playerScope = Util.ExtractDelimited(source, "player=");
+                return Util.ExtractValue(playerScope, "id="); 
+            }
+            set { Util.ReplaceStringValue(source, "version=", value); }
         }
 
         [EditorValue]
@@ -49,6 +44,20 @@ namespace CK2Editor.Editors
         {
             get { return Util.ExtractStringValue(source, "version="); }
             set { Util.ReplaceStringValue(source, "version=", value); }
+        }
+
+        [EditorValue]
+        public string Date
+        {
+            get { return Util.ExtractStringValue(source, "date="); }
+            set { Util.ReplaceStringValue(source, "date=", value); }
+        }
+
+        [EditorValue]
+        public string PlayerRealm
+        {
+            get { return Util.ExtractStringValue(source, "player_realm="); }
+            set { Util.ReplaceStringValue(source, "player_realm=", value); }
         }
     }
 }

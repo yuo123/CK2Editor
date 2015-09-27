@@ -85,6 +85,26 @@ namespace CK2Editor
         /// <param name="startIndex">The starting index.</param>
         /// <param name="ignoreCase">if set to <c>true</c> it will ignore case</param>
         /// <returns></returns>
+        public static int IndexOfAny(this StringBuilder sb, string[] values, int startIndex = 0, int maxIndex = -1)
+        {
+            int index = int.MaxValue;
+            foreach (string str in values)
+            {
+                int result = sb.IndexOf(str);
+                if (result != -1 && result < index)
+                    index = result;
+            }
+
+            return index == int.MaxValue ? -1 : index;
+        }
+
+        /// <summary>
+        /// Returns the index of the start of the any of the values in a StringBuilder
+        /// </summary>        
+        /// <param name="value">The characters to find</param>
+        /// <param name="startIndex">The starting index.</param>
+        /// <param name="ignoreCase">if set to <c>true</c> it will ignore case</param>
+        /// <returns></returns>
         public static int IndexOfAny(this StringBuilder sb, char[] values, int startIndex = 0, int maxIndex = -1)
         {
             for (int i = startIndex; i <= ResolveNegativeIndex(maxIndex, sb.Length); ++i)
@@ -104,7 +124,7 @@ namespace CK2Editor
         /// <returns>A new <c>FileSection</c> which is a child of <paramref name="scope"/> and contains the delimited area, without the brackets</returns>
         public static FileSection ExtractDelimited(FileSection scope, string identifier)
         {
-            int iindex = scope.IndexOf(identifier);
+            int iindex = scope.IndexOfAny(new string[] { "\n" + identifier, "\t" + identifier, " " + identifier });
             int i = scope.IndexOf("{", iindex) + 1;
             int cbrackets = 0;
             char inp = scope[i];
@@ -128,7 +148,9 @@ namespace CK2Editor
         /// <returns>The value without the parentheses</returns>
         public static string ExtractStringValue(FileSection scope, string name)
         {
-            int index = scope.IndexOf(name) + name.Length + 1;
+            int index = scope.IndexOfAny(new string[] { "\n" + name, "\t" + name, " " + name }) + name.Length + 1;
+            if (index == name.Length)//if the identifier was not found
+                return "";
             int index2 = scope.IndexOf("\"", index);
             return scope.ToString(index, index2);
         }
@@ -141,8 +163,8 @@ namespace CK2Editor
         /// <returns>The value</returns>
         public static string ExtractValue(FileSection scope, string name)
         {
-            int index = scope.IndexOf(name) + name.Length;
-            if (index == name.Length)
+            int index = scope.IndexOfAny(new string[] { "\n" + name, "\t" + name, " " + name }) + name.Length;
+            if (index == name.Length - 1)//if the identifier was not found
                 return "";
             int index2 = scope.IndexOfAny(new char[] { ' ', '\n' }, index);
             return scope.ToString(index, index2);
@@ -156,9 +178,17 @@ namespace CK2Editor
         /// <param name="value">The string value to replace the existing value with</param>
         public static void ReplaceStringValue(FileSection scope, string name, string value)
         {
-            int index = scope.IndexOf(name) + name.Length + 1;
-            int index2 = scope.IndexOf("\"", index);
-            scope.Remove(index, index2 - index);
+            int index = scope.IndexOfAny(new string[] { "\n" + name, "\t" + name, " " + name }) + name.Length + 1;
+            if (index != name.Length)
+            {
+                int index2 = scope.IndexOf("\"", index);
+                scope.Remove(index, index2 - index);
+            }
+            else
+            {//if the identifier was not found
+                scope.Insert(name);
+                index = name.Length;
+            }
             scope.Insert(value, index);
         }
 
@@ -170,9 +200,17 @@ namespace CK2Editor
         /// <param name="value">The non-string value to replace the existing value with</param>
         public static void ReplaceValue(FileSection scope, string name, string value)
         {
-            int index = scope.IndexOf(name) + name.Length;
-            int index2 = scope.IndexOfAny(new char[] { ' ', '\n' }, index);
-            scope.Remove(index, index2 - index);
+            int index = scope.IndexOfAny(new string[] { "\n" + name, "\t" + name, " " + name }) + name.Length;
+            if (index != name.Length - 1)
+            {
+                int index2 = scope.IndexOfAny(new char[] { ' ', '\n' }, index);
+                scope.Remove(index, index2 - index);
+            }
+            else
+            {//if the identifier was not found
+                scope.Insert(name);
+                index = name.Length;
+            }
             scope.Insert(value, index);
         }
     }

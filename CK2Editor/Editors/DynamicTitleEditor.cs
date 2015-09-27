@@ -15,37 +15,29 @@ namespace CK2Editor.Editors
         {
             this.source = source;
         }
-        
-        //public IDictionary<string, string> GetValues()
-        //{
-        //    Dictionary<string, string> re = new Dictionary<string, string>();
 
-        //    re.Add("Internal Name", InternName);
-        //    re.Add("Base Title", BaseTitle);
-        //    re.Add("Is Custom", IsCustom);
-        //    re.Add("Is Dynamic", IsDynamic);
-
-        //    return re;
-        //}
-
+        [EditorValue]
         public string InternalName
         {
             get { return Util.ExtractStringValue(source, "title="); }
             set { Util.ReplaceStringValue(source, "title=", value); }
         }
 
+        [EditorValue]
         public string BaseTitle
         {
             get { return Util.ExtractStringValue(source, "base_title="); }
             set { Util.ReplaceStringValue(source, "base_title=", value); }
         }
 
+        [EditorValue]
         public string IsCustom
         {
             get { return Util.ExtractValue(source, "is_custom="); }
             set { Util.ReplaceValue(source, "is_custom=", value); }
         }
 
+        [EditorValue]
         public string IsDynamic
         {
             get { return Util.ExtractValue(source, "is_dynamic="); }

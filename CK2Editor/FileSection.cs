@@ -130,18 +130,35 @@ namespace CK2Editor
         /// <returns>The first index of the first occurance of <paramref name="value"/></returns>
         public int IndexOf(string value, int startIndex = 0, int endIndex = -1, bool ignoreCase = false)
         {
-            return gscope.IndexOf(value, startIndex + this.si, this.si + Math.Min(this.ResolveNegativeIndex(endIndex), this.Length - 1), ignoreCase) - si;
+            int re = gscope.IndexOf(value, startIndex + this.si, this.si + Math.Min(this.ResolveNegativeIndex(endIndex), this.Length - 1), ignoreCase);
+            if (re == -1)
+                return -1;
+            else
+                return re - si;
         }
 
         /// <summary>
-        /// Returns the index of <paramref name="value"/> in this FileSection
+        /// Returns the index of any of <paramref name="values"/> in this FileSection
         /// </summary>
-        /// <param name="value">The value to look for</param>
+        /// <param name="values">The values to look for</param>
         /// <param name="startIndex">The index to start the search in. Negative indexes possible</param>
         /// <param name="endIndex">The index to stop the search in. Negative indexes possible</param>
         /// <param name="ignoreCase">Whether the search will be case insensitive or not</param>
-        /// <returns>The index of the first occurance of <paramref name="value"/></returns>
+        /// <returns>The index of the first occurance of any of <paramref name="values"/></returns>
         public int IndexOfAny(char[] values, int startIndex = 0, int endIndex = -1)
+        {
+            return gscope.IndexOfAny(values, startIndex + this.si, this.si + Math.Min(this.ResolveNegativeIndex(endIndex), this.Length - 1)) - si;
+        }
+
+        /// <summary>
+        /// Returns the first index of any of <paramref name="values"/> in this FileSection
+        /// </summary>
+        /// <param name="values">The value to look for</param>
+        /// <param name="startIndex">The index to start the search in. Negative indexes possible</param>
+        /// <param name="endIndex">The index to stop the search in. Negative indexes possible</param>
+        /// <param name="ignoreCase">Whether the search will be case insensitive or not</param>
+        /// <returns>The index of the first occurance of any of  <paramref name="values"/></returns>
+        public int IndexOfAny(string[] values, int startIndex = 0, int endIndex = -1)
         {
             return gscope.IndexOfAny(values, startIndex + this.si, this.si + Math.Min(this.ResolveNegativeIndex(endIndex), this.Length - 1)) - si;
         }
