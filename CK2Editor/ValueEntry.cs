@@ -28,6 +28,15 @@ namespace CK2Editor
         /// <summary>
         /// A link to another section, supplied by the format file
         /// </summary>
-        public IEditor Link;
+        public string Link;
+
+        public ValueEntry(string internalName, string friendlyName, string type, string value, string link)
+        {
+            InternalName = internalName;
+            FriendlyName = friendlyName;
+            Type = type;
+            Value = value;
+            Link = link;
+        }
     }
 }

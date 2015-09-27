@@ -4,7 +4,7 @@
   <date name="Current Date" type="string" />
   <player_realm name="Player's Realm" type="string" />
   <player name="Player Data">
-    <id name="Id" type="number" link="[ROOT]/characters/[VALUE]"/>
+    <id name="Id" type="number" link="[ROOT]/characters/[THISVALUE]"/>
     <type name="Type" type="number" />
   </player>
   <rebel name="rebel (Unknown Use)" type="number" />
@@ -36,12 +36,12 @@
   </dyn_title>
 
   <dynasties name="Dynasties">
-    <DYNASTY multiple="number" name="[NAME]">
+    <DYNASTY multiple="number" name="Name/[VALUE]">
       <name name="Name" type="string" />
       <culture name="Culture" type="string" />
-      <religion name="Religion" type="string" link="[ROOT]/religion/[VALUE]" />
+      <religion name="Religion" type="string" link="[ROOT]/religion/[THISVALUE]" />
       <coat_of_arms name="Coat of Arms">
-        <religion name="Religion" type="string" link="[ROOT]/religion/[VALUE]" />
+        <religion name="Religion" type="string" link="[ROOT]/religion/[THISVALUE]" />
         <data name="Data" type="series" />
       </coat_of_arms>
     </DYNASTY>

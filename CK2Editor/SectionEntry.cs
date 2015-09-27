@@ -24,6 +24,14 @@ namespace CK2Editor
         /// <summary>
         /// A link to another section, supplied by the format file
         /// </summary>
-        public IEditor Link;
+        public string Link;
+
+        public SectionEntry(string internalName, string friendlyName, IEditor section, string link)
+        {
+            InternalName = internalName;
+            FriendlyName = friendlyName;
+            Section = section;
+            Link = link;
+        }
     }
 }

@@ -213,5 +213,57 @@ namespace CK2Editor
             }
             scope.Insert(value, index);
         }
+
+        public static List<string> ListEntries(FileSection scope, Predicate<string> filter = null)
+        {
+            List<string> re = new List<string>();
+            int brackets = 0;
+            for (int i = 0; i < scope.Length; i++)
+            {
+                char c = scope[i];
+                switch (c)
+                {
+                    case '{': brackets++;
+                        break;
+                    case '}': brackets--;
+                        if (brackets < 0)
+                            brackets = 0;
+                        break;
+                    case '=':
+                        int index = scope.Last(ch => ch == ' ' || ch == '\t' || ch == '\n');
+                        string name = scope.ToString(i + 1, index - 1);
+                        if (filter == null || filter.Invoke(name))
+                            re.Add(name);
+                        break;
+                }
+            }
+            return re;
+        }
+
+        public static Dictionary<int, string> ListEntriesWithIndexes(FileSection scope, Predicate<string> filter = null)
+        {
+            Dictionary<int, string> re = new Dictionary<int, string>();
+            int brackets = 0;
+            for (int i = 0; i < scope.Length; i++)
+            {
+                char c = scope[i];
+                switch (c)
+                {
+                    case '{': brackets++;
+                        break;
+                    case '}': brackets--;
+                        if (brackets < 0)
+                            brackets = 0;
+                        break;
+                    case '=':
+                        int index = scope.Last(ch => ch == ' ' || ch == '\t' || ch == '\n');
+                        string name = scope.ToString(i + 1, index - 1);
+                        if (filter == null || filter.Invoke(name))
+                            re.Add(i + 1, name);
+                        break;
+                }
+            }
+            return re;
+        }
     }
 }
