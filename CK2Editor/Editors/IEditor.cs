@@ -19,15 +19,16 @@ namespace CK2Editor.Editors
         /// List of values that this editor can edit
         /// </summary>
         IList<ValueEntry> Values { get; set; }
-
         /// <summary>
-        /// The raw text this editor is based upon
+        /// Generates the text describing <c>Sections</c> and <c>Values</c> in the CK2 file format
         /// </summary>
-        string RawText { get; }
-
+        /// <param name="sb">the <c>StringBuilder</c> to append the output to</param>
+        /// <param name="indent">The number of tab characters to insert before each line</param>
+        void Save(StringBuilder sb, int indent = 0);
         /// <summary>
-        /// Make the changes to <c>Sections</c> and <c>Values</c> reflect in <c>RawText</c>
+        /// Generates the text describing <c>Sections</c> and <c>Values</c> in the CK2 file format
         /// </summary>
-        void Save();
+        /// <returns>The output text</returns>
+        string Save();
     }
 }

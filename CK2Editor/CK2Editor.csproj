@@ -49,12 +49,15 @@
     <Compile Include="Editors\IEditorList.cs" />
     <Compile Include="FormattedReader.cs" />
     <Compile Include="SectionEntry.cs" />
+    <Compile Include="Utility\FormatUtil.cs" />
     <Compile Include="ValueEntry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Util.cs" />
+    <Compile Include="Utility\Util.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="CK2Save.xml" />
+    <Content Include="CK2Save.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

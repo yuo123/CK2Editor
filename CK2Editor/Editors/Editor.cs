@@ -4,48 +4,41 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using CK2Editor.Utility;
+
 namespace CK2Editor.Editors
 {
     public class Editor : IEditor
     {
-        protected FileSection raw;
-
         public IList<SectionEntry> Sections { get; set; }
 
-        public IList<ValueEntry> Values
-        { get; set; }
+        public IList<ValueEntry> Values { get; set; }
 
-        public string RawText
+        public Editor()
         {
-            get { return raw.ToString(); }
+            Sections = new List<SectionEntry>();
+            Values = new List<ValueEntry>();
         }
 
-        public void Save()
+        public void Save(StringBuilder sb, int indent = 0)
         {
-            //recursively tell the sub-sections of this section to save
+            foreach (ValueEntry entry in Values)
+            {
+                FormatUtil.OutputValueFull(sb, entry, indent);
+            }
             foreach (SectionEntry section in Sections)
             {
-                section.Section.Save();
+                FormatUtil.OutputSectionStart(sb, section.InternalName, indent);
+                section.Section.Save(sb, indent + 1);
+                FormatUtil.OutputSectionEnd(sb, indent);
             }
+        }
 
-            //go through each of the values and update it
-            foreach (ValueEntry value in Values)
-            {
-                switch (value.Type)
-                {
-                    case "string":
-                        Util.ReplaceStringValue(raw, value.InternalName, value.Value);
-                        break;
-                    case "series":
-                        FileSection series = Util.ExtractDelimited(raw, value.InternalName + "=");
-                        series.Remove();
-                        series.Insert(value.Value);
-                        break;
-                    default:
-                        Util.ReplaceValue(raw, value.InternalName, value.Value);
-                        break;
-                }
-            }
+        public string Save()
+        {
+            StringBuilder sb = new StringBuilder();
+            Save(sb);
+            return sb.ToString();
         }
     }
 }

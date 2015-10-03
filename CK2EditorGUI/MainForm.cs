@@ -7,8 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 using CK2Editor.Editors;
+using CK2Editor;
 
 namespace CK2Editor
 {
@@ -25,14 +27,8 @@ namespace CK2Editor
             fileChooser.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Paradox Interactive\Crusader Kings II\save games";
 
             string path = @"D:\USERS\איל\Desktop\C# Projects\CK2Editor\Abyssinia999_05_08.ck2";
-            FileEditor editor = new FileEditor(path);
-            for (int i = 0; i < 1; i++)
-            {
-                foreach (System.Collections.Generic.KeyValuePair<string, string> pair in editor.GetValues())
-                {
-                    Console.WriteLine(pair.Key + ": " + pair.Value);
-                }
-            }
+            FormattedReader reader = new FormattedReader(@"D:\USERS\איל\Desktop\C# Projects\CK2Editor\CK2Editor\CK2Save.xml");
+            Editor ed = reader.ReadFile(path);
         }
 
         private void loadSaveButton_Click(object sender, EventArgs e)

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using CK2Editor.Utility;
+
 namespace CK2Editor
 {
     /// <summary>
@@ -11,6 +13,20 @@ namespace CK2Editor
     /// </summary>
     public class FileSection : IEnumerable<char>
     {
+        protected class IndexChangedEventArgs : EventArgs
+        {
+            internal int Location;
+            internal int Displacement;
+
+            public IndexChangedEventArgs(int location, int displacement)
+            {
+                Location = location;
+                Displacement = displacement;
+            }
+        }
+
+        protected event EventHandler<FileSection.IndexChangedEventArgs> IndexChanged;
+
         /// <summary>
         /// The global StringBulder object shared by all FileSections of the same file
         /// </summary>
@@ -33,11 +49,28 @@ namespace CK2Editor
         {
             get
             {
-                if (index < 0 || index >= this.Length)
-                    throw new IndexOutOfRangeException("Tried to acces index " + index + ", which is out of this FileSection's bounds");
-                return gscope[si + ResolveNegativeIndex(index)];
+                index = ResolveNegativeIndex(index);
+                ValidateIndex(index);
+                return gscope[si + index];
             }
-            set { gscope[si + ResolveNegativeIndex(index)] = value; }
+            set
+            {
+                index = ResolveNegativeIndex(index);
+                ValidateIndex(index);
+                gscope[si + index] = value;
+            }
+        }
+
+        public char this[uint index]
+        {
+            get
+            {
+                return gscope[si + (int)index];
+            }
+            set
+            {
+                gscope[si + (int)index] = value;
+            }
         }
 
         /// <summary>
@@ -83,6 +116,7 @@ namespace CK2Editor
                 Parent = parent;
                 si = parent.si + parent.ResolveNegativeIndex(startIndex);
                 ei = parent.si + parent.ResolveNegativeIndex(endIndex);
+                parent.IndexChanged += Parent_IndexChanged;
             }
             else
             {
@@ -90,6 +124,28 @@ namespace CK2Editor
                 si = Util.ResolveNegativeIndex(startIndex, sb.Length);
                 ei = Util.ResolveNegativeIndex(endIndex, sb.Length);
             }
+            this.IndexChanged += FileSection_IndexChanged;
+        }
+
+        void FileSection_IndexChanged(object sender, FileSection.IndexChangedEventArgs e)
+        {
+            if (sender != this && Parent != null && Parent.IndexChanged != null)
+            {
+                Parent.IndexChanged(this, e);
+            }
+        }
+
+        void Parent_IndexChanged(object sender, FileSection.IndexChangedEventArgs e)
+        {
+            int displacement = e.Displacement;
+            if (displacement < -(ei + e.Location))
+                displacement = -(ei + e.Location);
+
+            if (e.Location > ei) //if the changed location is further down than this section extends, it does not affect it
+                return;
+            if (e.Location <= si)
+                si += displacement;
+            ei += displacement;
         }
 
         /// <summary>
@@ -128,9 +184,9 @@ namespace CK2Editor
         /// <param name="endIndex">The index to stop the search in. Negative indexes possible</param>
         /// <param name="ignoreCase">Whether the search will be case insensitive or not</param>
         /// <returns>The first index of the first occurance of <paramref name="value"/></returns>
-        public int IndexOf(string value, int startIndex = 0, int endIndex = -1, bool ignoreCase = false)
+        public int IndexOf(string value, int startIndex = 0, int endIndex = -1)
         {
-            int re = gscope.IndexOf(value, startIndex + this.si, this.si + Math.Min(this.ResolveNegativeIndex(endIndex), this.Length - 1), ignoreCase);
+            int re = gscope.IndexOf(value, startIndex + this.si, this.si + Math.Min(this.ResolveNegativeIndex(endIndex), this.Length - 1));
             if (re == -1)
                 return -1;
             else
@@ -147,7 +203,8 @@ namespace CK2Editor
         /// <returns>The index of the first occurance of any of <paramref name="values"/></returns>
         public int IndexOfAny(char[] values, int startIndex = 0, int endIndex = -1)
         {
-            return gscope.IndexOfAny(values, startIndex + this.si, this.si + Math.Min(this.ResolveNegativeIndex(endIndex), this.Length - 1)) - si;
+            int result = gscope.IndexOfAny(values, startIndex + this.si, this.si + Math.Min(this.ResolveNegativeIndex(endIndex), this.Length - 1));
+            return result != -1 ? result - si : -1;
         }
 
         /// <summary>
@@ -160,7 +217,8 @@ namespace CK2Editor
         /// <returns>The index of the first occurance of any of  <paramref name="values"/></returns>
         public int IndexOfAny(string[] values, int startIndex = 0, int endIndex = -1)
         {
-            return gscope.IndexOfAny(values, startIndex + this.si, this.si + Math.Min(this.ResolveNegativeIndex(endIndex), this.Length - 1)) - si;
+            int result = gscope.IndexOfAny(values, startIndex + this.si, this.si + Math.Min(this.ResolveNegativeIndex(endIndex), this.Length - 1));
+            return result != -1 ? result - si : -1;
         }
 
         /// <summary>
@@ -173,6 +231,11 @@ namespace CK2Editor
             index = ResolveNegativeIndex(index);
             ValidateIndex(index);
             gscope.Insert(si + index, value);
+
+            if (IndexChanged != null)
+            {
+                IndexChanged(this, new IndexChangedEventArgs(si + index, value.Length));
+            }
         }
 
         /// <summary>
@@ -180,11 +243,18 @@ namespace CK2Editor
         /// </summary>
         /// <param name="index"></param>
         /// <param name="length"></param>
-        public void Remove(int index = 0, int length = -1)
+        public void Remove(int index = 0, int index2 = -1)
         {
             index = ResolveNegativeIndex(index);
             ValidateIndex(index);
-            gscope.Remove(si + index, length);
+            index2 = ResolveNegativeIndex(index2);
+            ValidateIndex(index2);
+            gscope.Remove(si + index, index2 - index);
+
+            if (IndexChanged != null)
+            {
+                IndexChanged(this, new IndexChangedEventArgs(si + index, -(index2 - index)));
+            }
         }
 
         public IEnumerator<char> GetEnumerator()
@@ -211,7 +281,7 @@ namespace CK2Editor
             index2 = ResolveNegativeIndex(index2);
             ValidateIndex(index);
             ValidateIndex(index2);
-            return gscope.ToString(index + si, index2 - index);
+            return gscope.ToString(index + si, index2 - index + 1);
         }
     }
 
