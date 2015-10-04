@@ -10,9 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{FE41809C-DDEC-48C3-91AA-ADF1D79C34A0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8A40FF5F-F7B7-47BB-A277-5DC3EFBCA3B9}"
-	ProjectSection(SolutionItems) = preProject
-		Report150923.vsp = Report150923.vsp
-	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aga.Controls", "..\Libraries\Aga.Controls\Aga.Controls.csproj", "{E73BB233-D88B-44A7-A98F-D71EE158381D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,11 +32,12 @@ Global
 		{FE41809C-DDEC-48C3-91AA-ADF1D79C34A0}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
 		{FE41809C-DDEC-48C3-91AA-ADF1D79C34A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FE41809C-DDEC-48C3-91AA-ADF1D79C34A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E73BB233-D88B-44A7-A98F-D71EE158381D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E73BB233-D88B-44A7-A98F-D71EE158381D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E73BB233-D88B-44A7-A98F-D71EE158381D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E73BB233-D88B-44A7-A98F-D71EE158381D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(Performance) = preSolution
-		HasPerformanceSessions = true
 	EndGlobalSection
 EndGlobal

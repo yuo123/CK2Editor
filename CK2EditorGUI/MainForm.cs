@@ -11,6 +11,8 @@ using System.IO;
 
 using CK2Editor.Editors;
 using CK2Editor;
+using CK2Editor.EditorGUIs;
+
 
 namespace CK2Editor
 {
@@ -29,6 +31,7 @@ namespace CK2Editor
             string path = @"D:\USERS\איל\Desktop\C# Projects\CK2Editor\Abyssinia999_05_08.ck2";
             FormattedReader reader = new FormattedReader(@"D:\USERS\איל\Desktop\C# Projects\CK2Editor\CK2Editor\CK2Save.xml");
             Editor ed = reader.ReadFile(path);
+            editorList.Model = new EditorGUI(ed);
         }
 
         private void loadSaveButton_Click(object sender, EventArgs e)
