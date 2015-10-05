@@ -44,7 +44,7 @@ namespace CK2Editor
                     {
                         default://the node is a single value
                             {
-                                ValueEntry ent;//no "new" needed because this is a struct
+                                ValueEntry ent = new ValueEntry();
                                 ent.InternalName = node.LocalName;
                                 ent.FriendlyName = node.Attributes["name"].Value;
                                 ent.Type = node.Attributes["type"] != null ? node.Attributes["type"].Value : "misc";
@@ -61,7 +61,7 @@ namespace CK2Editor
                                 {
                                     if (pair.Value == node.LocalName)
                                     {
-                                        ValueEntry ent;//no "new" needed because this is a struct
+                                        ValueEntry ent = new ValueEntry();
                                         ent.InternalName = pair.Value;
                                         ent.FriendlyName = node.Attributes["name"].Value;
                                         ent.Type = node.Attributes["type"] != null ? node.Attributes["type"].Value : "misc";
@@ -80,7 +80,7 @@ namespace CK2Editor
                     {
                         default://the node is a single section
                             {
-                                SectionEntry ent;//no "new" needed because this is a struct
+                                SectionEntry ent = new SectionEntry();
                                 ent.InternalName = node.LocalName;
                                 ent.FriendlyName = node.Attributes["name"].Value;
                                 ent.Section = ReadSection(FormatUtil.ExtractDelimited(file, ent.InternalName + '='), node);//note that this is an intentionally recursive call
@@ -96,7 +96,7 @@ namespace CK2Editor
                                 {
                                     if (pair.Value == node.LocalName)
                                     {
-                                        SectionEntry ent;//no "new" needed because this is a struct
+                                        SectionEntry ent = new SectionEntry();
                                         ent.InternalName = pair.Value;
                                         ent.FriendlyName = node.Attributes["name"].Value;
                                         ent.Section = ReadSection(FormatUtil.ExtractDelimited(file, ent.InternalName + '=', pair.Key), node);//note that this is an intentionally recursive call
@@ -116,7 +116,7 @@ namespace CK2Editor
                                     int n;
                                     if (int.TryParse(pair.Value, out n))
                                     {
-                                        SectionEntry ent;//no "new" needed because this is a struct
+                                        SectionEntry ent = new SectionEntry();
                                         ent.InternalName = pair.Value;
                                         ent.FriendlyName = node.Attributes["name"].Value;
                                         ent.Section = ReadSection(FormatUtil.ExtractDelimited(file, ent.InternalName + '=', pair.Key), node);//note that this is an intentionally recursive call
@@ -141,7 +141,7 @@ namespace CK2Editor
                     return FormatUtil.ExtractStringValue(scope, name + '=', startIndex);
                 case "series-compact":
                 case "series":
-                    return FormatUtil.ExtractDelimited(scope, name + '=', startIndex).ToString();
+                    return FormatUtil.ExtractDelimited(scope, name + '=', startIndex).ToString().Trim(new char[] { '\n', '\t' });
                 default:
                     return FormatUtil.ExtractValue(scope, name + '=', startIndex);
             }

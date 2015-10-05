@@ -7,28 +7,21 @@ using CK2Editor.Editors;
 
 namespace CK2Editor
 {
-    public struct ValueEntry
+    public class ValueEntry : Entry
     {
-        /// <summary>
-        /// The name used in the save file
-        /// </summary>
-        public string InternalName;
-        /// <summary>
-        /// A user friendly name, supplied by the format file
-        /// </summary>
-        public string FriendlyName;
         /// <summary>
         /// The value type, string, number, series or null (misc.)
         /// </summary>
-        public string Type;
+        public string Type { get; set; }
         /// <summary>
         /// The stores value
         /// </summary>
-        public string Value;
-        /// <summary>
-        /// A link to another section, supplied by the format file
-        /// </summary>
-        public string Link;
+        public string Value { get; set; }
+
+        public ValueEntry()
+        {
+
+        }
 
         public ValueEntry(string internalName, string friendlyName, string type, string value, string link)
         {

@@ -48,6 +48,7 @@
     <Compile Include="Editors\IEditor.cs" />
     <Compile Include="Editors\IEditorList.cs" />
     <Compile Include="FormattedReader.cs" />
+    <Compile Include="Entry.cs" />
     <Compile Include="SectionEntry.cs" />
     <Compile Include="Utility\FormatUtil.cs" />
     <Compile Include="ValueEntry.cs" />

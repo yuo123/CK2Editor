@@ -38,6 +38,7 @@
             this.valueColumn = new Aga.Controls.Tree.TreeColumn();
             this.nameNodeTextbox = new Aga.Controls.Tree.NodeControls.NodeTextBox();
             this.valueNodeTextbox = new Aga.Controls.Tree.NodeControls.NodeTextBox();
+            this.loadSaveButton = new System.Windows.Forms.Button();
             label1 = new System.Windows.Forms.Label();
             tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             label2 = new System.Windows.Forms.Label();
@@ -62,6 +63,7 @@
             tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
             tableLayoutPanel1.Controls.Add(label1, 0, 0);
             tableLayoutPanel1.Controls.Add(this.saveSelector, 1, 0);
+            tableLayoutPanel1.Controls.Add(this.loadSaveButton, 2, 0);
             tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
             tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -106,6 +108,7 @@
             this.editorList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.editorList.DragDropMarkColor = System.Drawing.Color.Black;
             this.editorList.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.editorList.GridLineStyle = ((Aga.Controls.Tree.GridLineStyle)((Aga.Controls.Tree.GridLineStyle.Horizontal | Aga.Controls.Tree.GridLineStyle.Vertical)));
             this.editorList.LineColor = System.Drawing.SystemColors.ControlDark;
             this.editorList.LoadOnDemand = true;
             this.editorList.Location = new System.Drawing.Point(0, 27);
@@ -114,9 +117,9 @@
             this.editorList.NodeControls.Add(this.nameNodeTextbox);
             this.editorList.NodeControls.Add(this.valueNodeTextbox);
             this.editorList.SelectedNode = null;
+            this.editorList.ShowNodeToolTips = true;
             this.editorList.Size = new System.Drawing.Size(1254, 318);
             this.editorList.TabIndex = 0;
-            this.editorList.Text = "treeViewAdv1";
             this.editorList.UseColumns = true;
             // 
             // nameColumn
@@ -152,6 +155,16 @@
             this.valueNodeTextbox.ParentColumn = this.valueColumn;
             this.valueNodeTextbox.Trimming = System.Drawing.StringTrimming.EllipsisCharacter;
             // 
+            // loadSaveButton
+            // 
+            this.loadSaveButton.Location = new System.Drawing.Point(1177, 3);
+            this.loadSaveButton.Name = "loadSaveButton";
+            this.loadSaveButton.Size = new System.Drawing.Size(65, 21);
+            this.loadSaveButton.TabIndex = 5;
+            this.loadSaveButton.Text = "Load...";
+            this.loadSaveButton.UseVisualStyleBackColor = true;
+            this.loadSaveButton.Click += new System.EventHandler(this.loadSaveButton_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -176,6 +189,7 @@
         private Aga.Controls.Tree.TreeColumn valueColumn;
         private Aga.Controls.Tree.NodeControls.NodeTextBox nameNodeTextbox;
         private Aga.Controls.Tree.NodeControls.NodeTextBox valueNodeTextbox;
+        private System.Windows.Forms.Button loadSaveButton;
     }
 }
 

@@ -7,24 +7,17 @@ using CK2Editor.Editors;
 
 namespace CK2Editor
 {
-    public struct SectionEntry
+    public class SectionEntry : Entry
     {
-        /// <summary>
-        /// The name used in the save file
-        /// </summary>
-        public string InternalName;
-        /// <summary>
-        /// A user friendly name, supplied by the format file
-        /// </summary>
-        public string FriendlyName;
         /// <summary>
         /// The editor of this section
         /// </summary>
-        public IEditor Section;
-        /// <summary>
-        /// A link to another section, supplied by the format file
-        /// </summary>
-        public string Link;
+        public IEditor Section { get; set; }
+
+        public SectionEntry()
+        {
+
+        }
 
         public SectionEntry(string internalName, string friendlyName, IEditor section, string link)
         {

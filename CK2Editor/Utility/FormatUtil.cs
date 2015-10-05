@@ -115,7 +115,7 @@ namespace CK2Editor.Utility
                             if (scope[i2] == ' ' || scope[i2] == '\n' || scope[i2] == '\t')
                                 break;
                         }
-                        string name = scope.ToString(i2 + 1, i);
+                        string name = scope.ToString(i2 + 1, i - 1);
                         if (filter == null || filter.Invoke(name))
                             re.Add(i2 + 1, name);
                         break;
