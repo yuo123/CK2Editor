@@ -9,6 +9,10 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 
+using Aga.Controls;
+using Aga.Controls.Tree;
+using Aga.Controls.Tree.NodeControls;
+
 using CK2Editor.Editors;
 using CK2Editor;
 using CK2Editor.EditorGUIs;
@@ -16,11 +20,13 @@ using CK2Editor.EditorGUIs;
 
 namespace CK2Editor
 {
-    public partial class MainForm : Form
+    public partial class MainForm : Form, IToolTipProvider
     {
         public MainForm()
         {
             InitializeComponent();
+
+            nameNodeTextbox.ToolTipProvider = this;
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -41,6 +47,21 @@ namespace CK2Editor
                 saveSelector.Items.AddRange(fileChooser.FileNames);
                 saveSelector.SelectedIndex = saveSelector.Items.Count - 1;
             }
+        }
+
+        public string GetToolTip(TreeNodeAdv node, NodeControl nodeControl)
+        {
+            var ent = node.Tag as Entry;
+            if (ent != null)
+            {
+                switch (nodeControl.ParentColumn.Header)
+                {
+                    case "Name":
+                        return "Internal Name: \"" + ent.InternalName + "\"";
+                }
+            }
+
+            return null;
         }
     }
 }
