@@ -1,4 +1,4 @@
-﻿namespace CK2Editor
+﻿namespace CK2EditorGUI
 {
     partial class MainForm
     {
@@ -32,13 +32,11 @@
             System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
             System.Windows.Forms.Label label2;
             this.saveSelector = new System.Windows.Forms.ComboBox();
+            this.loadSaveButton = new System.Windows.Forms.Button();
             this.fileChooser = new System.Windows.Forms.OpenFileDialog();
             this.editorList = new Aga.Controls.Tree.TreeViewAdv();
             this.nameColumn = new Aga.Controls.Tree.TreeColumn();
             this.valueColumn = new Aga.Controls.Tree.TreeColumn();
-            this.nameNodeTextbox = new Aga.Controls.Tree.NodeControls.NodeTextBox();
-            this.valueNodeTextbox = new Aga.Controls.Tree.NodeControls.NodeTextBox();
-            this.loadSaveButton = new System.Windows.Forms.Button();
             label1 = new System.Windows.Forms.Label();
             tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             label2 = new System.Windows.Forms.Label();
@@ -84,6 +82,16 @@
             this.saveSelector.Size = new System.Drawing.Size(1068, 21);
             this.saveSelector.TabIndex = 2;
             // 
+            // loadSaveButton
+            // 
+            this.loadSaveButton.Location = new System.Drawing.Point(1177, 3);
+            this.loadSaveButton.Name = "loadSaveButton";
+            this.loadSaveButton.Size = new System.Drawing.Size(65, 21);
+            this.loadSaveButton.TabIndex = 5;
+            this.loadSaveButton.Text = "Load...";
+            this.loadSaveButton.UseVisualStyleBackColor = true;
+            this.loadSaveButton.Click += new System.EventHandler(this.loadSaveButton_Click);
+            // 
             // label2
             // 
             label2.AutoSize = true;
@@ -114,8 +122,6 @@
             this.editorList.Location = new System.Drawing.Point(0, 27);
             this.editorList.Model = null;
             this.editorList.Name = "editorList";
-            this.editorList.NodeControls.Add(this.nameNodeTextbox);
-            this.editorList.NodeControls.Add(this.valueNodeTextbox);
             this.editorList.SelectedNode = null;
             this.editorList.ShowNodeToolTips = true;
             this.editorList.Size = new System.Drawing.Size(1254, 318);
@@ -139,32 +145,6 @@
             this.valueColumn.TooltipText = null;
             this.valueColumn.Width = 300;
             // 
-            // nameNodeTextbox
-            // 
-            this.nameNodeTextbox.DataPropertyName = "FriendlyName";
-            this.nameNodeTextbox.IncrementalSearchEnabled = true;
-            this.nameNodeTextbox.LeftMargin = 3;
-            this.nameNodeTextbox.ParentColumn = this.nameColumn;
-            this.nameNodeTextbox.Trimming = System.Drawing.StringTrimming.EllipsisCharacter;
-            // 
-            // valueNodeTextbox
-            // 
-            this.valueNodeTextbox.DataPropertyName = "Value";
-            this.valueNodeTextbox.IncrementalSearchEnabled = true;
-            this.valueNodeTextbox.LeftMargin = 3;
-            this.valueNodeTextbox.ParentColumn = this.valueColumn;
-            this.valueNodeTextbox.Trimming = System.Drawing.StringTrimming.EllipsisCharacter;
-            // 
-            // loadSaveButton
-            // 
-            this.loadSaveButton.Location = new System.Drawing.Point(1177, 3);
-            this.loadSaveButton.Name = "loadSaveButton";
-            this.loadSaveButton.Size = new System.Drawing.Size(65, 21);
-            this.loadSaveButton.TabIndex = 5;
-            this.loadSaveButton.Text = "Load...";
-            this.loadSaveButton.UseVisualStyleBackColor = true;
-            this.loadSaveButton.Click += new System.EventHandler(this.loadSaveButton_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -187,8 +167,6 @@
         private Aga.Controls.Tree.TreeViewAdv editorList;
         private Aga.Controls.Tree.TreeColumn nameColumn;
         private Aga.Controls.Tree.TreeColumn valueColumn;
-        private Aga.Controls.Tree.NodeControls.NodeTextBox nameNodeTextbox;
-        private Aga.Controls.Tree.NodeControls.NodeTextBox valueNodeTextbox;
         private System.Windows.Forms.Button loadSaveButton;
     }
 }

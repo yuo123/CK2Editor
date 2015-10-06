@@ -15,10 +15,12 @@ using Aga.Controls.Tree.NodeControls;
 
 using CK2Editor.Editors;
 using CK2Editor;
-using CK2Editor.EditorGUIs;
+using CK2EditorGUI.EditorGUIs;
+using CK2EditorGUI.NodeControls;
 
+using Aga.Controls.Tree.NodeControls;
 
-namespace CK2Editor
+namespace CK2EditorGUI
 {
     public partial class MainForm : Form, IToolTipProvider
     {
@@ -26,7 +28,15 @@ namespace CK2Editor
         {
             InitializeComponent();
 
-            nameNodeTextbox.ToolTipProvider = this;
+            var nameControl = new EntryNodeText();
+            nameControl.ToolTipProvider = this;
+            nameControl.ParentColumn = nameColumn;
+            editorList.NodeControls.Add(nameControl);
+
+            var valueControl = new NodeTextBox();
+            valueControl.DataPropertyName = "Value";
+            valueControl.ParentColumn = valueColumn;
+            editorList.NodeControls.Add(valueControl);
         }
 
         private void MainForm_Load(object sender, EventArgs e)

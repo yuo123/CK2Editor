@@ -35,18 +35,68 @@ namespace CK2Editor.Utility
         }
 
         /// <summary>
+        /// Extracts a FileSection of the file delimited by curly brackets and identified by <paramref name="identifier"/>
+        /// </summary>
+        /// <param name="scope">The FileSection to search</param>
+        /// <param name="identifier">The section's identifier, including the equals sign (<c>=</c>)</param>
+        /// <returns>A new <c>FileSection</c> which is a child of <paramref name="scope"/> and contains the delimited area, without the brackets</returns>
+        /// <param name="startIndex">The index to start searching at</param>
+        /// <param name="foundIndex">The index of the start of the delimited section</param>
+        public static FileSection ExtractDelimited(FileSection scope, string identifier, int startIndex, out int foundIndex)
+        {
+            int iindex = scope.IndexOfAny(new string[] { "\n" + identifier, "\t" + identifier, identifier, " " + identifier }, startIndex);
+            int i = scope.IndexOf("{", iindex) + 1;
+            int cbrackets = 0;
+            char inp = scope[i];
+            int i2 = i;
+            //advances through the file until it reaches the closing bracket (while ignoring brackets of lower scopes)
+            while ((inp != '}' || cbrackets > 0) && i2 < scope.Length - 1)
+            {
+                i2++;
+                if (inp == '{')
+                    cbrackets++;
+                else if (inp == '}')
+                    cbrackets--;
+                inp = scope[i2];
+            }
+            foundIndex = i;
+            return new FileSection(scope, i, i2 - 1);
+        }
+
+        /// <summary>
         /// Returns a string value delimited by two parentheses and preceded an identifier
         /// </summary>
         /// <param name="scope">The <c>FileSection</c> to search</param>
         /// <param name="name">The identifier of the value, including the equals sign (<c>=</c>)</param>
         /// <returns>The value without the parentheses</returns>
-        public static string ExtractStringValue(FileSection scope, string name, int stratIndex = 0)
+        public static string ExtractStringValue(FileSection scope, string name, int startIndex = 0)
         {
-            int index = scope.IndexOfAny(new string[] { "\n" + name, "\t" + name, " " + name, name }, stratIndex) + name.Length + 1;
+            int index = scope.IndexOfAny(new string[] { "\n" + name, "\t" + name, " " + name, name }, startIndex) + name.Length + 1;
             if (index == name.Length)//if the identifier was not found
                 return "";
             int index2 = scope.IndexOf("\"", index + 1);
-            return scope.ToString(index + 1, index2 - 1);
+            return scope.ToString(index, index2 - 1);
+        }
+
+        /// <summary>
+        /// Returns a string value delimited by two parentheses and preceded an identifier
+        /// </summary>
+        /// <param name="scope">The <c>FileSection</c> to search</param>
+        /// <param name="name">The identifier of the value, including the equals sign (<c>=</c>)</param>
+        /// <returns>The value without the parentheses</returns>
+        /// /// <param name="startIndex">The index to start searching at</param>
+        /// <param name="foundIndex">The index of the start of the value</param>
+        public static string ExtractStringValue(FileSection scope, string name, int startIndex, out int foundIndex)
+        {
+            int index = scope.IndexOfAny(new string[] { "\n" + name, "\t" + name, " " + name, name }, startIndex) + name.Length + 1;
+            if (index == name.Length)//if the identifier was not found
+            {
+                foundIndex = -1;
+                return "";
+            }
+            int index2 = scope.IndexOf("\"", index + 1);
+            foundIndex = index + 1;
+            return scope.ToString(index, index2 - 1);
         }
 
         /// <summary>
@@ -55,13 +105,32 @@ namespace CK2Editor.Utility
         /// <param name="scope">The <c>FileSection</c> to search</param>
         /// <param name="name">The identifier of the value, including the equals sign (<c>=</c>)</param>
         /// <returns>The value</returns>
-        public static string ExtractValue(FileSection scope, string name, int stratIndex = 0)
+        public static string ExtractValue(FileSection scope, string name, int startIndex = 0)
         {
-            int index = scope.IndexOfAny(new string[] { "\n" + name, "\t" + name, " " + name, name }, stratIndex) + name.Length;
+            int index = scope.IndexOfAny(new string[] { "\n" + name, "\t" + name, " " + name, name }, startIndex) + name.Length;
             if (index == name.Length - 1)//if the identifier was not found
                 return "";
             int index2 = scope.IndexOfAny(new char[] { ' ', '\n' }, index);
-            return scope.ToString(index + 1, index2 - 1);
+            return scope.ToString(index, index2 - 1);
+        }
+
+        /// <summary>
+        /// Returns a non-string value preceded by an identifier
+        /// </summary>
+        /// <param name="scope">The <c>FileSection</c> to search</param>
+        /// <param name="name">The identifier of the value, including the equals sign (<c>=</c>)</param>
+        /// <returns>The value</returns>
+        public static string ExtractValue(FileSection scope, string name, int startIndex, out int foundIndex)
+        {
+            int index = scope.IndexOfAny(new string[] { "\n" + name, "\t" + name, " " + name, name }, startIndex) + name.Length;
+            if (index == name.Length - 1)//if the identifier was not found
+            {
+                foundIndex = -1;
+                return "";
+            }
+            int index2 = scope.IndexOfAny(new char[] { ' ', '\n' }, index);
+            foundIndex = index + 1;
+            return scope.ToString(index, index2 - 1);
         }
 
         public static List<string> ListEntries(FileSection scope, Predicate<string> filter = null)
@@ -90,14 +159,14 @@ namespace CK2Editor.Utility
             return re;
         }
 
-        public static Dictionary<int, string> ListEntriesWithIndexes(FileSection scope, Predicate<string> filter = null)
+        public static Dictionary<int, string> ListEntriesWithIndexes(FileSection scope, int location = 0, Predicate<string> filter = null)
         {
             Dictionary<int, string> re = new Dictionary<int, string>();
             int brackets = 0;
             int length = scope.Length;
-            for (int i = 0; i < length; i++)
+            for (int i = location; i < length; i++)
             {
-                char c = scope[i];
+                char c = scope.GetCharAtUnsafe(i);
                 switch (c)
                 {
                     case '{': brackets++;
@@ -112,7 +181,8 @@ namespace CK2Editor.Utility
                         int i2;
                         for (i2 = i - 1; i2 >= 0; i2--)
                         {
-                            if (scope[i2] == ' ' || scope[i2] == '\n' || scope[i2] == '\t')
+                            char c2 = scope.GetCharAtUnsafe(i2);
+                            if (c2 == '\t' || c2 == '\n' || c2 == ' ')
                                 break;
                         }
                         string name = scope.ToString(i2 + 1, i - 1);

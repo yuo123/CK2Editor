@@ -61,16 +61,9 @@ namespace CK2Editor
             }
         }
 
-        public char this[uint index]
+        internal char GetCharAtUnsafe(int index)
         {
-            get
-            {
-                return gscope[si + (int)index];
-            }
-            set
-            {
-                gscope[si + (int)index] = value;
-            }
+            return gscope[si + index];
         }
 
         /// <summary>

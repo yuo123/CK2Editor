@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Xml;
+using System.Text.RegularExpressions;
 
 using CK2Editor.Editors;
 using CK2Editor.Utility;
@@ -32,105 +33,77 @@ namespace CK2Editor
             return ReadSection(file, xmlDoc.ChildNodes[1]);//nodes 0 and 1 are the root and File tags
         }
 
-        public Editor ReadSection(FileSection file, XmlNode formatNode)
-        {
-            Editor re = new Editor();
-            Dictionary<int, string> entries = null;
-            foreach (XmlNode node in formatNode.ChildNodes)
-            {
-                if (!node.HasChildNodes)
-                {//the node is a value, not a section
-                    switch (node.Attributes["multiple"] != null ? node.Attributes["multiple"].Value : null)//check if node actually represnts a list of values
-                    {
-                        default://the node is a single value
-                            {
+        /*
                                 ValueEntry ent = new ValueEntry();
                                 ent.InternalName = node.LocalName;
                                 ent.FriendlyName = node.Attributes["name"].Value;
                                 ent.Type = node.Attributes["type"] != null ? node.Attributes["type"].Value : "misc";
-                                ent.Value = ReadValue(file, ent.InternalName, ent.Type);
+                                ent.Value = ReadValue(file, ent.InternalName, ent.Type, location, out location);
+                                location += ent.Value.Length;
                                 ent.Link = node.Attributes["link"] != null ? node.Attributes["link"].Value : null;
                                 re.Values.Add(ent);
-                            }
-                            break;
-                        case "same"://the node is multiple values, all with the same name
-                            {
-                                if (entries == null)
-                                    entries = FormatUtil.ListEntriesWithIndexes(file);//all entries are cached in the entries variable
-                                foreach (KeyValuePair<int, string> pair in entries)
-                                {
-                                    if (pair.Value == node.LocalName)
-                                    {
-                                        ValueEntry ent = new ValueEntry();
-                                        ent.InternalName = pair.Value;
-                                        ent.FriendlyName = node.Attributes["name"].Value;
-                                        ent.Type = node.Attributes["type"] != null ? node.Attributes["type"].Value : "misc";
-                                        ent.Value = ReadValue(file, ent.InternalName, ent.Type, pair.Key);
-                                        ent.Link = node.Attributes["link"] != null ? node.Attributes["link"].Value : null;
-                                        re.Values.Add(ent);
-                                    }
-                                }
-                            }
-                            break;
-                    }
-                }
-                else
-                {//the node is a section
-                    switch (node.Attributes["multiple"] != null ? node.Attributes["multiple"].Value : null)//check if node actually represnts a list of sections
-                    {
-                        default://the node is a single section
-                            {
-                                SectionEntry ent = new SectionEntry();
-                                ent.InternalName = node.LocalName;
-                                ent.FriendlyName = node.Attributes["name"].Value;
-                                ent.Section = ReadSection(FormatUtil.ExtractDelimited(file, ent.InternalName + '='), node);//note that this is an intentionally recursive call
-                                ent.Link = node.Attributes["link"] != null ? node.Attributes["link"].Value : null;
-                                re.Sections.Add(ent);
-                                break;
-                            }
-                        case "same"://the node is a list of section, all named the same as the node
-                            {
-                                if (entries == null)
-                                    entries = FormatUtil.ListEntriesWithIndexes(file);//all entries are cached in the entries variable
-                                foreach (KeyValuePair<int, string> pair in entries)
-                                {
-                                    if (pair.Value == node.LocalName)
-                                    {
-                                        SectionEntry ent = new SectionEntry();
-                                        ent.InternalName = pair.Value;
-                                        ent.FriendlyName = node.Attributes["name"].Value;
-                                        ent.Section = ReadSection(FormatUtil.ExtractDelimited(file, ent.InternalName + '=', pair.Key), node);//note that this is an intentionally recursive call
-                                        ent.Link = node.Attributes["link"] != null ? node.Attributes["link"].Value : null;
-                                        re.Sections.Add(ent);
-                                    }
-                                }
+         */
+        public Editor ReadSection(FileSection file, XmlNode formatNode, IEditor root = null)
+        {
+            Editor re = new Editor();
+            re.Root = root != null ? root : re;//if no root was provided, the current editor is the root
+            Dictionary<int, string> entries = FormatUtil.ListEntriesWithIndexes(file);
 
-                                break;
-                            }
-                        case "number"://the node is a list of sections, each identified by a different integer number
-                            {
-                                if (entries == null)
-                                    entries = FormatUtil.ListEntriesWithIndexes(file);//all entries are cached in the entries variable
-                                foreach (KeyValuePair<int, string> pair in entries)
-                                {
-                                    int n;
-                                    if (int.TryParse(pair.Value, out n))
-                                    {
-                                        SectionEntry ent = new SectionEntry();
-                                        ent.InternalName = pair.Value;
-                                        ent.FriendlyName = node.Attributes["name"].Value;
-                                        ent.Section = ReadSection(FormatUtil.ExtractDelimited(file, ent.InternalName + '=', pair.Key), node);//note that this is an intentionally recursive call
-                                        ent.Link = node.Attributes["link"] != null ? node.Attributes["link"].Value : null;
-                                        re.Sections.Add(ent);
-                                    }
-                                }
-                                break;
-                            }
+            foreach (var pair in entries)
+            {
+                XmlNode childNode = FindNode(formatNode, pair.Value);//look for a format node that can dexcribe this entry
+                if (childNode != null)
+                {
+                    if (!childNode.HasChildNodes)
+                    {//the node is a value
+                        ValueEntry ent = new ValueEntry();
+                        ent.InternalName = pair.Value;
+                        ent.FriendlyName = childNode.Attributes["name"].Value;
+                        ent.Type = childNode.Attributes["type"] != null ? childNode.Attributes["type"].Value : "misc";
+                        ent.Value = ReadValue(file, ent.InternalName, ent.Type, pair.Key);
+                        ent.Link = childNode.Attributes["link"] != null ? childNode.Attributes["link"].Value : null;
+                        ent.Editor = re;
+                        re.Values.Add(ent);
+                    }
+                    else
+                    {//the node is a section
+                        SectionEntry ent = new SectionEntry();
+                        ent.InternalName = pair.Value;
+                        ent.FriendlyName = childNode.Attributes["name"].Value;
+                        ent.Section = ReadSection(FormatUtil.ExtractDelimited(file, pair.Value, pair.Key), childNode, re.Root);
+                        ent.Link = childNode.Attributes["link"] != null ? childNode.Attributes["link"].Value : null;
+                        ent.Editor = re;
+                        re.Sections.Add(ent);
                     }
                 }
+
             }
 
             return re;
+        }
+
+        private XmlNode FindNode(XmlNode parentNode, string name)
+        {
+            foreach (XmlNode child in parentNode.ChildNodes)
+            {
+                Func<string, bool> comparer = GetNameComparer(child);
+                if (comparer.Invoke(name))
+                    return child;
+            }
+            return null;
+        }
+
+        private Func<string, bool> GetNameComparer(XmlNode node)
+        {
+            switch (node.Attributes["multiple"] != null ? node.Attributes["multiple"].Value : null)
+            {
+                default:
+                case "same":
+                    return name => name == node.LocalName;
+                case "number":
+                    int n;
+                    return name => int.TryParse(name, out n);
+            }
         }
 
         public string ReadValue(FileSection scope, string name, string type, int startIndex = 0)
@@ -146,5 +119,129 @@ namespace CK2Editor
                     return FormatUtil.ExtractValue(scope, name + '=', startIndex);
             }
         }
+
+        public string ReadValue(FileSection scope, string name, string type, int startIndex, out int foundIndex)
+        {
+            switch (type)
+            {
+                case "string":
+                    return FormatUtil.ExtractStringValue(scope, name + '=', startIndex, out foundIndex);
+                case "series-compact":
+                case "series":
+                    return FormatUtil.ExtractDelimited(scope, name + '=', startIndex, out foundIndex).ToString().Trim(new char[] { '\n', '\t' });
+                default:
+                    return FormatUtil.ExtractValue(scope, name + '=', startIndex, out foundIndex);
+            }
+        }
+
+        public static string ParseValueRefs(Entry start, string s)
+        {
+            bool inref = false;
+            int refstart = -1;
+            string ret = s;
+            for (int i = 0; i < s.Length; i++)
+            {
+                if (!inref)
+                {
+                    if (s[i] == '[' && s[i + 1] == '!')
+                    {
+                        inref = true;
+                        refstart = i;
+                        i++;
+                    }
+                }
+                else
+                {
+                    if (s[i] == '!' && s[i + 1] == ']')
+                    {
+                        inref = false;
+                        int reflength = i - refstart + 2;
+                        string parsed = ParseValueRef(start, ret.Substring(refstart + 2, reflength - 4));
+                        if (parsed == null)
+                            return null;
+                        ret = ret.Remove(refstart, reflength);
+                        ret = ret.Insert(refstart, parsed);
+                        i++;
+                    }
+                }
+            }
+            return ret;
+        }
+
+        public static string ParseValueRef(Entry start, string sref)
+        {
+            string[] comps = sref.Split(new char[] { ':' });
+            Entry ent = ParseRef(start, comps[0]);
+            if (ent == null)//if the reference wwas not found
+                return null;
+            switch (comps[1])
+            {
+                case "[VALUE]":
+                    {
+                        ValueEntry vent = ent as ValueEntry;
+                        if (vent == null)
+                            throw new FileFormatException("Reference in format file could not be parsed: Sections do not have a value! (" + "entry " + ent.InternalName + ")");
+                        return vent.Value;
+                    }
+                default:
+                    throw new FileFormatException("Reference in format file could not be parsed:  unknown symbol " + comps[1]);
+            }
+        }
+
+        public static Entry ParseRef(Entry start, string sref)
+        {
+            Entry current = start;
+            if (sref.Length > 0 && sref[0] == '!')//reference path starting with another '!' means it starts at the root
+            {
+                current = new SectionEntry();//create a temprary wrapper SectionEntry, for convenience
+                ((SectionEntry)current).Section = start.Editor.Root;
+            }
+
+            string[] comps = sref.Split(new char[] { '/' });
+            foreach (string comp in comps)
+            {
+                SectionEntry section = current as SectionEntry;
+                if (section == null)
+                    throw new FileFormatException("Reference in format file could not be parsed: tried to get parent of value (entry " + current.InternalName + ")");
+                foreach (Match match in Regex.Matches(comp, "\\[*\\]"))
+                {
+                    comp.Remove(match.Index, match.Length);
+                    comp.Insert(match.Index, ParseSymbol(start, current, match.Value));
+                }
+                current = section.Section.Entries.FirstOrDefault(ent => ent.InternalName == comp);
+            }
+            return current;
+        }
+
+        public static string ParseSymbol(Entry start, Entry current, string value)
+        {
+            switch (value)
+            {
+                case "VALUE":
+                    {
+                        var vent = current as ValueEntry;
+                        if (vent == null)
+                            throw new FileFormatException("Reference in format file could not be parsed: " + value + " (for entry " + current.InternalName + ")");
+                        return vent.Value;
+                    }
+                case "THISVALUE":
+                    {
+                        var vent = start as ValueEntry;
+                        if (vent == null)
+                            throw new FileFormatException("Reference in format file could not be parsed: " + value + " (for entry " + start.InternalName + ")");
+                        return vent.Value;
+                    }
+            }
+            throw new FileFormatException("Reference in format file could not be parsed:  unknown symbol " + value);
+        }
+    }
+
+    public class FileFormatException : Exception
+    {
+        public FileFormatException() { }
+
+        public FileFormatException(string message) : base(message) { }
+
+        public FileFormatException(string message, Exception innerException) : base(message, innerException) { }
     }
 }

@@ -16,11 +16,17 @@ namespace CK2Editor.Editors
         /// <summary>
         /// List of editors for all the sub-sections of the section that this editors edits
         /// </summary>
-        IList<SectionEntry> Sections { get; set; }
+        IList<SectionEntry> Sections { get; }
         /// <summary>
         /// List of values that this editor can edit
         /// </summary>
-        IList<ValueEntry> Values { get; set; }
+        IList<ValueEntry> Values { get; }
+
+        IList<Entry> Entries { get; }
+        /// <summary>
+        /// The Editor of the entire file this IEditor is part of
+        /// </summary>
+        IEditor Root { get; set; }
         /// <summary>
         /// Generates the text describing <c>Sections</c> and <c>Values</c> in the CK2 file format
         /// </summary>

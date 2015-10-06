@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace CK2Editor
+namespace CK2EditorGUI
 {
     static class Program
     {

@@ -10,9 +10,9 @@ namespace CK2Editor.Editors
 {
     public class Editor : IEditor
     {
-        public IList<SectionEntry> Sections { get; set; }
+        public IList<SectionEntry> Sections { get; private set; }
 
-        public IList<ValueEntry> Values { get; set; }
+        public IList<ValueEntry> Values { get; private set; }
 
         public Editor()
         {
@@ -39,6 +39,21 @@ namespace CK2Editor.Editors
             StringBuilder sb = new StringBuilder();
             Save(sb);
             return sb.ToString();
+        }
+
+
+        public IEditor Root { get; set; }
+
+
+        public IList<Entry> Entries
+        {
+            get
+            {
+                var ret = new List<Entry>(Values.Count + Sections.Count);
+                ret.AddRange(Values);
+                ret.AddRange(Sections);
+                return ret;
+            }
         }
     }
 }

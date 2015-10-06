@@ -8,9 +8,10 @@ using System.Collections;
 
 using Aga.Controls.Tree;
 
+using CK2Editor;
 using CK2Editor.Editors;
 
-namespace CK2Editor.EditorGUIs
+namespace CK2EditorGUI.EditorGUIs
 {
     class EditorGUI : ITreeModel
     {

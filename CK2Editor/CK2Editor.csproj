@@ -42,8 +42,7 @@
   <ItemGroup>
     <Compile Include="Editors\Editor.cs" />
     <Compile Include="Editors\EditorList.cs" />
-    <Compile Include="Editors\EditorListAttribute.cs" />
-    <Compile Include="Editors\EditorValueAttribute.cs" />
+    <Compile Include="FileFormatException.cs" />
     <Compile Include="FileSection.cs" />
     <Compile Include="Editors\IEditor.cs" />
     <Compile Include="Editors\IEditorList.cs" />
