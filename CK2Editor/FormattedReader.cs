@@ -29,7 +29,7 @@ namespace CK2Editor
 
         public Editor ReadFile(string filename)
         {
-            FileSection file = new FileSection(File.ReadAllText(filename));
+            FileSection file = new FileSection(File.ReadAllText(filename, Encoding.UTF7));//Encoding is important!
             return ReadSection(file, xmlDoc.ChildNodes[1]);//nodes 0 and 1 are the root and File tags
         }
 
@@ -51,7 +51,7 @@ namespace CK2Editor
 
             foreach (var pair in entries)
             {
-                XmlNode childNode = FindNode(formatNode, pair.Value);//look for a format node that can dexcribe this entry
+                XmlNode childNode = FindNode(formatNode, pair.Value);//look for a format node that can describe this entry
                 if (childNode != null)
                 {
                     if (!childNode.HasChildNodes)
@@ -190,23 +190,27 @@ namespace CK2Editor
 
         public static Entry ParseRef(Entry start, string sref)
         {
+            if (sref == null)
+                return null;
             Entry current = start;
             if (sref.Length > 0 && sref[0] == '!')//reference path starting with another '!' means it starts at the root
             {
                 current = new SectionEntry();//create a temprary wrapper SectionEntry, for convenience
                 ((SectionEntry)current).Section = start.Editor.Root;
+                sref = sref.Remove(0, 2);
             }
 
             string[] comps = sref.Split(new char[] { '/' });
-            foreach (string comp in comps)
+            foreach (string compi in comps)
             {
                 SectionEntry section = current as SectionEntry;
                 if (section == null)
                     throw new FileFormatException("Reference in format file could not be parsed: tried to get parent of value (entry " + current.InternalName + ")");
-                foreach (Match match in Regex.Matches(comp, "\\[*\\]"))
+                string comp = compi;
+                foreach (Match match in Regex.Matches(comp, "\\[.*\\]"))
                 {
-                    comp.Remove(match.Index, match.Length);
-                    comp.Insert(match.Index, ParseSymbol(start, current, match.Value));
+                    comp = comp.Remove(match.Index, match.Length);
+                    comp = comp.Insert(match.Index, ParseSymbol(start, current, match.Value));
                 }
                 current = section.Section.Entries.FirstOrDefault(ent => ent.InternalName == comp);
             }
@@ -217,14 +221,14 @@ namespace CK2Editor
         {
             switch (value)
             {
-                case "VALUE":
+                case "[VALUE]":
                     {
                         var vent = current as ValueEntry;
                         if (vent == null)
                             throw new FileFormatException("Reference in format file could not be parsed: " + value + " (for entry " + current.InternalName + ")");
                         return vent.Value;
                     }
-                case "THISVALUE":
+                case "[THISVALUE]":
                     {
                         var vent = start as ValueEntry;
                         if (vent == null)

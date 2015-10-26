@@ -69,7 +69,10 @@
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="NodeControls\EntryNodeText.cs">
+    <Compile Include="NodeControls\EntryNameNodeText.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="NodeControls\EntryValueNodeText.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Program.cs" />

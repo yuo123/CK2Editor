@@ -11,13 +11,13 @@ using CK2Editor.Editors;
 
 namespace CK2EditorGUI.NodeControls
 {
-    class EntryNodeText : NodeTextBox
+    class EntryNameNodeText : NodeTextBox
     {
         public override object GetValue(Aga.Controls.Tree.TreeNodeAdv node)
         {
             Entry ent = node.Tag as Entry;
             if (ent == null)
-                throw new ArgumentException("EntryNodeText can only be used with entries");
+                throw new ArgumentException("EntryNameNodeText can only be used with entries");
             string res = FormattedReader.ParseValueRefs(ent, ent.FriendlyName);
             return res != null ? res : ent.InternalName;
         }

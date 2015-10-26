@@ -117,7 +117,7 @@
             this.editorList.DragDropMarkColor = System.Drawing.Color.Black;
             this.editorList.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.editorList.GridLineStyle = ((Aga.Controls.Tree.GridLineStyle)((Aga.Controls.Tree.GridLineStyle.Horizontal | Aga.Controls.Tree.GridLineStyle.Vertical)));
-            this.editorList.LineColor = System.Drawing.SystemColors.ControlDark;
+            this.editorList.LineColor = System.Drawing.SystemColors.ControlDarkDark;
             this.editorList.LoadOnDemand = true;
             this.editorList.Location = new System.Drawing.Point(0, 27);
             this.editorList.Model = null;

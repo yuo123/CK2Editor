@@ -18,8 +18,6 @@ using CK2Editor;
 using CK2EditorGUI.EditorGUIs;
 using CK2EditorGUI.NodeControls;
 
-using Aga.Controls.Tree.NodeControls;
-
 namespace CK2EditorGUI
 {
     public partial class MainForm : Form, IToolTipProvider
@@ -28,13 +26,13 @@ namespace CK2EditorGUI
         {
             InitializeComponent();
 
-            var nameControl = new EntryNodeText();
+            var nameControl = new EntryNameNodeText();
             nameControl.ToolTipProvider = this;
             nameControl.ParentColumn = nameColumn;
+            //nameControl.Font=System.Drawing.Font.
             editorList.NodeControls.Add(nameControl);
 
-            var valueControl = new NodeTextBox();
-            valueControl.DataPropertyName = "Value";
+            var valueControl = new EntryValueNodeText();
             valueControl.ParentColumn = valueColumn;
             editorList.NodeControls.Add(valueControl);
         }
