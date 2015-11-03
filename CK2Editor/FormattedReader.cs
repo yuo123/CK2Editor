@@ -61,6 +61,8 @@ namespace CK2Editor
                         ent.FriendlyName = childNode.Attributes["name"].Value;
                         ent.Type = childNode.Attributes["type"] != null ? childNode.Attributes["type"].Value : "misc";
                         ent.Value = ReadValue(file, ent.InternalName, ent.Type, pair.Key);
+                        if (ent.Value == "665369\r")
+                            System.Diagnostics.Debugger.Break();
                         ent.Link = childNode.Attributes["link"] != null ? childNode.Attributes["link"].Value : null;
                         ent.Editor = re;
                         re.Values.Add(ent);
