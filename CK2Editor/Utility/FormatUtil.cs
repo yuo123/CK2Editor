@@ -110,7 +110,7 @@ namespace CK2Editor.Utility
             int index = scope.IndexOfAny(new string[] { "\n" + name, "\t" + name, " " + name, name }, startIndex) + name.Length;
             if (index == name.Length - 1)//if the identifier was not found
                 return "";
-            int index2 = scope.IndexOfAny(new char[] { ' ', '\n' }, index);
+            int index2 = scope.IndexOfAny(new char[] { ' ', '\n', '\t', '\r' }, index);
             return scope.ToString(index, index2 - 1);
         }
 

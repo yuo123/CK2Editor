@@ -205,7 +205,7 @@ namespace CK2Editor
             {
                 SectionEntry section = current as SectionEntry;
                 if (section == null)
-                    throw new FileFormatException("Reference in format file could not be parsed: tried to get parent of value (entry " + current.InternalName + ")");
+                    return null;
                 string comp = compi;
                 foreach (Match match in Regex.Matches(comp, "\\[.*\\]"))
                 {
