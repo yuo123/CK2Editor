@@ -17,11 +17,16 @@ namespace CK2EditorGUI.NodeControls
             ValueEntry ent = node.Tag as ValueEntry;
             if (ent == null)
                 return "";
-            if (ent.Link == null)
-                return "";
 
             string value = ent.Value;
-            return value + " " + FormattedReader.ParseRef(ent, ent.Link).FriendlyName;
+            string link = "";
+            if (ent.Link != null)
+            {
+                Entry linkEnt = FormattedReader.ParseRef(ent, ent.Link);
+                if (linkEnt != null)
+                    link = linkEnt.FriendlyName;
+            }
+            return value + " " + link;
         }
     }
 }

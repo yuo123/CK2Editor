@@ -61,8 +61,6 @@ namespace CK2Editor
                         ent.FriendlyName = childNode.Attributes["name"].Value;
                         ent.Type = childNode.Attributes["type"] != null ? childNode.Attributes["type"].Value : "misc";
                         ent.Value = ReadValue(file, ent.InternalName, ent.Type, pair.Key);
-                        if (ent.Value == "665369\r")
-                            System.Diagnostics.Debugger.Break();
                         ent.Link = childNode.Attributes["link"] != null ? childNode.Attributes["link"].Value : null;
                         ent.Editor = re;
                         re.Values.Add(ent);
@@ -207,7 +205,7 @@ namespace CK2Editor
             {
                 SectionEntry section = current as SectionEntry;
                 if (section == null)
-                    throw new FileFormatException("Reference in format file could not be parsed: tried to get parent of value (entry " + current.InternalName + ")");
+                    return null;
                 string comp = compi;
                 foreach (Match match in Regex.Matches(comp, "\\[.*\\]"))
                 {
