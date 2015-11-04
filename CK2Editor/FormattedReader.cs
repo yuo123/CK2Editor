@@ -190,13 +190,21 @@ namespace CK2Editor
 
         public static Entry ParseRef(Entry start, string sref)
         {
+            return ParseRefPath(start, sref).LastOrDefault();
+        }
+
+        public static IEnumerable<Entry> ParseRefPath(Entry start, string sref)
+        {
             if (sref == null)
-                return null;
+                yield break;
             Entry current = start;
             if (sref.Length > 0 && sref[0] == '!')//reference path starting with another '!' means it starts at the root
             {
-                current = new SectionEntry();//create a temprary wrapper SectionEntry, for convenience
-                ((SectionEntry)current).Section = start.Editor.Root;
+                if (start.Editor != null)
+                {
+                    current = new SectionEntry();//create a temprary wrapper SectionEntry, for convenience
+                    ((SectionEntry)current).Section = start.Editor.Root;
+                }
                 sref = sref.Remove(0, 2);
             }
 
@@ -205,7 +213,7 @@ namespace CK2Editor
             {
                 SectionEntry section = current as SectionEntry;
                 if (section == null)
-                    return null;
+                    yield break;
                 string comp = compi;
                 foreach (Match match in Regex.Matches(comp, "\\[.*\\]"))
                 {
@@ -213,8 +221,8 @@ namespace CK2Editor
                     comp = comp.Insert(match.Index, ParseSymbol(start, current, match.Value));
                 }
                 current = section.Section.Entries.FirstOrDefault(ent => ent.InternalName == comp);
+                yield return current;
             }
-            return current;
         }
 
         public static string ParseSymbol(Entry start, Entry current, string value)

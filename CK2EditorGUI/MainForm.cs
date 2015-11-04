@@ -45,7 +45,9 @@ namespace CK2EditorGUI
             string path = @"C:\Users\User\Desktop\CK2Editor\Test_Save.ck2";
             FormattedReader reader = new FormattedReader(@"C:\Users\User\Desktop\CK2Editor\CK2Editor\CK2Save.xml");
             Editor ed = reader.ReadFile(path);
-            editorList.Model = new EditorGUI(ed);
+            EditorGUI egui = new EditorGUI(ed);
+            egui.Tree = editorList;
+            editorList.Model = egui;
         }
 
         private void loadSaveButton_Click(object sender, EventArgs e)
@@ -71,5 +73,7 @@ namespace CK2EditorGUI
 
             return null;
         }
+
+
     }
 }

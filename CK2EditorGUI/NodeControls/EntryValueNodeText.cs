@@ -8,24 +8,20 @@ using System.Windows.Forms;
 using Aga.Controls.Tree.NodeControls;
 
 using CK2Editor;
+using CK2EditorGUI.EditorGUIs;
 
 namespace CK2EditorGUI.NodeControls
 {
     class EntryValueNodeText : NodeTextBox
     {
-        private TextBox linkBox;
-
-        public override void SetValue(Aga.Controls.Tree.TreeNodeAdv node, object value)
+        public override void MouseDoubleClick(Aga.Controls.Tree.TreeNodeAdvMouseEventArgs args)
         {
-            ValueEntry ent = value as ValueEntry;
+            base.MouseDoubleClick(args);
+            ValueEntry ent = args.Node.Tag as ValueEntry;
             if (ent == null)
                 return;//if this is not a value entry, value is not relevant
-            if (linkBox == null)
-            {
-                linkBox = new TextBox();
-            }
-            linkBox.Text = "(" + FormattedReader.ParseRef(ent, ent.Link).FriendlyName + ")";
-            base.SetValue(node, value);
+            EditorGUI egui = (EditorGUI)this.Parent.Model;
+            egui.GotoLink(ent.Link, args.Node);
         }
 
         public override object GetValue(Aga.Controls.Tree.TreeNodeAdv node)
@@ -34,7 +30,7 @@ namespace CK2EditorGUI.NodeControls
             if (ent == null)
                 return "";//if this is not a value entry, value is not relevant
             Entry linked = FormattedReader.ParseRef(ent, ent.Link);
-            return ent.Value + (ent.Link != null ? "(" + FormattedReader.ParseValueRefs(linked, linked.FriendlyName) + ")" : "");
+            return ent.Value + (ent.Link != null && linked != null ? " (" + FormattedReader.ParseValueRefs(linked, linked.FriendlyName) + ")" : "");
         }
     }
 }

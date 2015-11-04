@@ -208,6 +208,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\loading_icon" />
+    <None Include="ClassDiagram1.cd" />
     <None Include="Tree\ClassDiagram.cd" />
     <None Include="Tree\NodeControls\ClassDiagram.cd" />
     <Content Include="Resources\unknown.bmp" />

@@ -17,6 +17,8 @@ namespace CK2EditorGUI.EditorGUIs
     {
         public IEditor FileEditor { get; set; }
 
+        public TreeViewAdv Tree { get; set; }
+
         public EditorGUI(IEditor editor)
         {
             FileEditor = editor;
@@ -34,6 +36,37 @@ namespace CK2EditorGUI.EditorGUIs
         public bool IsLeaf(TreePath treePath)
         {
             return treePath.LastNode is ValueEntry;
+        }
+
+        protected internal void GotoLink(string path, TreeNodeAdv start = null)
+        {
+            TreeNodeAdv node = start != null ? start : Tree.Root;
+            Entry startEnt;
+            if (node.Tag == null)
+            {
+                SectionEntry tempEnt = new SectionEntry();
+                tempEnt.Section = this.FileEditor;
+                startEnt = tempEnt;
+            }
+            else
+                startEnt = (Entry)node.Tag;
+            foreach (Entry ent in FormattedReader.ParseRefPath(startEnt, path))
+            {
+                node.Expand();
+                node = GetNodeForEntry(node, ent);
+            }
+            node.IsSelected = true;
+            Tree.ScrollTo(node);
+        }
+
+        protected internal static TreeNodeAdv GetNodeForEntry(TreeNodeAdv parent, Entry ent)
+        {
+            foreach (TreeNodeAdv node in parent.Children)
+            {
+                if (node.Tag == ent)
+                    return node;
+            }
+            return null;
         }
 
         public event EventHandler<TreeModelEventArgs> NodesChanged;
