@@ -60,7 +60,7 @@ namespace CK2Editor
                         ent.InternalName = pair.Value;
                         ent.FriendlyName = childNode.Attributes["name"].Value;
                         ent.Type = childNode.Attributes["type"] != null ? childNode.Attributes["type"].Value : "misc";
-                        ent.Value = ReadValue(file, ent.InternalName, ent.Type, pair.Key);
+                        ent.Value = FormatUtil.ReadValue(file, ent.InternalName, ent.Type, pair.Key);
                         ent.Link = childNode.Attributes["link"] != null ? childNode.Attributes["link"].Value : null;
                         ent.Editor = re;
                         re.Values.Add(ent);
@@ -106,33 +106,6 @@ namespace CK2Editor
             }
         }
 
-        public string ReadValue(FileSection scope, string name, string type, int startIndex = 0)
-        {
-            switch (type)
-            {
-                case "string":
-                    return FormatUtil.ExtractStringValue(scope, name + '=', startIndex);
-                case "series-compact":
-                case "series":
-                    return FormatUtil.ExtractDelimited(scope, name + '=', startIndex).ToString().Trim(new char[] { '\n', '\t' });
-                default:
-                    return FormatUtil.ExtractValue(scope, name + '=', startIndex);
-            }
-        }
-
-        public string ReadValue(FileSection scope, string name, string type, int startIndex, out int foundIndex)
-        {
-            switch (type)
-            {
-                case "string":
-                    return FormatUtil.ExtractStringValue(scope, name + '=', startIndex, out foundIndex);
-                case "series-compact":
-                case "series":
-                    return FormatUtil.ExtractDelimited(scope, name + '=', startIndex, out foundIndex).ToString().Trim(new char[] { '\n', '\t' });
-                default:
-                    return FormatUtil.ExtractValue(scope, name + '=', startIndex, out foundIndex);
-            }
-        }
 
         public static string ParseValueRefs(Entry start, string s)
         {

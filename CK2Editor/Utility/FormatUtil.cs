@@ -133,6 +133,51 @@ namespace CK2Editor.Utility
             return scope.ToString(index, index2 - 1);
         }
 
+        /// <summary>
+        /// Reads a value of the specified type and name from the given scope, optionally starting at a specific index
+        /// </summary>
+        /// <param name="scope">The scope to search</param>
+        /// <param name="name">The name of the value in the file, without the equal sign (<c>=</c>)</param>
+        /// <param name="type">The value type</param>
+        /// <param name="startIndex">The index to start the search at</param>
+        /// <returns>A string representation of the value</returns>
+        public static string ReadValue(FileSection scope, string name, string type, int startIndex = 0)
+        {
+            switch (type)
+            {
+                case "string":
+                    return FormatUtil.ExtractStringValue(scope, name + '=', startIndex);
+                case "series-compact":
+                case "series":
+                    return ExtractDelimited(scope, name + '=', startIndex).ToString().Trim(new char[] { '\n', '\t', '\r' });
+                default:
+                    return FormatUtil.ExtractValue(scope, name + '=', startIndex);
+            }
+        }
+
+        /// <summary>
+        /// Reads a value of the specified type and name from the given scope, optionally starting at a specific index
+        /// </summary>
+        /// <param name="scope">The scope to search</param>
+        /// <param name="name">The name of the value in the file</param>
+        /// <param name="type">The value type</param>
+        /// <param name="startIndex">The index to start the search at</param>
+        /// <param name="foundIndex">The index the value was found at</param>
+        /// <returns>A string representation of the value</returns>
+        public static string ReadValue(FileSection scope, string name, string type, int startIndex, out int foundIndex)
+        {
+            switch (type)
+            {
+                case "string":
+                    return FormatUtil.ExtractStringValue(scope, name + '=', startIndex, out foundIndex);
+                case "series-compact":
+                case "series":
+                    return ExtractDelimited(scope, name + '=', startIndex, out foundIndex).ToString().Trim(new char[] { '\n', '\t' });
+                default:
+                    return FormatUtil.ExtractValue(scope, name + '=', startIndex, out foundIndex);
+            }
+        }
+
         public static List<string> ListEntries(FileSection scope, Predicate<string> filter = null)
         {
             List<string> re = new List<string>();
