@@ -13,7 +13,7 @@ using CK2Editor.Editors;
 
 namespace CK2EditorGUI.EditorGUIs
 {
-    class EditorGUI : ITreeModel
+    public class EditorGUI : ITreeModel
     {
         public IEditor FileEditor { get; set; }
 

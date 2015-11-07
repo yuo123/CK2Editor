@@ -32,5 +32,14 @@ namespace CK2EditorGUI.NodeControls
             Entry linked = FormattedReader.ParseRef(ent, ent.Link);
             return ent.Value + (ent.Link != null && linked != null ? " (" + FormattedReader.ParseValueRefs(linked, linked.FriendlyName) + ")" : "");
         }
+
+        protected override string FormatLabel(object obj)
+        {
+            string btext = base.FormatLabel(obj);
+            if (btext.Length > 20)
+                return btext.Substring(0, 20) + "...";
+            //System.Drawing.Graphics g =  System.Drawing.Graphics.FromHwnd(Parent.Handle);
+            return btext;
+        }
     }
 }

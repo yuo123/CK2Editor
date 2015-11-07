@@ -74,7 +74,7 @@ namespace CK2Editor.Utility
             int index = scope.IndexOfAny(new string[] { "\n" + name, "\t" + name, " " + name, name }, startIndex) + name.Length + 1;
             if (index == name.Length)//if the identifier was not found
                 return "";
-            int index2 = scope.IndexOf("\"", index + 1);
+            int index2 = scope.IndexOf("\"", index);
             return scope.Substring(index, index2 - index);
         }
 

@@ -33,16 +33,6 @@ namespace CK2Editor
             return ReadSection(file, xmlDoc.ChildNodes[1]);//nodes 0 and 1 are the root and File tags
         }
 
-        /*
-                                ValueEntry ent = new ValueEntry();
-                                ent.InternalName = node.LocalName;
-                                ent.FriendlyName = node.Attributes["name"].Value;
-                                ent.Type = node.Attributes["type"] != null ? node.Attributes["type"].Value : "misc";
-                                ent.Value = ReadValue(file, ent.InternalName, ent.Type, location, out location);
-                                location += ent.Value.Length;
-                                ent.Link = node.Attributes["link"] != null ? node.Attributes["link"].Value : null;
-                                re.Values.Add(ent);
-         */
         public Editor ReadSection(string file, XmlNode formatNode, IEditor root = null)
         {
             Editor re = new Editor();
@@ -76,14 +66,70 @@ namespace CK2Editor
                         re.Sections.Add(ent);
                     }
                 }
+                else //if no format node was found, try to supplement information
+                {
+                    string type = DetectType(file, pair);
+                    if (type != "section")
+                    {//the node is a value
+                        ValueEntry ent = new ValueEntry();
+                        ent.InternalName = pair.Value;
+                        ent.Type = type;
+                        ent.Value = FormatUtil.ReadValue(file, ent.InternalName, ent.Type, pair.Key);
+                        ent.Editor = re;
+                        re.Values.Add(ent);
+                    }
+                    else
+                    {//the node is a section
+                        SectionEntry ent = new SectionEntry();
+                        ent.InternalName = pair.Value;
+                        ent.Section = ReadSection(FormatUtil.ExtractDelimited(file, pair.Value, pair.Key), childNode, re.Root);
+                        ent.Editor = re;
+                        re.Sections.Add(ent);
+                    }
+                }
 
             }
 
             return re;
         }
 
+        private string DetectType(string file, KeyValuePair<int, string> pair)
+        {
+            int i;
+            bool sawNewline = false;
+            for (i = pair.Key + pair.Value.Length + 1; i < file.Length; i++)//go through the file, starting after the name
+            {
+                if (file[i] == '\n')
+                    sawNewline = true;
+                else if (file[i] == '{')//if a curly bracket was found, move to the second loop
+                    break;
+                else if (!sawNewline)
+                {
+                    if (file[i] == '"')//if there is a '"' before a newline, this must be a string value
+                        return "string";
+                    else if (!char.IsWhiteSpace(file[i]))//if there is a visible character before a newline, this must be a non-string single value
+                        return "misc";
+                }
+            }
+            for (; i < file.Length; i++)//if a curly bracket was found, this is either a series or a section
+            {
+                if (file[i] == '\n')
+                    sawNewline = true;
+                else if (file[i] == '=')//if there is an equal sign, this can't be a series
+                    return "section";
+                else if (file[i] == '}')//if a brace was found before an equal sign, this must be a series
+                    if (sawNewline)
+                        return "series";
+                    else
+                        return "series-compact";
+            }
+            throw new FileFormatException("Invalid format for section or value " + pair.Value + " at position " + pair.Key);
+        }
+
         private XmlNode FindNode(XmlNode parentNode, string name)
         {
+            if (parentNode == null)
+                return null;
             foreach (XmlNode child in parentNode.ChildNodes)
             {
                 Func<string, bool> comparer = GetNameComparer(child);
@@ -109,6 +155,8 @@ namespace CK2Editor
 
         public static string ParseValueRefs(Entry start, string s)
         {
+            if (s == null)
+                return null;
             bool inref = false;
             int refstart = -1;
             string ret = s;
