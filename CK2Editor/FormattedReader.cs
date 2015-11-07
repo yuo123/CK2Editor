@@ -29,7 +29,7 @@ namespace CK2Editor
 
         public Editor ReadFile(string filename)
         {
-            FileSection file = new FileSection(File.ReadAllText(filename, Encoding.UTF7));//Encoding is important!
+            string file = File.ReadAllText(filename, Encoding.UTF7);//Encoding is important!
             return ReadSection(file, xmlDoc.ChildNodes[1]);//nodes 0 and 1 are the root and File tags
         }
 
@@ -43,7 +43,7 @@ namespace CK2Editor
                                 ent.Link = node.Attributes["link"] != null ? node.Attributes["link"].Value : null;
                                 re.Values.Add(ent);
          */
-        public Editor ReadSection(FileSection file, XmlNode formatNode, IEditor root = null)
+        public Editor ReadSection(string file, XmlNode formatNode, IEditor root = null)
         {
             Editor re = new Editor();
             re.Root = root != null ? root : re;//if no root was provided, the current editor is the root

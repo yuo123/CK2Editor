@@ -50,13 +50,28 @@ namespace CK2EditorGUI.EditorGUIs
             }
             else
                 startEnt = (Entry)node.Tag;
+            if (path[0] == '!')
+                node = Tree.Root;
             foreach (Entry ent in FormattedReader.ParseRefPath(startEnt, path))
             {
                 node.Expand();
                 node = GetNodeForEntry(node, ent);
             }
-            node.IsSelected = true;
             Tree.ScrollTo(node);
+            //There seems to be a bug in treeViewAdv, where the selection will sometimes be wrong if you scroll at the same time, and this is a workaround.
+            //I could fix it, but I would like the library to remain untouched, and this works (at least for now).
+            Timer workAround = new Timer();
+            workAround.Tick += WorkAround_Tick;
+            workAround.Interval = 1;
+            workAroundnode = node;
+            workAround.Start();
+        }
+        private TreeNodeAdv workAroundnode;
+        private void WorkAround_Tick(object sender, EventArgs e)
+        {
+            ((Timer)sender).Stop();
+            workAroundnode.Tree.ClearSelection();
+            workAroundnode.IsSelected = true;
         }
 
         protected internal static TreeNodeAdv GetNodeForEntry(TreeNodeAdv parent, Entry ent)

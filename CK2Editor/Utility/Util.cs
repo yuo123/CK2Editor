@@ -80,27 +80,27 @@ namespace CK2Editor.Utility
         }
          
         /// <summary>
-        /// Returns the index of the start of the any of the values in a StringBuilder
+        /// Returns the index of the start of the any of the values in a string
         /// </summary>        
         /// <param name="value">The characters to find</param>
         /// <param name="startIndex">The starting index.</param>
         /// <param name="ignoreCase">if set to <c>true</c> it will ignore case</param>
         /// <returns></returns>
-        public static int IndexOfAny(this StringBuilder sb, string[] values, int startIndex = 0, int maxIndex = -1)
+        public static int IndexOfAny(this string s, string[] values, int startIndex = 0, int maxIndex = -1)
         {
             int[] curs = new int[values.Length]; //curs holds the indexes of the character of each string in values we are currently looking for.
-            maxIndex = Util.ResolveNegativeIndex(maxIndex, sb.Length);
-            for (int i = startIndex; i < maxIndex; i++)//main loop, goes through the entire StringBuilder
+            maxIndex = Util.ResolveNegativeIndex(maxIndex, s.Length);
+            for (int i = startIndex; i < maxIndex; i++)//main loop, goes through the entire string
             {
                 for (int j = 0; j < curs.Length; j++)//secondary loop, goes through all of curs (and values)
                 {
-                    if (sb[i] == values[j][curs[j]])//if there's a match
+                    if (s[i] == values[j][curs[j]])//if there's a match
                     {
                         curs[j]++;
                         if (curs[j] == values[j].Length)//if we've reached the end of a value
                             return i - values[j].Length + 1;
                     }
-                    else if (curs[j] != 0)//if there isn't a match
+                    else if (curs[j] != 0)//if there isn't a match, and the index wasn't already zero
                     {
                         curs[j] = 0;//reset the current index
                         j--;//rewind the loop, so it goes over this value again with the index of zero
@@ -115,7 +115,6 @@ namespace CK2Editor.Utility
         /// </summary>        
         /// <param name="value">The characters to find</param>
         /// <param name="startIndex">The starting index.</param>
-        /// <param name="ignoreCase">if set to <c>true</c> it will ignore case</param>
         /// <returns></returns>
         public static int IndexOfAny(this StringBuilder sb, char[] values, int startIndex = 0, int maxIndex = -1)
         {
