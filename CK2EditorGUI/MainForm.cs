@@ -42,8 +42,8 @@ namespace CK2EditorGUI
             saveSelector.SelectedIndex = 0;
             fileChooser.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Paradox Interactive\Crusader Kings II\save games";
 
-            string path = @"C:\Users\User\Desktop\CK2Editor\Test_Save.ck2";
-            FormattedReader reader = new FormattedReader(@"C:\Users\User\Desktop\CK2Editor\CK2Editor\CK2Save.xml");
+            string path = @"C:\Users\איל\Desktop\CK2Editor\Test_Save.ck2";
+            FormattedReader reader = new FormattedReader(@"Formats\CK2Save.xml");
             Editor ed = reader.ReadFile(path);
             EditorGUI egui = new EditorGUI(ed);
             egui.Tree = editorList;

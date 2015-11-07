@@ -55,7 +55,7 @@
     <Compile Include="Utility\Util.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="CK2Save.xml">
+    <Content Include="Formats\CK2Save.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
