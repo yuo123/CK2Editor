@@ -29,12 +29,12 @@ namespace CK2EditorGUI
             var nameControl = new EntryNameNodeText();
             nameControl.ToolTipProvider = this;
             nameControl.ParentColumn = nameColumn;
-            //nameControl.Font=System.Drawing.Font.
-            editorList.NodeControls.Add(nameControl);
+            nameControl.IncrementalSearchEnabled = true;
+            //editorList.NodeControls.Add(nameControl);
 
             var valueControl = new EntryValueNodeText();
             valueControl.ParentColumn = valueColumn;
-            editorList.NodeControls.Add(valueControl);
+            //editorList.NodeControls.Add(valueControl);
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -42,12 +42,11 @@ namespace CK2EditorGUI
             saveSelector.SelectedIndex = 0;
             fileChooser.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Paradox Interactive\Crusader Kings II\save games";
 
-            string path = Environment.ExpandEnvironmentVariables(@"%userprofile%\Desktop\CK2Editor\Full_Test_Save.ck2");
+            string path = Environment.ExpandEnvironmentVariables(@"%userprofile%\Desktop\CK2Editor\Test_Save.ck2");
             FormattedReader reader = new FormattedReader(@"Formats\CK2Save.xml");
             Editor ed = reader.ReadFile(path);
-            EditorGUI egui = new EditorGUI(ed);
-            egui.Tree = editorList;
-            editorList.Model = egui;
+            //egui.Tree = editorList;
+            //editorList.Model = egui;
         }
 
         private void loadSaveButton_Click(object sender, EventArgs e)

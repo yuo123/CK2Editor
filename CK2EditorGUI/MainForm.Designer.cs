@@ -34,9 +34,9 @@
             this.saveSelector = new System.Windows.Forms.ComboBox();
             this.loadSaveButton = new System.Windows.Forms.Button();
             this.fileChooser = new System.Windows.Forms.OpenFileDialog();
-            this.editorList = new Aga.Controls.Tree.TreeViewAdv();
             this.nameColumn = new Aga.Controls.Tree.TreeColumn();
             this.valueColumn = new Aga.Controls.Tree.TreeColumn();
+            this.editorList = new CK2EditorGUI.EditorGUIs.EditorGUI();
             label1 = new System.Windows.Forms.Label();
             tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             label2 = new System.Windows.Forms.Label();
@@ -107,27 +107,6 @@
             // 
             this.fileChooser.Multiselect = true;
             // 
-            // editorList
-            // 
-            this.editorList.BackColor = System.Drawing.SystemColors.Window;
-            this.editorList.Columns.Add(this.nameColumn);
-            this.editorList.Columns.Add(this.valueColumn);
-            this.editorList.DefaultToolTipProvider = null;
-            this.editorList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.editorList.DragDropMarkColor = System.Drawing.Color.Black;
-            this.editorList.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.editorList.GridLineStyle = ((Aga.Controls.Tree.GridLineStyle)((Aga.Controls.Tree.GridLineStyle.Horizontal | Aga.Controls.Tree.GridLineStyle.Vertical)));
-            this.editorList.LineColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.editorList.LoadOnDemand = true;
-            this.editorList.Location = new System.Drawing.Point(0, 27);
-            this.editorList.Model = null;
-            this.editorList.Name = "editorList";
-            this.editorList.SelectedNode = null;
-            this.editorList.ShowNodeToolTips = true;
-            this.editorList.Size = new System.Drawing.Size(1254, 318);
-            this.editorList.TabIndex = 0;
-            this.editorList.UseColumns = true;
-            // 
             // nameColumn
             // 
             this.nameColumn.Header = "Name";
@@ -144,6 +123,16 @@
             this.valueColumn.SortOrder = System.Windows.Forms.SortOrder.None;
             this.valueColumn.TooltipText = null;
             this.valueColumn.Width = 300;
+            // 
+            // editorList
+            // 
+            this.editorList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.editorList.FileEditor = null;
+            this.editorList.Location = new System.Drawing.Point(0, 27);
+            this.editorList.Name = "editorList";
+            this.editorList.Size = new System.Drawing.Size(1254, 318);
+            this.editorList.TabIndex = 6;
+            this.editorList.Tree = null;
             // 
             // MainForm
             // 
@@ -164,10 +153,10 @@
 
         private System.Windows.Forms.ComboBox saveSelector;
         private System.Windows.Forms.OpenFileDialog fileChooser;
-        private Aga.Controls.Tree.TreeViewAdv editorList;
         private Aga.Controls.Tree.TreeColumn nameColumn;
         private Aga.Controls.Tree.TreeColumn valueColumn;
         private System.Windows.Forms.Button loadSaveButton;
+        private EditorGUIs.EditorGUI editorList;
     }
 }
 
