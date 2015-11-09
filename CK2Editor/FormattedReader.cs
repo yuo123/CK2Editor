@@ -157,9 +157,10 @@ namespace CK2Editor
         {
             if (s == null)
                 return null;
+            if (start.InternalName == "501431")
+                System.Diagnostics.Debugger.Break();
             bool inref = false;
             int refstart = -1;
-            string ret = s;
             for (int i = 0; i < s.Length; i++)
             {
                 if (!inref)
@@ -177,16 +178,18 @@ namespace CK2Editor
                     {
                         inref = false;
                         int reflength = i - refstart + 2;
-                        string parsed = ParseValueRef(start, ret.Substring(refstart + 2, reflength - 4));
+                        string parsed = ParseValueRef(start, s.Substring(refstart + 2, reflength - 4));
                         if (parsed == null)
-                            return null;
-                        ret = ret.Remove(refstart, reflength);
-                        ret = ret.Insert(refstart, parsed);
+                            parsed = "";
+                        s = s.Remove(refstart, reflength);
+                        i -= reflength;
+                        s = s.Insert(refstart, parsed);
+                        i += parsed.Length;
                         i++;
                     }
                 }
             }
-            return ret;
+            return s;
         }
 
         public static string ParseValueRef(Entry start, string sref)

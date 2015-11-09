@@ -49,9 +49,13 @@
   </dynasties>
 
   <character name="Characters">
-    <CHARACTER multiple="number" name="[!birth_name:[VALUE]!]">
+    <CHARACTER multiple="number" name="[!bn:[VALUE]!][!birth_name:[VALUE]!]">
       <birth_name name="First Name" type="string" />
+      <bn name="First Name" type="string" />
       <birth_date name="Birth Date" type="string" />
+      <b_d name="Birth Date" type="string" />
+      <d_d name="Death Date" type="string" />
+      <d_r name="Death Reason" type="number" />
     </CHARACTER>
   </character>
 </File>
