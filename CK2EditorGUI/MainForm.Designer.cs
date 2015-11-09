@@ -34,8 +34,6 @@
             this.saveSelector = new System.Windows.Forms.ComboBox();
             this.loadSaveButton = new System.Windows.Forms.Button();
             this.fileChooser = new System.Windows.Forms.OpenFileDialog();
-            this.nameColumn = new Aga.Controls.Tree.TreeColumn();
-            this.valueColumn = new Aga.Controls.Tree.TreeColumn();
             this.editorList = new CK2EditorGUI.EditorGUIs.EditorGUI();
             label1 = new System.Windows.Forms.Label();
             tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -107,23 +105,6 @@
             // 
             this.fileChooser.Multiselect = true;
             // 
-            // nameColumn
-            // 
-            this.nameColumn.Header = "Name";
-            this.nameColumn.MinColumnWidth = 10;
-            this.nameColumn.Sortable = true;
-            this.nameColumn.SortOrder = System.Windows.Forms.SortOrder.Ascending;
-            this.nameColumn.TooltipText = null;
-            this.nameColumn.Width = 300;
-            // 
-            // valueColumn
-            // 
-            this.valueColumn.Header = "Value";
-            this.valueColumn.MinColumnWidth = 10;
-            this.valueColumn.SortOrder = System.Windows.Forms.SortOrder.None;
-            this.valueColumn.TooltipText = null;
-            this.valueColumn.Width = 300;
-            // 
             // editorList
             // 
             this.editorList.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -153,8 +134,6 @@
 
         private System.Windows.Forms.ComboBox saveSelector;
         private System.Windows.Forms.OpenFileDialog fileChooser;
-        private Aga.Controls.Tree.TreeColumn nameColumn;
-        private Aga.Controls.Tree.TreeColumn valueColumn;
         private System.Windows.Forms.Button loadSaveButton;
         private EditorGUIs.EditorGUI editorList;
     }

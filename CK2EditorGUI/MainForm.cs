@@ -20,21 +20,12 @@ using CK2EditorGUI.NodeControls;
 
 namespace CK2EditorGUI
 {
-    public partial class MainForm : Form, IToolTipProvider
+    public partial class MainForm : Form
     {
         public MainForm()
         {
             InitializeComponent();
 
-            var nameControl = new EntryNameNodeText();
-            nameControl.ToolTipProvider = this;
-            nameControl.ParentColumn = nameColumn;
-            nameControl.IncrementalSearchEnabled = true;
-            //editorList.NodeControls.Add(nameControl);
-
-            var valueControl = new EntryValueNodeText();
-            valueControl.ParentColumn = valueColumn;
-            //editorList.NodeControls.Add(valueControl);
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -45,8 +36,7 @@ namespace CK2EditorGUI
             string path = Environment.ExpandEnvironmentVariables(@"%userprofile%\Desktop\CK2Editor\Test_Save.ck2");
             FormattedReader reader = new FormattedReader(@"Formats\CK2Save.xml");
             Editor ed = reader.ReadFile(path);
-            //egui.Tree = editorList;
-            //editorList.Model = egui;
+            editorList.FileEditor = ed;
         }
 
         private void loadSaveButton_Click(object sender, EventArgs e)
@@ -58,20 +48,6 @@ namespace CK2EditorGUI
             }
         }
 
-        public string GetToolTip(TreeNodeAdv node, NodeControl nodeControl)
-        {
-            var ent = node.Tag as Entry;
-            if (ent != null)
-            {
-                switch (nodeControl.ParentColumn.Header)
-                {
-                    case "Name":
-                        return "Internal Name: \"" + ent.InternalName + "\"";
-                }
-            }
-
-            return null;
-        }
 
 
     }
