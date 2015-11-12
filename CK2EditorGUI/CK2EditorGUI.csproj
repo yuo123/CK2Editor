@@ -75,6 +75,9 @@
     <Compile Include="NodeControls\EntryValueNodeText.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="PathDisplay.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="MainForm.resx">

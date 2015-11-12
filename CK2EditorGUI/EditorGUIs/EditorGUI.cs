@@ -41,7 +41,6 @@ namespace CK2EditorGUI.EditorGUIs
 
         }
 
-
         public System.Collections.IEnumerable GetChildren(TreePath treePath)
         {
             if (this.FileEditor == null)
