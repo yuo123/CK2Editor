@@ -16,8 +16,8 @@ using CK2EditorGUI.NodeControls;
 
 namespace CK2EditorGUI.EditorGUIs
 {
-    [System.ComponentModel.Designer("System.Windows.Forms.Design.ParentControlDesigner, System.Design", typeof(IDesigner))]
-    public class EditorGUI : UserControl, ITreeModel, IToolTipProvider
+    [System.ComponentModel.DesignerCategory("")]
+    public class EditorGUI : Panel, ITreeModel, IToolTipProvider
     {
         private IEditor m_fileEditor;
         public IEditor FileEditor
@@ -29,27 +29,7 @@ namespace CK2EditorGUI.EditorGUIs
             set
             {
                 m_fileEditor = value;
-                if (value != null)
-                    ResumeLayout(true);
             }
-        }
-
-        public EditorGUI()
-            : base()
-        {
-            SuspendLayout();
-            InitializeComponent();
-
-            Tree.Model = this;
-            var nameControl = new EntryNameNodeText();
-            nameControl.ToolTipProvider = this;
-            nameControl.ParentColumn = nameColumn;
-            nameControl.IncrementalSearchEnabled = true;
-            editorList.NodeControls.Add(nameControl);
-
-            var valueControl = new EntryValueNodeText();
-            valueControl.ParentColumn = valueColumn;
-            editorList.NodeControls.Add(valueControl);
         }
 
         public EditorGUI(IEditor editor)
@@ -107,8 +87,7 @@ namespace CK2EditorGUI.EditorGUIs
             workAround.Start();
         }
 
-        public TreeViewAdv Tree;
-        private TreeColumn treeColumn1;
+        public TreeViewAdv Tree { get; set; }
         private TreeNodeAdv workAroundnode;
         private void WorkAround_Tick(object sender, EventArgs e)
         {
@@ -153,47 +132,11 @@ namespace CK2EditorGUI.EditorGUIs
         private void InitializeComponent()
         {
             this.Tree = new Aga.Controls.Tree.TreeViewAdv();
-            this.editorList = new Aga.Controls.Tree.TreeViewAdv();
+            this.Tree = new Aga.Controls.Tree.TreeViewAdv();
             this.nameColumn = new Aga.Controls.Tree.TreeColumn();
             this.valueColumn = new Aga.Controls.Tree.TreeColumn();
             this.SuspendLayout();
-            // 
-            // Tree
-            // 
-            this.Tree.BackColor = System.Drawing.SystemColors.Window;
-            this.Tree.Columns.Add(this.nameColumn);
-            this.Tree.Columns.Add(this.valueColumn);
-            this.Tree.DefaultToolTipProvider = null;
-            this.Tree.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Tree.DragDropMarkColor = System.Drawing.Color.Black;
-            this.Tree.GridLineStyle = ((Aga.Controls.Tree.GridLineStyle)((Aga.Controls.Tree.GridLineStyle.Horizontal | Aga.Controls.Tree.GridLineStyle.Vertical)));
-            this.Tree.LineColor = System.Drawing.SystemColors.ControlDark;
-            this.Tree.Location = new System.Drawing.Point(0, 0);
-            this.Tree.Model = null;
-            this.Tree.Name = "Tree";
-            this.Tree.SelectedNode = null;
-            this.Tree.Size = new System.Drawing.Size(1008, 398);
-            this.Tree.TabIndex = 0;
-            this.Tree.Text = "treeViewAdv1";
-            // 
-            // editorList
-            // 
-            this.editorList.BackColor = System.Drawing.SystemColors.Window;
-            this.editorList.DefaultToolTipProvider = null;
-            this.editorList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.editorList.DragDropMarkColor = System.Drawing.Color.Black;
-            this.editorList.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.editorList.GridLineStyle = ((Aga.Controls.Tree.GridLineStyle)((Aga.Controls.Tree.GridLineStyle.Horizontal | Aga.Controls.Tree.GridLineStyle.Vertical)));
-            this.editorList.LineColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.editorList.LoadOnDemand = true;
-            this.editorList.Location = new System.Drawing.Point(0, 27);
-            this.editorList.Model = null;
-            this.editorList.Name = "editorList";
-            this.editorList.SelectedNode = null;
-            this.editorList.ShowNodeToolTips = true;
-            this.editorList.Size = new System.Drawing.Size(1254, 318);
-            this.editorList.TabIndex = 0;
-            this.editorList.UseColumns = true;
+
             // 
             // nameColumn
             // 
@@ -212,16 +155,46 @@ namespace CK2EditorGUI.EditorGUIs
             this.valueColumn.TooltipText = null;
             this.valueColumn.Width = 300;
             // 
+            // Tree
+            // 
+            this.Tree.Columns.Add(this.nameColumn);
+            this.Tree.Columns.Add(this.valueColumn);
+            this.Tree.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Tree.DragDropMarkColor = System.Drawing.Color.Black;
+            this.Tree.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Tree.GridLineStyle = ((Aga.Controls.Tree.GridLineStyle)((Aga.Controls.Tree.GridLineStyle.Horizontal | Aga.Controls.Tree.GridLineStyle.Vertical)));
+            this.Tree.LineColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.Tree.LoadOnDemand = true;
+            this.Tree.Location = new System.Drawing.Point(0, 27);
+            this.Tree.Name = "Tree";
+            this.Tree.ShowNodeToolTips = true;
+            this.Tree.Size = new System.Drawing.Size(1254, 318);
+            this.Tree.UseColumns = true;
+            //
+            //nameControl
+            //
+            var nameControl = new EntryNameNodeText();
+            nameControl.ToolTipProvider = this;
+            nameControl.ParentColumn = nameColumn;
+            nameControl.IncrementalSearchEnabled = true;
+            Tree.NodeControls.Add(nameControl);
+            //
+            //valueControl
+            //
+            var valueControl = new EntryValueNodeText();
+            valueControl.ParentColumn = valueColumn;
+            Tree.NodeControls.Add(valueControl);
+            // 
             // EditorGUI
             // 
             this.Controls.Add(this.Tree);
             this.Name = "EditorGUI";
             this.Size = new System.Drawing.Size(1008, 398);
-            this.ResumeLayout(false);
+            this.BorderStyle = BorderStyle.None;
+            this.ResumeLayout(true);
+
 
         }
-
-        private TreeViewAdv editorList;
         private Aga.Controls.Tree.TreeColumn nameColumn;
         private Aga.Controls.Tree.TreeColumn valueColumn;
     }

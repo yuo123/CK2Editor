@@ -22,21 +22,27 @@ namespace CK2EditorGUI
 {
     public partial class MainForm : Form
     {
+        private EditorGUI editorList;
+
         public MainForm()
         {
             InitializeComponent();
 
-        }
-
-        private void MainForm_Load(object sender, EventArgs e)
-        {
             saveSelector.SelectedIndex = 0;
             fileChooser.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Paradox Interactive\Crusader Kings II\save games";
 
             string path = Environment.ExpandEnvironmentVariables(@"%userprofile%\Desktop\CK2Editor\Test_Save.ck2");
             FormattedReader reader = new FormattedReader(@"Formats\CK2Save.xml");
             Editor ed = reader.ReadFile(path);
-            editorList.FileEditor = ed;
+            editorList = new EditorGUI(ed);
+            editorList.Dock = DockStyle.Fill;
+            this.Controls.Add(editorList);
+            editorList.BringToFront();
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+
         }
 
         private void loadSaveButton_Click(object sender, EventArgs e)

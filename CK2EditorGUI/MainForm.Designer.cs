@@ -34,7 +34,6 @@
             this.saveSelector = new System.Windows.Forms.ComboBox();
             this.loadSaveButton = new System.Windows.Forms.Button();
             this.fileChooser = new System.Windows.Forms.OpenFileDialog();
-            this.editorList = new CK2EditorGUI.EditorGUIs.EditorGUI();
             label1 = new System.Windows.Forms.Label();
             tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             label2 = new System.Windows.Forms.Label();
@@ -105,22 +104,11 @@
             // 
             this.fileChooser.Multiselect = true;
             // 
-            // editorList
-            // 
-            this.editorList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.editorList.FileEditor = null;
-            this.editorList.Location = new System.Drawing.Point(0, 27);
-            this.editorList.Name = "editorList";
-            this.editorList.Size = new System.Drawing.Size(1254, 318);
-            this.editorList.TabIndex = 6;
-            this.editorList.Tree = null;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1254, 345);
-            this.Controls.Add(this.editorList);
             this.Controls.Add(tableLayoutPanel1);
             this.Name = "MainForm";
             this.Text = "Crusader Kings 2 Save Editor";
@@ -135,7 +123,6 @@
         private System.Windows.Forms.ComboBox saveSelector;
         private System.Windows.Forms.OpenFileDialog fileChooser;
         private System.Windows.Forms.Button loadSaveButton;
-        private EditorGUIs.EditorGUI editorList;
     }
 }
 
