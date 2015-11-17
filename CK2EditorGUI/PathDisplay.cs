@@ -33,7 +33,7 @@ namespace CK2EditorGUI
             rlab.Text = Seperator;
             rlab.Font = new System.Drawing.Font(rlab.Font, FontStyle.Underline);
             rlab.ForeColor = Color.Blue;
-            FormatLabel(rlab);
+            FormatClickableLabel(rlab);
             this.Controls.Add(rlab);
         }
 
@@ -53,9 +53,7 @@ namespace CK2EditorGUI
             //label for the location (given by the "into" parameter)
             Label locLabel = new Label();
             locLabel.Text = into;
-            FormatLabel(locLabel);
-            locLabel.Font = new Font(locLabel.Font, FontStyle.Underline);
-            locLabel.ForeColor = Color.Blue;
+            FormatClickableLabel(locLabel);
             this.Controls.Add(locLabel);
             locLabel.BringToFront();
         }
@@ -66,6 +64,33 @@ namespace CK2EditorGUI
             label.AutoSize = true;
             label.Padding = new Padding(0);
             label.Margin = new Padding(0);
+        }
+
+        protected virtual void FormatClickableLabel(Label label)
+        {
+            FormatLabel(label);
+            label.Font = new Font(label.Font, FontStyle.Underline);
+            label.ForeColor = Color.Blue;
+            label.Cursor = Cursors.Hand;
+            label.Click += label_Click;
+        }
+
+        void label_Click(object sender, EventArgs e)
+        {
+            string path;
+            StringBuilder sb = new StringBuilder();
+            int clickedIndexed = this.Controls.GetChildIndex((Control)sender);
+            for (int i = this.Controls.Count - 1; i >= clickedIndexed; i--)
+            {
+                sb.Append(this.Controls[i].Text);
+            }
+            path = sb.ToString();
+            this.SetPath(path);
+            if (this.PathClicked != null)
+            {
+                PathClickEventArgs args = new PathClickEventArgs();
+                args.Path = path;
+            }
         }
 
         public override Size GetPreferredSize(Size proposedSize)
@@ -118,5 +143,12 @@ namespace CK2EditorGUI
                 return sb.ToString();
             }
         }
+
+        public event EventHandler<PathClickEventArgs> PathClicked;
+    }
+
+    public class PathClickEventArgs : EventArgs
+    {
+        public string Path { get; set; }
     }
 }
