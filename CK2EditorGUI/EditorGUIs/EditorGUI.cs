@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Collections;
 using System.ComponentModel.Design;
+using System.Drawing;
 
 using Aga.Controls.Tree;
 using Aga.Controls.Tree.NodeControls;
@@ -38,7 +39,6 @@ namespace CK2EditorGUI.EditorGUIs
             InitializeComponent();
             FileEditor = editor;
             Tree.Model = this;
-
         }
 
         public System.Collections.IEnumerable GetChildren(TreePath treePath)
@@ -86,7 +86,31 @@ namespace CK2EditorGUI.EditorGUIs
             workAround.Start();
         }
 
-        public TreeViewAdv Tree { get; set; }
+        private TreeViewAdv m_tree;
+
+        public TreeViewAdv Tree
+        {
+            get { return m_tree; }
+            set
+            {
+                if (m_tree != null)
+                    m_tree.SelectionChanged -= Tree_SelectionChanged;
+                m_tree = value;
+                m_tree.SelectionChanged += Tree_SelectionChanged;
+            }
+        }
+
+        void Tree_SelectionChanged(object sender, EventArgs e)
+        {
+            TreePath path = Tree.GetPath(Tree.SelectedNode);
+            StringBuilder sb = new StringBuilder();
+            foreach (Entry node in path.FullPath)
+            {
+                sb.Append("/" + node.InternalName);
+            }
+            pathDisplay.SetPath(sb.ToString());
+        }
+
         private TreeNodeAdv workAroundnode;
         private void WorkAround_Tick(object sender, EventArgs e)
         {
@@ -183,18 +207,25 @@ namespace CK2EditorGUI.EditorGUIs
             var valueControl = new EntryValueNodeText();
             valueControl.ParentColumn = valueColumn;
             Tree.NodeControls.Add(valueControl);
+            //
+            //pathDisplay
+            //
+            pathDisplay = new PathDisplay();
+            pathDisplay.Dock = DockStyle.Top;
+            pathDisplay.AutoSize = true;
             // 
             // EditorGUI
             // 
             this.Controls.Add(this.Tree);
+            this.Controls.Add(pathDisplay);
             this.Name = "EditorGUI";
             this.Size = new System.Drawing.Size(1008, 398);
             this.BorderStyle = BorderStyle.None;
             this.ResumeLayout(true);
 
-
         }
         private Aga.Controls.Tree.TreeColumn nameColumn;
         private Aga.Controls.Tree.TreeColumn valueColumn;
+        private PathDisplay pathDisplay;
     }
 }
