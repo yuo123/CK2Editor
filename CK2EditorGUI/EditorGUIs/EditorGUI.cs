@@ -213,6 +213,7 @@ namespace CK2EditorGUI.EditorGUIs
             pathDisplay = new PathDisplay();
             pathDisplay.Dock = DockStyle.Top;
             pathDisplay.AutoSize = true;
+            pathDisplay.PathClicked += pathDisplay_PathClicked;
             // 
             // EditorGUI
             // 
@@ -223,6 +224,13 @@ namespace CK2EditorGUI.EditorGUIs
             this.BorderStyle = BorderStyle.None;
             this.ResumeLayout(true);
 
+        }
+
+        void pathDisplay_PathClicked(object sender, PathClickEventArgs e)
+        {
+            string path = e.Path.Substring(1);
+            path = "!" + path;
+            this.GotoLink(path);
         }
         private Aga.Controls.Tree.TreeColumn nameColumn;
         private Aga.Controls.Tree.TreeColumn valueColumn;

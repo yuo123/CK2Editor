@@ -90,6 +90,7 @@ namespace CK2EditorGUI
             {
                 PathClickEventArgs args = new PathClickEventArgs();
                 args.Path = path;
+                this.PathClicked(this, args);
             }
         }
 
