@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using System.Collections;
 using System.ComponentModel.Design;
 using System.Drawing;
+using System.ComponentModel;
 
 using Aga.Controls.Tree;
 using Aga.Controls.Tree.NodeControls;
@@ -212,7 +213,7 @@ namespace CK2EditorGUI.EditorGUIs
             //
             pathDisplay = new PathDisplay();
             pathDisplay.Dock = DockStyle.Top;
-            pathDisplay.AutoSize = true;
+            pathDisplay.Height = 16;
             pathDisplay.PathClicked += pathDisplay_PathClicked;
             // 
             // EditorGUI
@@ -223,7 +224,6 @@ namespace CK2EditorGUI.EditorGUIs
             this.Size = new System.Drawing.Size(1008, 398);
             this.BorderStyle = BorderStyle.None;
             this.ResumeLayout(true);
-
         }
 
         void pathDisplay_PathClicked(object sender, PathClickEventArgs e)
@@ -235,5 +235,6 @@ namespace CK2EditorGUI.EditorGUIs
         private Aga.Controls.Tree.TreeColumn nameColumn;
         private Aga.Controls.Tree.TreeColumn valueColumn;
         private PathDisplay pathDisplay;
+        private BackgroundWorker bworker;
     }
 }

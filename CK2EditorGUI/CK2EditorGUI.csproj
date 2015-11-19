@@ -63,6 +63,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EditorGUIs\EditorGUI.cs" />
+    <Compile Include="FileReadingDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FileReadingDialog.Designer.cs">
+      <DependentUpon>FileReadingDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -80,6 +86,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="FileReadingDialog.resx">
+      <DependentUpon>FileReadingDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>

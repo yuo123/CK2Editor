@@ -15,6 +15,8 @@ namespace CK2EditorGUI.NodeControls
     {
         public override object GetValue(Aga.Controls.Tree.TreeNodeAdv node)
         {
+            if (node.Tag == null)
+                return "";
             Entry ent = node.Tag as Entry;
             if (ent == null)
                 throw new ArgumentException("EntryNameNodeText can only be used with entries");

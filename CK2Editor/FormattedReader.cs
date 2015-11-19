@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using System.IO;
 using System.Xml;
@@ -87,9 +88,7 @@ namespace CK2Editor
                         re.Sections.Add(ent);
                     }
                 }
-
             }
-
             return re;
         }
 
@@ -229,10 +228,10 @@ namespace CK2Editor
                     current = new SectionEntry();//create a temprary wrapper SectionEntry, for convenience
                     ((SectionEntry)current).Section = start.Editor.Root;
                 }
-                sref = sref.Remove(0, 2);
+                sref = sref.Remove(0, 1);
             }
 
-            string[] comps = sref.Split(new char[] { '/' });
+            string[] comps = sref.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
             foreach (string compi in comps)
             {
                 SectionEntry section = current as SectionEntry;
