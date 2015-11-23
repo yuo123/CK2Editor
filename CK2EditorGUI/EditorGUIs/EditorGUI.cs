@@ -34,12 +34,23 @@ namespace CK2EditorGUI.EditorGUIs
             }
         }
 
-        public EditorGUI(IEditor editor)
-            : base()
+        public EditorGUI()
         {
             InitializeComponent();
+        }
+
+        //public EditorGUI(IEditor editor)
+        //    : base()
+        //{
+        //    InitializeComponent();
+        //    FileEditor = editor;
+        //    Tree.Model = this;
+        //}
+
+        public void SetFile(IEditor editor)
+        {
             FileEditor = editor;
-            Tree.Model = this;
+            this.StructureChanged(this, new TreePathEventArgs());
         }
 
         public System.Collections.IEnumerable GetChildren(TreePath treePath)
@@ -97,6 +108,7 @@ namespace CK2EditorGUI.EditorGUIs
                 if (m_tree != null)
                     m_tree.SelectionChanged -= Tree_SelectionChanged;
                 m_tree = value;
+                m_tree.Model = this;
                 m_tree.SelectionChanged += Tree_SelectionChanged;
             }
         }
@@ -155,7 +167,6 @@ namespace CK2EditorGUI.EditorGUIs
 
         private void InitializeComponent()
         {
-            this.Tree = new Aga.Controls.Tree.TreeViewAdv();
             this.Tree = new Aga.Controls.Tree.TreeViewAdv();
             this.nameColumn = new TreeColumn();
             this.valueColumn = new TreeColumn();

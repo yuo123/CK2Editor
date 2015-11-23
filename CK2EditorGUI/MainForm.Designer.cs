@@ -113,6 +113,7 @@
             this.Name = "MainForm";
             this.Text = "Crusader Kings 2 Save Editor";
             this.Load += new System.EventHandler(this.MainForm_Load);
+            this.Shown += new System.EventHandler(this.MainForm_Shown);
             tableLayoutPanel1.ResumeLayout(false);
             this.ResumeLayout(false);
 

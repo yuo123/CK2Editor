@@ -58,4 +58,7 @@
       <d_r name="Death Reason" type="number" />
     </CHARACTER>
   </character>
+
+  <character_history name="Previous Characters">
+  </character_history>
 </File>

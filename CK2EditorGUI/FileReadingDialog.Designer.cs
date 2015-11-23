@@ -63,8 +63,14 @@
             this.ClientSize = new System.Drawing.Size(424, 65);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(label1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
             this.Name = "FileReadingDialog";
+            this.ShowIcon = false;
+            this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "CK2Editor - Reading File...";
+            this.Load += new System.EventHandler(this.FileReadingDialog_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

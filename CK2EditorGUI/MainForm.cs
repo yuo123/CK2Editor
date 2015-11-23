@@ -31,23 +31,34 @@ namespace CK2EditorGUI
             saveSelector.SelectedIndex = 0;
             fileChooser.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Paradox Interactive\Crusader Kings II\save games";
 
-            string path = Environment.ExpandEnvironmentVariables(@"%userprofile%\Desktop\CK2Editor\Test_Save.ck2");
-            FormattedReader reader = new FormattedReader(@"Formats\CK2Save.xml");
-            Editor ed = reader.ReadFile(path);
-            editorList = new EditorGUI(ed);
+
+            editorList = new EditorGUI();
             editorList.Dock = DockStyle.Fill;
             this.Controls.Add(editorList);
             editorList.BringToFront();
+
         }
 
         private void ReadFile(string formatPath, string filePath)
         {
-            throw new NotImplementedException();
+            FileReadingDialog dialog = new FileReadingDialog();
+            FormattedReader reader = new FormattedReader(formatPath);
+            dialog.ReadingDone += Dialog_ReadingDone;
+            dialog.ReadFile(reader, filePath);
+            dialog.Show(this);
+            dialog.Focus();
+        }
+
+        private void Dialog_ReadingDone(object sender, ReadingDoneEventArgs e)
+        {
+            if (e.Successful)
+            {
+                editorList.SetFile(e.ResultEditor);
+            }
         }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-
         }
 
         private void loadSaveButton_Click(object sender, EventArgs e)
@@ -59,7 +70,10 @@ namespace CK2EditorGUI
             }
         }
 
-
-
+        private void MainForm_Shown(object sender, EventArgs e)
+        {
+            string path = Environment.ExpandEnvironmentVariables(@"%userprofile%\Desktop\CK2Editor\Full_Test_Save.ck2");
+            ReadFile(@"Formats\CK2Save.xml", path);
+        }
     }
 }

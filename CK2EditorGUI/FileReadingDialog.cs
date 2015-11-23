@@ -64,6 +64,12 @@ namespace CK2EditorGUI
                 args.Successful = true;
                 ReadingDone(this, args);
             }
+            this.Close();
+        }
+
+        private void FileReadingDialog_Load(object sender, EventArgs e)
+        {
+            CenterToParent();
         }
     }
 
