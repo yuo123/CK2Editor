@@ -157,8 +157,8 @@ namespace CK2EditorGUI.EditorGUIs
         {
             this.Tree = new Aga.Controls.Tree.TreeViewAdv();
             this.Tree = new Aga.Controls.Tree.TreeViewAdv();
-            this.nameColumn = new Aga.Controls.Tree.TreeColumn();
-            this.valueColumn = new Aga.Controls.Tree.TreeColumn();
+            this.nameColumn = new TreeColumn();
+            this.valueColumn = new TreeColumn();
             this.SuspendLayout();
 
             // 
@@ -232,9 +232,8 @@ namespace CK2EditorGUI.EditorGUIs
             path = "!" + path;
             this.GotoLink(path);
         }
-        private Aga.Controls.Tree.TreeColumn nameColumn;
-        private Aga.Controls.Tree.TreeColumn valueColumn;
+        private TreeColumn nameColumn;
+        private TreeColumn valueColumn;
         private PathDisplay pathDisplay;
-        private BackgroundWorker bworker;
     }
 }

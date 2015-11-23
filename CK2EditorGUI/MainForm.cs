@@ -40,6 +40,11 @@ namespace CK2EditorGUI
             editorList.BringToFront();
         }
 
+        private void ReadFile(string formatPath, string filePath)
+        {
+            throw new NotImplementedException();
+        }
+
         private void MainForm_Load(object sender, EventArgs e)
         {
 
