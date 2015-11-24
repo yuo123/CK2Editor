@@ -119,13 +119,14 @@ namespace CK2EditorGUI.EditorGUIs
 
         void Tree_SelectionChanged(object sender, EventArgs e)
         {
-            TreePath path = Tree.GetPath(Tree.SelectedNode);
-            StringBuilder sb = new StringBuilder();
-            foreach (Entry node in path.FullPath)
+            TreePath tpath = Tree.GetPath(Tree.SelectedNode);
+            Dictionary<string, object> path = new Dictionary<string, object>(tpath.FullPath.Length);
+            foreach (var obj in tpath.FullPath)
             {
-                sb.Append("/" + node.InternalName);
+                Entry ent = (Entry)obj;
+                path.Add(ent.InternalName, ent);
             }
-            pathDisplay.SetPath(sb.ToString());
+            pathDisplay.SetPath(path);
         }
 
         private TreeNodeAdv workAroundnode;
@@ -243,9 +244,7 @@ namespace CK2EditorGUI.EditorGUIs
 
         void pathDisplay_PathClicked(object sender, PathClickEventArgs e)
         {
-            string path = e.Path.Substring(1);
-            path = "!" + path;
-            this.GotoLink(path);
+            this.Goto(((ObjectPathClickEventArgs)e).ObjectPath.Cast<Entry>());
         }
         private TreeColumn nameColumn;
         private TreeColumn valueColumn;

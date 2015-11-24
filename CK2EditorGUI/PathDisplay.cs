@@ -41,7 +41,7 @@ namespace CK2EditorGUI
         /// Expand the displayed path into <paramref name="into"/>
         /// </summary>
         /// <param name="into">The location to append to the end of the path</param>
-        public void Expand(string into)
+        public virtual void Expand(string into)
         {
             //label for the seperator
             Label sepLabel = new Label();
