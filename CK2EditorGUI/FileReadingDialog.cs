@@ -71,6 +71,11 @@ namespace CK2EditorGUI
         {
             CenterToParent();
         }
+
+        private void FileReadingDialog_FormClosing(object sender, FormClosingEventArgs e)
+        {//Note! cancellation isn't yet implemented!
+            bworker.CancelAsync();
+        }
     }
 
     internal class ReadingDoneEventArgs : EventArgs

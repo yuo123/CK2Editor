@@ -53,6 +53,7 @@
             // 
             // bworker
             // 
+            this.bworker.WorkerSupportsCancellation = true;
             this.bworker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bworker_DoWork);
             this.bworker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bworker_RunWorkerCompleted);
             // 
@@ -70,6 +71,7 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "CK2Editor - Reading File...";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FileReadingDialog_FormClosing);
             this.Load += new System.EventHandler(this.FileReadingDialog_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

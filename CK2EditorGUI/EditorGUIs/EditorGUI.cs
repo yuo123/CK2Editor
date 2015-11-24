@@ -31,6 +31,8 @@ namespace CK2EditorGUI.EditorGUIs
             set
             {
                 m_fileEditor = value;
+
+                this.StructureChanged(this, new TreePathEventArgs());
             }
         }
 
@@ -46,12 +48,6 @@ namespace CK2EditorGUI.EditorGUIs
         //    FileEditor = editor;
         //    Tree.Model = this;
         //}
-
-        public void SetFile(IEditor editor)
-        {
-            FileEditor = editor;
-            this.StructureChanged(this, new TreePathEventArgs());
-        }
 
         public System.Collections.IEnumerable GetChildren(TreePath treePath)
         {
@@ -69,21 +65,13 @@ namespace CK2EditorGUI.EditorGUIs
             return treePath.LastNode is ValueEntry;
         }
 
-        protected internal void GotoLink(string path, TreeNodeAdv start = null)
+        public void Goto(IEnumerable<Entry> path, TreeNodeAdv start = null)
         {
+            if (path.Count() == 0)//special case to go to the root, which scrolls to the top
+                Tree.ScrollTo(Tree.Root.Children[0]);
             TreeNodeAdv node = start != null ? start : Tree.Root;
-            Entry startEnt;
-            if (node.Tag == null)
-            {
-                SectionEntry tempEnt = new SectionEntry();
-                tempEnt.Section = this.FileEditor;
-                startEnt = tempEnt;
-            }
-            else
-                startEnt = (Entry)node.Tag;
-            if (path[0] == '!')
-                node = Tree.Root;
-            foreach (Entry ent in FormattedReader.ParseRefPath(startEnt, path))
+            
+            foreach (Entry ent in path)
             {
                 node.Expand();
                 node = GetNodeForEntry(node, ent);
@@ -96,6 +84,22 @@ namespace CK2EditorGUI.EditorGUIs
             workAround.Interval = 1;
             workAroundnode = node;
             workAround.Start();
+        }
+
+        public void GotoLink(string path, TreeNodeAdv start = null)
+        {
+            TreeNodeAdv node = start != null ? start : Tree.Root;
+            Entry startEnt;
+            if (node.Tag == null)//the root node doesn't have a tag
+            {//create a temporary wrapper SectionEntry
+                SectionEntry tempEnt = new SectionEntry();
+                tempEnt.Section = this.FileEditor;
+                startEnt = tempEnt;
+            }
+            else
+                startEnt = (Entry)node.Tag;
+                node = Tree.Root;
+                Goto(FormattedReader.ParseRefPath(startEnt, path));
         }
 
         private TreeViewAdv m_tree;
@@ -222,7 +226,7 @@ namespace CK2EditorGUI.EditorGUIs
             //
             //pathDisplay
             //
-            pathDisplay = new PathDisplay();
+            pathDisplay = new ObjectPathDisplay();
             pathDisplay.Dock = DockStyle.Top;
             pathDisplay.Height = 16;
             pathDisplay.PathClicked += pathDisplay_PathClicked;
@@ -245,6 +249,6 @@ namespace CK2EditorGUI.EditorGUIs
         }
         private TreeColumn nameColumn;
         private TreeColumn valueColumn;
-        private PathDisplay pathDisplay;
+        private ObjectPathDisplay pathDisplay;
     }
 }

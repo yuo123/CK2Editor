@@ -53,7 +53,7 @@ namespace CK2EditorGUI
         {
             if (e.Successful)
             {
-                editorList.SetFile(e.ResultEditor);
+                editorList.FileEditor = e.ResultEditor;
             }
         }
 
@@ -72,7 +72,7 @@ namespace CK2EditorGUI
 
         private void MainForm_Shown(object sender, EventArgs e)
         {
-            string path = Environment.ExpandEnvironmentVariables(@"%userprofile%\Desktop\CK2Editor\Full_Test_Save.ck2");
+            string path = Environment.ExpandEnvironmentVariables(@"%userprofile%\Desktop\CK2Editor\Test_Save.ck2");
             ReadFile(@"Formats\CK2Save.xml", path);
         }
     }

@@ -75,23 +75,35 @@ namespace CK2EditorGUI
             label.Click += label_Click;
         }
 
-        void label_Click(object sender, EventArgs e)
+        private void label_Click(object sender, EventArgs e)
         {
-            string path;
+            LabelClicked((Control)sender, e);
+        }
+
+        protected virtual void LabelClicked(Control lab, EventArgs e)
+        {
+            string path = GetPathForLabel(lab);
+            this.SetPath(path);
+            PathClickEventArgs args = new PathClickEventArgs();
+            args.Path = path;
+            OnPathClicked(args);
+        }
+
+        protected virtual void OnPathClicked(PathClickEventArgs args)
+        {
+            if (this.PathClicked != null)
+                this.PathClicked(this, args);
+        }
+
+        protected virtual string GetPathForLabel(Control lab)
+        {
             StringBuilder sb = new StringBuilder();
-            int clickedIndexed = this.Controls.GetChildIndex((Control)sender);
+            int clickedIndexed = this.Controls.GetChildIndex(lab);
             for (int i = this.Controls.Count - 1; i >= clickedIndexed; i--)
             {
                 sb.Append(this.Controls[i].Text);
             }
-            path = sb.ToString();
-            this.SetPath(path);
-            if (this.PathClicked != null)
-            {
-                PathClickEventArgs args = new PathClickEventArgs();
-                args.Path = path;
-                this.PathClicked(this, args);
-            }
+            return sb.ToString();
         }
 
         public override Size GetPreferredSize(Size proposedSize)
@@ -102,7 +114,7 @@ namespace CK2EditorGUI
         /// <summary>
         /// Go out of the last location in the path
         /// </summary>
-        public void Retract()
+        public virtual void Retract()
         {
             if (this.Controls.Count <= 1)
                 return;
@@ -116,7 +128,7 @@ namespace CK2EditorGUI
         /// Sets the full path this PathDisplay should display
         /// </summary>
         /// <param name="path">The full path to expand into, entries seperated by <c>Seperator</c></param>
-        public void SetPath(string path)
+        public virtual void SetPath(string path)
         {
             while (this.Controls.Count > 1)
             {
