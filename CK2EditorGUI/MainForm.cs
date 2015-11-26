@@ -24,13 +24,17 @@ namespace CK2EditorGUI
     {
         private EditorGUI editorList;
 
+        private static readonly string FormatDir = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + Path.DirectorySeparatorChar + "Formats";
+
+        private static readonly string DefaultSaveDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + Path.Combine("Paradox Interactive", "Crusader Kings II", "save games");
+
+
         public MainForm()
         {
             InitializeComponent();
 
             saveSelector.SelectedIndex = 0;
-            fileChooser.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Paradox Interactive\Crusader Kings II\save games";
-
+            saveFileChooser.InitialDirectory = DefaultSaveDir;
 
             editorList = new EditorGUI();
             editorList.Dock = DockStyle.Fill;
@@ -59,21 +63,49 @@ namespace CK2EditorGUI
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            RefreshFormats();
         }
 
         private void loadSaveButton_Click(object sender, EventArgs e)
         {
-            if (fileChooser.ShowDialog() == DialogResult.OK)
+            if (saveFileChooser.ShowDialog() == DialogResult.OK)
             {
-                saveSelector.Items.AddRange(fileChooser.FileNames);
+                saveSelector.Items.AddRange(saveFileChooser.FileNames);
                 saveSelector.SelectedIndex = saveSelector.Items.Count - 1;
             }
         }
 
         private void MainForm_Shown(object sender, EventArgs e)
         {
-            string path = Environment.ExpandEnvironmentVariables(@"%userprofile%\Desktop\CK2Editor\Test_Save.ck2");
+            string path = Environment.ExpandEnvironmentVariables(@"%userprofile%\Desktop\CK2Editor\Full_Test_Save.ck2");
             ReadFile(@"Formats\CK2Save.xml", path);
+        }
+
+        private void RefreshFormats()
+        {
+            if (!Directory.Exists(FormatDir))
+                MessageBox.Show("Could not find formats directory: " + FormatDir);
+            else
+            {
+                formatSelector.Items.Clear();
+                foreach (string file in Directory.GetFiles(FormatDir))
+                {
+                    if (file.EndsWith(".xml", StringComparison.OrdinalIgnoreCase))
+                        formatSelector.Items.Add(Path.GetFileNameWithoutExtension(file));
+                }
+                formatSelector.SelectedIndex = 0;
+            }
+        }
+
+        private void refreshFormatsButton_Click(object sender, EventArgs e)
+        {
+            RefreshFormats();
+        }
+
+        private void saveSelector_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (saveSelector.SelectedItem != null && formatSelector.SelectedItem != null)
+                ReadFile(((string)formatSelector.SelectedItem) + ".xml", (string)saveSelector.SelectedItem);
         }
     }
 }

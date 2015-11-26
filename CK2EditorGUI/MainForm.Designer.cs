@@ -31,13 +31,20 @@
             System.Windows.Forms.Label label1;
             System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
             System.Windows.Forms.Label label2;
+            System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
+            System.Windows.Forms.Label label3;
             this.saveSelector = new System.Windows.Forms.ComboBox();
             this.loadSaveButton = new System.Windows.Forms.Button();
-            this.fileChooser = new System.Windows.Forms.OpenFileDialog();
+            this.saveFileChooser = new System.Windows.Forms.OpenFileDialog();
+            this.formatSelector = new System.Windows.Forms.ComboBox();
+            this.refreshFormatsButton = new System.Windows.Forms.Button();
             label1 = new System.Windows.Forms.Label();
             tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             label2 = new System.Windows.Forms.Label();
+            tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            label3 = new System.Windows.Forms.Label();
             tableLayoutPanel1.SuspendLayout();
+            tableLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -60,7 +67,7 @@
             tableLayoutPanel1.Controls.Add(this.saveSelector, 1, 0);
             tableLayoutPanel1.Controls.Add(this.loadSaveButton, 2, 0);
             tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
-            tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            tableLayoutPanel1.Location = new System.Drawing.Point(0, 27);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 1;
             tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -78,6 +85,7 @@
             this.saveSelector.Name = "saveSelector";
             this.saveSelector.Size = new System.Drawing.Size(1068, 21);
             this.saveSelector.TabIndex = 2;
+            this.saveSelector.SelectedIndexChanged += new System.EventHandler(this.saveSelector_SelectedIndexChanged);
             // 
             // loadSaveButton
             // 
@@ -100,9 +108,58 @@
             label2.TabIndex = 0;
             label2.Text = "Current Section:";
             // 
-            // fileChooser
+            // saveFileChooser
             // 
-            this.fileChooser.Multiselect = true;
+            this.saveFileChooser.Multiselect = true;
+            // 
+            // tableLayoutPanel2
+            // 
+            tableLayoutPanel2.ColumnCount = 3;
+            tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
+            tableLayoutPanel2.Controls.Add(label3, 0, 0);
+            tableLayoutPanel2.Controls.Add(this.formatSelector, 1, 0);
+            tableLayoutPanel2.Controls.Add(this.refreshFormatsButton, 2, 0);
+            tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Top;
+            tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
+            tableLayoutPanel2.Name = "tableLayoutPanel2";
+            tableLayoutPanel2.RowCount = 1;
+            tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            tableLayoutPanel2.Size = new System.Drawing.Size(1254, 27);
+            tableLayoutPanel2.TabIndex = 6;
+            // 
+            // label3
+            // 
+            label3.Dock = System.Windows.Forms.DockStyle.Fill;
+            label3.Location = new System.Drawing.Point(3, 0);
+            label3.Name = "label3";
+            label3.Size = new System.Drawing.Size(94, 27);
+            label3.TabIndex = 4;
+            label3.Text = "Current Format:";
+            label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // formatSelector
+            // 
+            this.formatSelector.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.formatSelector.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.formatSelector.FormattingEnabled = true;
+            this.formatSelector.Items.AddRange(new object[] {
+            "Choose a format file"});
+            this.formatSelector.Location = new System.Drawing.Point(103, 3);
+            this.formatSelector.Name = "formatSelector";
+            this.formatSelector.Size = new System.Drawing.Size(1068, 21);
+            this.formatSelector.TabIndex = 2;
+            // 
+            // refreshFormatsButton
+            // 
+            this.refreshFormatsButton.Location = new System.Drawing.Point(1177, 3);
+            this.refreshFormatsButton.Name = "refreshFormatsButton";
+            this.refreshFormatsButton.Size = new System.Drawing.Size(65, 21);
+            this.refreshFormatsButton.TabIndex = 5;
+            this.refreshFormatsButton.Text = "Refresh";
+            this.refreshFormatsButton.UseVisualStyleBackColor = true;
+            this.refreshFormatsButton.Click += new System.EventHandler(this.refreshFormatsButton_Click);
             // 
             // MainForm
             // 
@@ -110,11 +167,13 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1254, 345);
             this.Controls.Add(tableLayoutPanel1);
+            this.Controls.Add(tableLayoutPanel2);
             this.Name = "MainForm";
             this.Text = "Crusader Kings 2 Save Editor";
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.Shown += new System.EventHandler(this.MainForm_Shown);
             tableLayoutPanel1.ResumeLayout(false);
+            tableLayoutPanel2.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -122,8 +181,10 @@
         #endregion
 
         private System.Windows.Forms.ComboBox saveSelector;
-        private System.Windows.Forms.OpenFileDialog fileChooser;
+        private System.Windows.Forms.OpenFileDialog saveFileChooser;
         private System.Windows.Forms.Button loadSaveButton;
+        private System.Windows.Forms.ComboBox formatSelector;
+        private System.Windows.Forms.Button refreshFormatsButton;
     }
 }
 
