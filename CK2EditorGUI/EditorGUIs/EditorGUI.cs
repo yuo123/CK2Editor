@@ -162,11 +162,15 @@ namespace CK2EditorGUI.EditorGUIs
             return null;
         }
 
+#pragma warning disable 67
+
         public event EventHandler<TreeModelEventArgs> NodesChanged;
 
         public event EventHandler<TreeModelEventArgs> NodesInserted;
 
         public event EventHandler<TreeModelEventArgs> NodesRemoved;
+
+#pragma warning restore 67
 
         public event EventHandler<TreePathEventArgs> StructureChanged;
 

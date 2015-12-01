@@ -35,9 +35,10 @@
             System.Windows.Forms.Label label3;
             this.saveSelector = new System.Windows.Forms.ComboBox();
             this.loadSaveButton = new System.Windows.Forms.Button();
-            this.saveFileChooser = new System.Windows.Forms.OpenFileDialog();
             this.formatSelector = new System.Windows.Forms.ComboBox();
             this.refreshFormatsButton = new System.Windows.Forms.Button();
+            this.saveFileChooser = new System.Windows.Forms.OpenFileDialog();
+            this.saveButton = new System.Windows.Forms.Button();
             label1 = new System.Windows.Forms.Label();
             tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             label2 = new System.Windows.Forms.Label();
@@ -59,13 +60,15 @@
             // 
             // tableLayoutPanel1
             // 
-            tableLayoutPanel1.ColumnCount = 3;
+            tableLayoutPanel1.ColumnCount = 4;
             tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
+            tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 52F));
+            tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 48F));
             tableLayoutPanel1.Controls.Add(label1, 0, 0);
             tableLayoutPanel1.Controls.Add(this.saveSelector, 1, 0);
             tableLayoutPanel1.Controls.Add(this.loadSaveButton, 2, 0);
+            tableLayoutPanel1.Controls.Add(this.saveButton, 3, 0);
             tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
             tableLayoutPanel1.Location = new System.Drawing.Point(0, 27);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -83,15 +86,15 @@
             "Choose a file or click load"});
             this.saveSelector.Location = new System.Drawing.Point(103, 3);
             this.saveSelector.Name = "saveSelector";
-            this.saveSelector.Size = new System.Drawing.Size(1068, 21);
+            this.saveSelector.Size = new System.Drawing.Size(1048, 21);
             this.saveSelector.TabIndex = 2;
             this.saveSelector.SelectedIndexChanged += new System.EventHandler(this.saveSelector_SelectedIndexChanged);
             // 
             // loadSaveButton
             // 
-            this.loadSaveButton.Location = new System.Drawing.Point(1177, 3);
+            this.loadSaveButton.Location = new System.Drawing.Point(1157, 3);
             this.loadSaveButton.Name = "loadSaveButton";
-            this.loadSaveButton.Size = new System.Drawing.Size(65, 21);
+            this.loadSaveButton.Size = new System.Drawing.Size(46, 21);
             this.loadSaveButton.TabIndex = 5;
             this.loadSaveButton.Text = "Load...";
             this.loadSaveButton.UseVisualStyleBackColor = true;
@@ -107,10 +110,6 @@
             label2.Size = new System.Drawing.Size(93, 13);
             label2.TabIndex = 0;
             label2.Text = "Current Section:";
-            // 
-            // saveFileChooser
-            // 
-            this.saveFileChooser.Multiselect = true;
             // 
             // tableLayoutPanel2
             // 
@@ -161,6 +160,20 @@
             this.refreshFormatsButton.UseVisualStyleBackColor = true;
             this.refreshFormatsButton.Click += new System.EventHandler(this.refreshFormatsButton_Click);
             // 
+            // saveFileChooser
+            // 
+            this.saveFileChooser.Multiselect = true;
+            // 
+            // saveButton
+            // 
+            this.saveButton.Location = new System.Drawing.Point(1209, 3);
+            this.saveButton.Name = "saveButton";
+            this.saveButton.Size = new System.Drawing.Size(42, 21);
+            this.saveButton.TabIndex = 6;
+            this.saveButton.Text = "Save";
+            this.saveButton.UseVisualStyleBackColor = true;
+            this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -185,6 +198,7 @@
         private System.Windows.Forms.Button loadSaveButton;
         private System.Windows.Forms.ComboBox formatSelector;
         private System.Windows.Forms.Button refreshFormatsButton;
+        private System.Windows.Forms.Button saveButton;
     }
 }
 

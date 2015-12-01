@@ -1,3 +1,2 @@
 Implement full search
 Implement Adding new Entries
-Implement saving files

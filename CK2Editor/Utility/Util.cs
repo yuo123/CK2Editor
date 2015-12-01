@@ -8,6 +8,8 @@ namespace CK2Editor.Utility
 {
     public static class Util
     {
+        public static readonly Encoding SAVE_ENCODING = Encoding.UTF7;
+
         /// <summary>
         /// Turns a negative index in a length context into an equivalent positive one
         /// </summary>

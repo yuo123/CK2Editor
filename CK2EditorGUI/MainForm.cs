@@ -109,5 +109,11 @@ namespace CK2EditorGUI
             if (saveSelector.SelectedItem != null && formatSelector.SelectedItem != null && saveSelector.SelectedIndex != 0)
                 ReadFile(Path.Combine(FormatDir, ((string)formatSelector.SelectedItem)) + ".xml", (string)saveSelector.SelectedItem);
         }
+
+        private void saveButton_Click(object sender, EventArgs e)
+        {
+            if (saveSelector.SelectedText != null && saveSelector.SelectedIndex != 0)
+                File.WriteAllText((string)saveSelector.SelectedItem, editorList.FileEditor.Save());
+        }
     }
 }
