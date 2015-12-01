@@ -32,5 +32,15 @@ namespace CK2EditorGUI.NodeControls
             Entry linked = FormattedReader.ParseRef(ent, ent.Link);
             return ent.Value + (ent.Link != null && linked != null ? " (" + FormattedReader.ParseValueRefs(linked, linked.FriendlyName) + ")" : "");
         }
+
+        protected override string FormatLabel(object obj)
+        {
+            //this is workaround to the fact that GDI+ can't handle very large strings
+            string text = base.FormatLabel(obj);
+            if (text.Length > 1000)
+                return text.Substring(0, 1000) + "...";
+            else
+                return text;
+        }
     }
 }

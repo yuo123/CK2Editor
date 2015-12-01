@@ -92,7 +92,7 @@ namespace CK2Editor
             return re;
         }
 
-        private string DetectType(string file, KeyValuePair<int, string> pair)
+        public static string DetectType(string file, KeyValuePair<int, string> pair)
         {
             int i;
             bool sawNewline = false;
