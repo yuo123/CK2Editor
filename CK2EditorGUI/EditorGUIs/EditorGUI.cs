@@ -217,12 +217,14 @@ namespace CK2EditorGUI.EditorGUIs
             nameControl.ToolTipProvider = this;
             nameControl.ParentColumn = nameColumn;
             nameControl.IncrementalSearchEnabled = true;
+            nameControl.Trimming = StringTrimming.EllipsisCharacter;
             Tree.NodeControls.Add(nameControl);
             //
             //valueControl
             //
             var valueControl = new EntryValueNodeText();
             valueControl.ParentColumn = valueColumn;
+            valueControl.Trimming = StringTrimming.EllipsisCharacter;
             Tree.NodeControls.Add(valueControl);
             //
             //pathDisplay

@@ -24,8 +24,10 @@ namespace CK2EditorGUI
     {
         private EditorGUI editorList;
 
+        //The directory containing format xml files
         private static readonly string FormatDir = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + Path.DirectorySeparatorChar + "Formats";
 
+        //The save file location first suggested to the user (<Documents>\Paradox Interactive\Crusader Kings II\save games")
         private static readonly string DefaultSaveDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + Path.Combine("Paradox Interactive", "Crusader Kings II", "save games");
 
 

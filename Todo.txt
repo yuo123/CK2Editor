@@ -1,5 +1,3 @@
-Fix auto-ellipsis
 Implement full search
 Implement Adding new Entries
 Implement saving files
-Implement proper file selection and loading
