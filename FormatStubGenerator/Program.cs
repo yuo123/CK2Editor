@@ -38,7 +38,7 @@ namespace FormatStubGenerator
                 GenerateSectionNode(xmlDoc, fileNode, file);
                 xmlDoc.AppendChild(fileNode);
                 xmlDoc.Save(path + ".xml");
-                Console.WriteLine("Done! File saved to:\n{0}", path + ".xml");
+                Console.Write("Done! File saved to:\n{0}", path + ".xml");
             }
             catch (FileFormatException e)
             {
