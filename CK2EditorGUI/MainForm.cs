@@ -77,8 +77,8 @@ namespace CK2EditorGUI
 
         private void MainForm_Shown(object sender, EventArgs e)
         {
-            string path = Environment.ExpandEnvironmentVariables(@"%userprofile%\Desktop\CK2Editor\Full_Test_Save.ck2");
-            ReadFile(@"Formats\CK2Save.xml", path);
+            //string path = Environment.ExpandEnvironmentVariables(@"%userprofile%\Desktop\CK2Editor\Full_Test_Save.ck2");
+            //ReadFile(@"Formats\CK2Save.xml", path);
         }
 
         private void RefreshFormats()
@@ -104,8 +104,8 @@ namespace CK2EditorGUI
 
         private void saveSelector_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (saveSelector.SelectedItem != null && formatSelector.SelectedItem != null)
-                ReadFile(((string)formatSelector.SelectedItem) + ".xml", (string)saveSelector.SelectedItem);
+            if (saveSelector.SelectedItem != null && formatSelector.SelectedItem != null && saveSelector.SelectedIndex != 0)
+                ReadFile(Path.Combine(FormatDir, ((string)formatSelector.SelectedItem)) + ".xml", (string)saveSelector.SelectedItem);
         }
     }
 }
