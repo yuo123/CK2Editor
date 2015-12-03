@@ -107,7 +107,13 @@ namespace CK2Editor
                     if (file[i] == '"')//if there is a '"' before a newline, this must be a string value
                         return "string";
                     else if (!char.IsWhiteSpace(file[i]))//if there is a visible character before a newline, this must be a non-string single value
-                        return "misc";
+                    {
+                        int n;
+                        if (char.IsDigit(file[i]))//if the first char is a digit, this must is either a number or a date, the latter will be fixed by the user
+                            return "number";
+                        else
+                            return "misc";
+                    }
                 }
             }
             for (; i < file.Length; i++)//if a curly bracket was found, this is either a series or a section

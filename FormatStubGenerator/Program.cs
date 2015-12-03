@@ -83,6 +83,7 @@ namespace FormatStubGenerator
                     XmlNode node = doc.CreateElement(childPair.Value);
                     parent.AppendChild(node);
                     XmlAttribute natt = doc.CreateAttribute("name");
+                    natt.Value = Util.UppercaseWords(childPair.Value.Replace('_', ' '));
                     node.Attributes.Append(natt);
                     if (assignFoundNumber)
                         foundNumber = node;
@@ -95,6 +96,7 @@ namespace FormatStubGenerator
                     XmlNode node = doc.CreateElement(childPair.Value);
                     parent.AppendChild(node);
                     XmlAttribute natt = doc.CreateAttribute("name");
+                    natt.Value = Util.UppercaseWords(childPair.Value.Replace('_', ' '));
                     node.Attributes.Append(natt);
                     XmlAttribute tatt = doc.CreateAttribute("type");
                     tatt.Value = type;
