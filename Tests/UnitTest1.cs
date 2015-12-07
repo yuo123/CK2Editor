@@ -3,6 +3,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using CK2Editor;
 using CK2Editor.Editors;
 using System.IO;
+using System.Collections.Generic;
+using System.Linq;
+
 using CK2Editor.Utility;
 
 namespace Tests
@@ -15,9 +18,8 @@ namespace Tests
         {
 
             //FormattedReader fr = new FormattedReader(fpath);
-            //Editor ed = fr.ReadFile(path);
-
-            string text = "0123456789abcdefgho oijwao\t\n \n\tAxawjakl=\"g89\"nweabfgh98=\"\"xdk da={wefamkiwai{c}\t\nf3ds}\t\tawdwd=5\t\n\t\tseries= {\n1 5 3 4 7 }\n";
+            //Editor ed = fr.ReadFile(path);               
+            string text = "0123456789abcdefgho oijwao\t\n \n\tAxawjakl=\"g89\" nweabfgh98=\"\" xdk da={wefamkiwai{c}\t\nf3ds}\t\tawdwd=5\t\n\t\tseries= {\n1 5 3 4 7 }\n";
             Assert.AreEqual(text, text.ToString());
             Assert.AreEqual(9, text.IndexOf("9"));
             Assert.AreEqual(-1, text.IndexOf("0", 10));
@@ -28,6 +30,18 @@ namespace Tests
             Assert.AreEqual("", FormatUtil.ExtractStringValue(text, "abfgh98="));
             Assert.AreEqual("\n1 5 3 4 7 ", FormatUtil.ExtractDelimited(text, "series=").ToString());
             Assert.AreEqual("1 5 3 4 7 ", FormatUtil.ReadValue(text, "series", "series").ToString());
+
+            Dictionary<int, string> expected = new Dictionary<int, string>();
+            expected.Add(0, "");
+            expected.Add(20, "");
+            expected.Add(31, "Axawjakl");
+            expected.Add(46, "nweabfgh98");
+            expected.Add(60, "");
+            expected.Add(64, "da");
+            expected.Add(90, "awdwd");
+            expected.Add(101, "series");
+            var result = FormatUtil.ListEntriesWithIndexes(text);
+            Assert.IsTrue(result.Count == expected.Count && result.SequenceEqual(expected));
         }
     }
 }

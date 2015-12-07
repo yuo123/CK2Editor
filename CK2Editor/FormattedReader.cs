@@ -108,7 +108,9 @@ namespace CK2Editor
                         return "string";
                     else if (!char.IsWhiteSpace(file[i]))//if there is a visible character before a newline, this must be a non-string single value
                     {
+#pragma warning disable CS0168
                         int n;
+#pragma warning restore CS0168
                         if (char.IsDigit(file[i]))//if the first char is a digit, this must is either a number or a date, the latter will be fixed by the user
                             return "number";
                         else
@@ -156,7 +158,6 @@ namespace CK2Editor
                     return name => int.TryParse(name, out n);
             }
         }
-
 
         public static string ParseValueRefs(Entry start, string s)
         {

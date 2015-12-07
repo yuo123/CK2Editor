@@ -180,28 +180,7 @@ namespace CK2Editor.Utility
 
         public static List<string> ListEntries(string scope, Predicate<string> filter = null)
         {
-            List<string> re = new List<string>();
-            int brackets = 0;
-            for (int i = 0; i < scope.Length; i++)
-            {
-                char c = scope[i];
-                switch (c)
-                {
-                    case '{': brackets++;
-                        break;
-                    case '}': brackets--;
-                        if (brackets < 0)
-                            brackets = 0;
-                        break;
-                    case '=':
-                        int index = scope.Last(ch => ch == ' ' || ch == '\t' || ch == '\n');
-                        string name = scope.Substring(i + 1, index - 1 - i);
-                        if (filter == null || filter.Invoke(name))
-                            re.Add(name);
-                        break;
-                }
-            }
-            return re;
+            return ListEntriesWithIndexes(scope, 0, filter).Values.ToList();
         }
 
         public static Dictionary<int, string> ListEntriesWithIndexes(string scope, int location = 0, Predicate<string> filter = null)
@@ -214,31 +193,56 @@ namespace CK2Editor.Utility
                 char c = scope[i];
                 switch (c)
                 {
-                    case '{': brackets++;
+                    case '{':
+                        brackets++;
                         break;
-                    case '}': brackets--;
+                    case '}':
+                        brackets--;
                         if (brackets < 0)
                             brackets = 0;
                         break;
-                    case '=':
-                        if (brackets > 0)
-                            break;
-                        int i2;
-                        for (i2 = i - 1; i2 >= 0; i2--)//if an equal sign was found, serach backwards to find the identifier
+                    default:
                         {
-                            char c2 = scope[i2];
-                            if (c2 == '\t' || c2 == '\n' || c2 == ' ')
+                            if (brackets > 0)//ignore lower scopes
                                 break;
+                            if (char.IsWhiteSpace(c))//ignore whitespaces
+                                break;
+                            int firsti = i++;
+                            bool identifier = false;
+                            for (; !identifier && !char.IsWhiteSpace(scope, i); i++)//go until the first whitespace, or until we discovered this is an identifier
+                            {
+                                if (scope[i] == '=')
+                                {
+                                    re.Add(firsti, scope.Substring(firsti, i - firsti));//if it is an equal sign, we found an identifier
+                                    i--;//decrement i, so it isn't incremented from both loops and skips a character
+                                    identifier = true;
+                                }
+                            }
+                            if (!identifier)
+                            {//if no equal sign was found, we found an entry
+                                if (firsti == 0)//if we're at the start of the scope, this is an anonymous entry
+                                {
+                                    re.Add(0, "");
+                                }
+                                else
+                                    for (int i2 = firsti - 1; i2 >= 0; i2--)//find the first non-whitespace backwards
+                                    {
+                                        if (scope[i2] == '=')//if an equal sign was found, we have already found the identifier
+                                            break;
+                                        if (!char.IsWhiteSpace(scope, i2) || i2 == 0)//if a non-whitespace was found, or the start of the scope was reached, this is an anonymous entry ("multiple='blank'" in format)
+                                        {
+                                            re.Add(firsti, "");
+                                            break;
+                                        }
+                                    }
+                            }
                         }
-                        string name = scope.Substring(i2 + 1, i - 1 - i2);
-                        if (filter == null || filter.Invoke(name))
-                            re.Add(i2 + 1, name);
                         break;
                 }
             }
             return re;
         }
-        
+
         public static void OutputSectionStart(StringBuilder sb, string name, int indent)
         {
             sb.IndentedAppendLine(indent, name + '=');
