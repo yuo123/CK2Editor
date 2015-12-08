@@ -40,7 +40,7 @@ namespace Tests
             expected.Add(64, "da");
             expected.Add(90, "awdwd");
             expected.Add(101, "series");
-            var result = FormatUtil.ListEntriesWithIndexes(text);
+            var result = FormatUtil.ListEntriesWithIndexes(text).ToDictionary(pair => pair.Key, pair => pair.Value);
             Assert.IsTrue(result.Count == expected.Count && result.SequenceEqual(expected));
         }
     }

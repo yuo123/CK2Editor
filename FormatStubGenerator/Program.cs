@@ -24,7 +24,7 @@ namespace FormatStubGenerator
                     if (path != null)
                         Console.WriteLine("Invalid path");
                     Console.Write("Enter the file's path: ");
-                    path = Console.ReadLine();
+                    path = Environment.ExpandEnvironmentVariables(Console.ReadLine());
                 } while (!File.Exists(path));
 
             try
@@ -35,7 +35,7 @@ namespace FormatStubGenerator
                 string file = File.ReadAllText(path);
                 xmlDoc.AppendChild(xmlDoc.CreateXmlDeclaration("1.0", "utf-8", null));
                 XmlNode fileNode = xmlDoc.CreateNode(XmlNodeType.Element, "File", null);
-                GenerateSectionNode(xmlDoc, fileNode, file);
+                GenerateSectionNode(xmlDoc, fileNode, file.Substring("CK2txt".Length));
                 xmlDoc.AppendChild(fileNode);
                 xmlDoc.Save(path + ".xml");
                 Console.Write("Done! File saved to:\n{0}", path + ".xml");
@@ -44,64 +44,110 @@ namespace FormatStubGenerator
             {
                 Console.WriteLine("An error has occured: " + e.Message);
             }
+            Console.ReadKey(false);
         }
 
         public static void GenerateSectionNode(XmlDocument doc, XmlNode parent, string scope)
         {
-            XmlNode foundNumber = null;
+            bool foundNumber = false;
+            bool foundBlank = false;
+            bool foundDate = false;
             List<XmlNode> foundNames = new List<XmlNode>();
             foreach (var childPair in FormatUtil.ListEntriesWithIndexes(scope))
             {
-                string type = FormattedReader.DetectType(scope, childPair);
-                if (type == "section")
+                XmlAttribute multiple = null;
+                double n;
+                if (double.TryParse(childPair.Value, out n))
                 {
-                    bool assignFoundNumber = false;
-                    int n;
-                    if (int.TryParse(childPair.Value, out n))
+                    if (foundNumber)
                     {
-                        if (foundNumber != null)
-                        {
-                            XmlAttribute multiple = doc.CreateAttribute("multiple");
-                            multiple.Value = "number";
-                            foundNumber.Attributes.Append(multiple);
+                        continue;
+                    }
+                    else
+                    {
+                        multiple = doc.CreateAttribute("multiple");
+                        multiple.Value = "number";
+                        foundNumber = true;
+                    }
+                }
+                else
+                {
+                    if (childPair.Value == "")
+                    {
+                        if (foundBlank)
                             continue;
-                        }
                         else
-                            assignFoundNumber = true;
+                        {
+                            multiple = doc.CreateAttribute("multiple");
+                            multiple.Value = "blank";
+                            foundBlank = true;
+                        }
+                    }
+                    else if (childPair.Value.Count(c => c == '.') == 2)
+                    {
+                        if (foundDate)
+                            continue;
+                        else
+                        {
+                            multiple = doc.CreateAttribute("multiple");
+                            multiple.Value = "date";
+                            foundDate = true;
+                        }
                     }
                     else
                     {
                         XmlNode found = foundNames.Find(elem => elem.LocalName == childPair.Value);
                         if (found != null)
                         {
-                            XmlAttribute multiple = doc.CreateAttribute("multiple");
+                            multiple = doc.CreateAttribute("multiple");
                             multiple.Value = "same";
                             found.Attributes.Append(multiple);
                             continue;
                         }
                     }
-                    XmlNode node = doc.CreateElement(childPair.Value);
-                    parent.AppendChild(node);
-                    XmlAttribute natt = doc.CreateAttribute("name");
-                    natt.Value = Util.UppercaseWords(childPair.Value.Replace('_', ' '));
-                    node.Attributes.Append(natt);
-                    if (assignFoundNumber)
-                        foundNumber = node;
-                    else
-                        foundNames.Add(node);
+                }
+
+                string type = FormattedReader.DetectType(scope, childPair);
+                string name;
+                if (multiple != null)
+                {
+                    switch (multiple.Value)
+                    {
+                        case "number":
+                            name = "NUMBER";
+                            break;
+                        case "blank":
+                            name = "BLANK";
+                            break;
+                        case "date":
+                            name = "DATE";
+                            break;
+                        default:
+                            name = childPair.Value;
+                            break;
+                    }
+                }
+                else
+                    name = childPair.Value;
+
+                XmlNode node = doc.CreateElement(name);
+                XmlAttribute natt = doc.CreateAttribute("name");
+                natt.Value = Util.UppercaseWords(name.Replace('_', ' '));
+                node.Attributes.Append(natt);
+                if (multiple != null)
+                    node.Attributes.Append(multiple);
+                parent.AppendChild(node);
+                if (type == "section")
+                {
                     GenerateSectionNode(doc, node, FormatUtil.ExtractDelimited(scope, childPair.Value, childPair.Key));
                 }
                 else
                 {
-                    XmlNode node = doc.CreateElement(childPair.Value);
-                    parent.AppendChild(node);
-                    XmlAttribute natt = doc.CreateAttribute("name");
-                    natt.Value = Util.UppercaseWords(childPair.Value.Replace('_', ' '));
-                    node.Attributes.Append(natt);
                     XmlAttribute tatt = doc.CreateAttribute("type");
                     tatt.Value = type;
                     node.Attributes.Append(tatt);
                 }
+                foundNames.Add(node);
             }
         }
     }

@@ -38,9 +38,8 @@ namespace CK2Editor
         {
             Editor re = new Editor();
             re.Root = root != null ? root : re;//if no root was provided, the current editor is the root
-            Dictionary<int, string> entries = FormatUtil.ListEntriesWithIndexes(file);
 
-            foreach (var pair in entries)
+            foreach (var pair in FormatUtil.ListEntriesWithIndexes(file))
             {
                 XmlNode childNode = FindNode(formatNode, pair.Value);//look for a format node that can describe this entry
                 if (childNode != null)
@@ -111,25 +110,27 @@ namespace CK2Editor
 #pragma warning disable CS0168
                         int n;
 #pragma warning restore CS0168
-                        if (char.IsDigit(file[i]))//if the first char is a digit, this must is either a number or a date, the latter will be fixed by the user
-                            return "number";
+                        if (char.IsDigit(file[i]))//if the first char is a digit, this must is either a number or a date
+                        {
+                            bool dot = false;
+                            do
+                            {
+                                i++;
+                                if (file[i] == '.')
+                                {
+                                    if (dot)//if two dots were found, this is a date (Y.M.D format)
+                                        return "date";
+                                    else dot = true;
+                                }
+                            } while (!char.IsWhiteSpace(file[i]));
+                            return "number";//if less than two dots were found before a newline, this is a number
+                        }
                         else
                             return "misc";
                     }
                 }
             }
-            for (; i < file.Length; i++)//if a curly bracket was found, this is either a series or a section
-            {
-                if (file[i] == '\n')
-                    sawNewline = true;
-                else if (file[i] == '=')//if there is an equal sign, this can't be a series
-                    return "section";
-                else if (file[i] == '}')//if a brace was found before an equal sign, this must be a series
-                    if (sawNewline)
-                        return "series";
-                    else
-                        return "series-compact";
-            }
+            return "section";
             throw new FileFormatException("Invalid format for section or value " + pair.Value + " at position " + pair.Key);
         }
 
@@ -154,8 +155,14 @@ namespace CK2Editor
                 case "same":
                     return name => name == node.LocalName;
                 case "number":
-                    int n;
-                    return name => int.TryParse(name, out n);
+                    double n;
+                    return name => double.TryParse(name, out n);
+                case "date":
+                    return name => name.Count(c => c == '.') == 2;
+                case "blank":
+                    return name => name == "";
+                case "different":
+                    return name => true;
             }
         }
 
@@ -273,6 +280,35 @@ namespace CK2Editor
                             throw new FileFormatException("Reference in format file could not be parsed: " + value + " (for entry " + start.InternalName + ")");
                         return vent.Value;
                     }
+                case "[NAME]":
+                    {
+                        var vent = current as ValueEntry;
+                        if (vent == null)
+                            throw new FileFormatException("Reference in format file could not be parsed: " + value + " (for entry " + current.InternalName + ")");
+                        return vent.InternalName;
+                    }
+                case "[THISNAME]":
+                    {
+                        var vent = start as ValueEntry;
+                        if (vent == null)
+                            throw new FileFormatException("Reference in format file could not be parsed: " + value + " (for entry " + start.InternalName + ")");
+                        return vent.InternalName;
+                    }
+                case "[VNAME]":
+                    {
+                        var vent = current as ValueEntry;
+                        if (vent == null)
+                            throw new FileFormatException("Reference in format file could not be parsed: " + value + " (for entry " + current.InternalName + ")");
+                        return vent.FriendlyName;
+                    }
+                case "[THISVNAME]":
+                    {
+                        var vent = start as ValueEntry;
+                        if (vent == null)
+                            throw new FileFormatException("Reference in format file could not be parsed: " + value + " (for entry " + start.InternalName + ")");
+                        return vent.FriendlyName;
+                    }
+
             }
             throw new FileFormatException("Reference in format file could not be parsed:  unknown symbol " + value);
         }

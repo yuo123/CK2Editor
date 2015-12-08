@@ -178,16 +178,16 @@ namespace CK2Editor.Utility
             }
         }
 
-        public static List<string> ListEntries(string scope, Predicate<string> filter = null)
+        public static IEnumerable<string> ListEntries(string scope, Predicate<string> filter = null)
         {
-            return ListEntriesWithIndexes(scope, 0, filter).Values.ToList();
+            return ListEntriesWithIndexes(scope, 0, filter).Select(pair => pair.Value);
         }
 
-        public static Dictionary<int, string> ListEntriesWithIndexes(string scope, int location = 0, Predicate<string> filter = null)
+        public static IEnumerable<KeyValuePair<int, string>> ListEntriesWithIndexes(string scope, int location = 0, Predicate<string> filter = null)
         {
-            Dictionary<int, string> re = new Dictionary<int, string>();
             int brackets = 0;
             int length = scope.Length;
+            bool inString = false;
             for (int i = location; i < length; i++)//go through scope, looking for an equal sign that is not inside curly brackets
             {
                 char c = scope[i];
@@ -201,19 +201,28 @@ namespace CK2Editor.Utility
                         if (brackets < 0)
                             brackets = 0;
                         break;
+                    case '"':
+                        inString = !inString;
+                        goto default;
                     default:
                         {
                             if (brackets > 0)//ignore lower scopes
+                                break;
+                            if (inString)//ignore content of strings
+                            {
+                                break;
+                            }
+                            else if (c == '"')
                                 break;
                             if (char.IsWhiteSpace(c))//ignore whitespaces
                                 break;
                             int firsti = i++;
                             bool identifier = false;
-                            for (; !identifier && !char.IsWhiteSpace(scope, i); i++)//go until the first whitespace, or until we discovered this is an identifier
+                            for (; !identifier && i < scope.Length && !char.IsWhiteSpace(scope, i); i++)//go until the first whitespace, or until we discovered this is an identifier
                             {
                                 if (scope[i] == '=')
                                 {
-                                    re.Add(firsti, scope.Substring(firsti, i - firsti));//if it is an equal sign, we found an identifier
+                                    yield return new KeyValuePair<int, string>(firsti, scope.Substring(firsti, i - firsti));//if it is an equal sign, we found an identifier
                                     i--;//decrement i, so it isn't incremented from both loops and skips a character
                                     identifier = true;
                                 }
@@ -222,7 +231,7 @@ namespace CK2Editor.Utility
                             {//if no equal sign was found, we found an entry
                                 if (firsti == 0)//if we're at the start of the scope, this is an anonymous entry
                                 {
-                                    re.Add(0, "");
+                                    yield return new KeyValuePair<int, string>(0, "");
                                 }
                                 else
                                     for (int i2 = firsti - 1; i2 >= 0; i2--)//find the first non-whitespace backwards
@@ -231,7 +240,7 @@ namespace CK2Editor.Utility
                                             break;
                                         if (!char.IsWhiteSpace(scope, i2) || i2 == 0)//if a non-whitespace was found, or the start of the scope was reached, this is an anonymous entry ("multiple='blank'" in format)
                                         {
-                                            re.Add(firsti, "");
+                                            yield return new KeyValuePair<int, string>(firsti, "");
                                             break;
                                         }
                                     }
@@ -240,7 +249,6 @@ namespace CK2Editor.Utility
                         break;
                 }
             }
-            return re;
         }
 
         public static void OutputSectionStart(StringBuilder sb, string name, int indent)

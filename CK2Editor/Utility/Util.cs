@@ -57,7 +57,7 @@ namespace CK2Editor.Utility
             return index;
         }
 
-        
+
         /// <summary>
         /// Returns the index of the start of the contents in a StringBuilder
         /// </summary>        
@@ -107,7 +107,7 @@ namespace CK2Editor.Utility
 
             return -1;
         }
-         
+
         /// <summary>
         /// Returns the index of the start of the any of the values in a string
         /// </summary>        
@@ -123,7 +123,11 @@ namespace CK2Editor.Utility
             {
                 for (int j = 0; j < curs.Length; j++)//secondary loop, goes through all of curs (and values)
                 {
-                    if (s[i] == values[j][curs[j]])//if there's a match
+                    if (string.IsNullOrEmpty(values[j]))
+                    {
+                        continue;
+                    }
+                    else if (s[i] == values[j][curs[j]])//if there's a match
                     {
                         curs[j]++;
                         if (curs[j] == values[j].Length)//if we've reached the end of a value

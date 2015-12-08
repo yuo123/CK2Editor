@@ -35,7 +35,7 @@ namespace CK2EditorGUI.NodeControls
 
         protected override string FormatLabel(object obj)
         {
-            //this is workaround to the fact that GDI+ can't handle very large strings
+            //this is workaround to the fact that GDI+ can't handle very large strings. Normal Auto-ellipsis should adjust the length further
             string text = base.FormatLabel(obj);
             if (text.Length > 1000)
                 return text.Substring(0, 1000) + "...";
