@@ -44,9 +44,9 @@ Value refrences are based on normal refrences, but evaluate to strings. The synt
 + The refrence is delimited by the sequences `[!` and `!]`  
 + The refrence contains a notmal refrence  
 + At the end of the normal refrences, there will be a colon (':') followed by one of the following special symbols:  
-+ `[NAME]` - The internal name of the current entry  
-+ `[VNAME]` - The user-friendly ("visual") name of the current entry  
-+ `[VALUE]` - The value of the current entry  
+  * `[NAME]` - The internal name of the current entry  
+  * `[VNAME]` - The user-friendly ("visual") name of the current entry  
+  * `[VALUE]` - The value of the current entry  
   
 Multiple and nested value refrences are supported.
 
