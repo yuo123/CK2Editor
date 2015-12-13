@@ -27,23 +27,23 @@ before the "File" element, an XML declaration is recommended.
 Some attributes allow refrences or value refrences. These are refrences to other entries that are related to the current entry. Normal references refrence an entry itself, and value refrences refrence related strings.
 #####Symbols
 Refrences can contain symbols, which are strings related to the entries the refrence path started at or is at now. Below is a list of valid symbols:  
-+ "`[THISNAME]`" - The internal name of the entry the path started at  
-+ "`[THISVNAME]`" - The user-friendly ("visual") name of the entry the path started at  
-+ "`[THISVALUE]`" - The value of the entry the path started at  
++ `[THISNAME]` - The internal name of the entry the path started at  
++ `[THISVNAME]` - The user-friendly ("visual") name of the entry the path started at  
++ `[THISVALUE]` - The value of the entry the path started at  
 #####Normal Refrences
 The syntax of normal refrences is as follows:  
 + The path starts from the current entry, unless it starts with a '!' in which case it jumps to the the root (the "file" elemt in the format file)
 + A forward slash ('/') seperates entries in the path
 + An entry name takes the path into that entry
-+ two dots ("..") take the path to the current entry's parent
++ two dots ("..") take the path to the current entry's parent  
 #####Value Refrences
 Value refrences are based on normal refrences, but evaluate to strings. The syntax of value refrences is as follows:  
-+ The refrence is delimited by the sequences `"[!" and "!]"` (without the quotes)  
++ The refrence is delimited by the sequences `[!` and `!]`  
 + The refrence contains a notmal refrence  
 + At the end of the normal refrences, there will be a colon (':') followed by one of the following special symbols:  
-+ "`[NAME]`" - The internal name of the current entry  
-+ "`[VNAME]`" - The user-friendly ("visual") name of the current entry  
-+ "`[VALUE]`" - The value of the current entry  
++ `[NAME]` - The internal name of the current entry  
++ `[VNAME]` - The user-friendly ("visual") name of the current entry  
++ `[VALUE]` - The value of the current entry  
   
 Multiple and nested value refrences are supported.
 #####Example
