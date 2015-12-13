@@ -11,6 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8A40FF5F-F7B7-47BB-A277-5DC3EFBCA3B9}"
 	ProjectSection(SolutionItems) = preProject
+		FormatSpec.md = FormatSpec.md
 		Performance1.psess = Performance1.psess
 		Performance2.psess = Performance2.psess
 		Performance3.psess = Performance3.psess
