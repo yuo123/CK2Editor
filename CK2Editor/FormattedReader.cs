@@ -211,15 +211,17 @@ namespace CK2Editor
             Entry ent = ParseRef(start, comps[0]);
             if (ent == null)//if the reference wwas not found
                 return null;
+            var vent = ent as ValueEntry;
+            if (vent == null)
+                throw new FileFormatException("Reference in format file could not be parsed: " + comps[1] + " (for entry " + ent.InternalName + ")");
             switch (comps[1])
             {
                 case "[VALUE]":
-                    {
-                        ValueEntry vent = ent as ValueEntry;
-                        if (vent == null)
-                            throw new FileFormatException("Reference in format file could not be parsed: Sections do not have a value! (" + "entry " + ent.InternalName + ")");
-                        return vent.Value;
-                    }
+                    return vent.Value;
+                case "[NAME]":
+                    return vent.InternalName;
+                case "[VNAME]":
+                    return vent.FriendlyName;
                 default:
                     throw new FileFormatException("Reference in format file could not be parsed:  unknown symbol " + comps[1]);
             }

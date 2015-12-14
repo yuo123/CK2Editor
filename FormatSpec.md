@@ -20,7 +20,7 @@ I realize there might be confusion between the different terms used in this docu
 + "Attribute" - an XML attribute of an element
 
 ###Top Structure
-The format file must contain a rot element called "File". This represents the entire file after the CK2txt header, and all entries should be decendants of this element.  
+The format file must contain a root element called "File". This represents the entire file after the CK2txt header, and all entries should be decendants of this element.  
 before the "File" element, an XML declaration is recommended.  
 
 ###Refrences
@@ -34,7 +34,7 @@ Refrences can contain symbols, which are strings related to the entries the refr
 
 #####Normal Refrences
 The syntax of normal refrences is as follows:  
-+ The path starts from the current entry, unless it starts with a '!' in which case it jumps to the the root (the "file" elemt in the format file)
++ The path starts from the current entry, unless it starts with a '!' in which case it jumps to the the root (the "file" element in the format file)
 + A forward slash ('/') seperates entries in the path
 + An entry name takes the path into that entry
 + two dots ("..") take the path to the current entry's parent
@@ -69,6 +69,7 @@ In addition, the following attributes can be present:
   * "blank" - All the entries have no identifiers  
   * "number" - All the entries have different numbers as their identifiers  
   * "different" - All the entries have different, unrelated names. Causes all the entries in the current section to be associated with the element  
+  
   The name of an element with a multiple attribute of anything but "same" will be ignored  
 
 ###Value Entry Syntax
