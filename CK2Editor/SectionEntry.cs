@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CK2Editor.Editors;
+
 
 namespace CK2Editor
 {
@@ -12,14 +12,14 @@ namespace CK2Editor
         /// <summary>
         /// The editor of this section
         /// </summary>
-        public IEditor Section { get; set; }
+        public SectionEntry Section { get; set; }
 
         public SectionEntry()
         {
 
         }
 
-        public SectionEntry(string internalName, string friendlyName, IEditor section, string link)
+        public SectionEntry(string internalName, string friendlyName, SectionEntry section, string link)
         {
             InternalName = internalName;
             FriendlyName = friendlyName;

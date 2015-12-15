@@ -188,13 +188,20 @@ namespace CK2Editor.Utility
             int brackets = 0;
             int length = scope.Length;
             bool inString = false;
+            bool identifier = false;
             for (int i = location; i < length; i++)//go through scope, looking for an equal sign that is not inside curly brackets
             {
                 char c = scope[i];
                 switch (c)
                 {
                     case '{':
-                        brackets++;
+                        if (brackets < 1 && !identifier)
+                            yield return new KeyValuePair<int, string>(i, "");
+                        else
+                        {
+                            brackets++;
+                            identifier = false;
+                        }
                         break;
                     case '}':
                         brackets--;
@@ -203,6 +210,7 @@ namespace CK2Editor.Utility
                         break;
                     case '"':
                         inString = !inString;
+                        identifier = false;
                         goto default;
                     default:
                         {
@@ -215,9 +223,11 @@ namespace CK2Editor.Utility
                             else if (c == '"')
                                 break;
                             if (char.IsWhiteSpace(c))//ignore whitespaces
+                            {
+                                identifier = false;
                                 break;
+                            }
                             int firsti = i++;
-                            bool identifier = false;
                             for (; !identifier && i < scope.Length && !char.IsWhiteSpace(scope, i); i++)//go until the first whitespace, or until we discovered this is an identifier
                             {
                                 if (scope[i] == '=')
@@ -237,7 +247,10 @@ namespace CK2Editor.Utility
                                     for (int i2 = firsti - 1; i2 >= 0; i2--)//find the first non-whitespace backwards
                                     {
                                         if (scope[i2] == '=')//if an equal sign was found, we have already found the identifier
+                                        {
+                                            identifier = false;
                                             break;
+                                        }
                                         if (!char.IsWhiteSpace(scope, i2) || i2 == 0)//if a non-whitespace was found, or the start of the scope was reached, this is an anonymous entry ("multiple='blank'" in format)
                                         {
                                             yield return new KeyValuePair<int, string>(firsti, "");

@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Aga.Controls.Tree.NodeControls;
 
 using CK2Editor;
-using CK2Editor.Editors;
 
 namespace CK2EditorGUI.NodeControls
 {

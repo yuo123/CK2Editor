@@ -8,7 +8,6 @@ using System.IO;
 using System.Xml;
 using System.Text.RegularExpressions;
 
-using CK2Editor.Editors;
 using CK2Editor.Utility;
 
 namespace CK2Editor
@@ -28,15 +27,15 @@ namespace CK2Editor
             xmlDoc.Load(formatStream);
         }
 
-        public Editor ReadFile(string filename)
+        public SectionEntry ReadFile(string filename)
         {
             string file = File.ReadAllText(filename, Encoding.UTF7);//Encoding is important!
             return ReadSection(file, xmlDoc.ChildNodes[1]);//nodes 0 and 1 are the root and File tags
         }
 
-        public Editor ReadSection(string file, XmlNode formatNode, IEditor root = null)
+        public SectionEntry ReadSection(string file, XmlNode formatNode, SectionEntry root = null)
         {
-            Editor re = new Editor();
+            SectionEntry re = new SectionEntry();
             re.Root = root != null ? root : re;//if no root was provided, the current editor is the root
 
             foreach (var pair in FormatUtil.ListEntriesWithIndexes(file))
@@ -52,7 +51,7 @@ namespace CK2Editor
                         ent.Type = childNode.Attributes["type"] != null ? childNode.Attributes["type"].Value : "misc";
                         ent.Value = FormatUtil.ReadValue(file, ent.InternalName, ent.Type, pair.Key);
                         ent.Link = childNode.Attributes["link"] != null ? childNode.Attributes["link"].Value : null;
-                        ent.Editor = re;
+                        ent.SectionEntry = re;
                         re.Values.Add(ent);
                     }
                     else
@@ -62,7 +61,7 @@ namespace CK2Editor
                         ent.FriendlyName = childNode.Attributes["name"].Value;
                         ent.Section = ReadSection(FormatUtil.ExtractDelimited(file, pair.Value, pair.Key), childNode, re.Root);
                         ent.Link = childNode.Attributes["link"] != null ? childNode.Attributes["link"].Value : null;
-                        ent.Editor = re;
+                        ent.SectionEntry = re;
                         re.Sections.Add(ent);
                     }
                 }
@@ -75,7 +74,7 @@ namespace CK2Editor
                         ent.InternalName = pair.Value;
                         ent.Type = type;
                         ent.Value = FormatUtil.ReadValue(file, ent.InternalName, ent.Type, pair.Key);
-                        ent.Editor = re;
+                        ent.SectionEntry = re;
                         re.Values.Add(ent);
                     }
                     else
@@ -83,7 +82,7 @@ namespace CK2Editor
                         SectionEntry ent = new SectionEntry();
                         ent.InternalName = pair.Value;
                         ent.Section = ReadSection(FormatUtil.ExtractDelimited(file, pair.Value, pair.Key), childNode, re.Root);
-                        ent.Editor = re;
+                        ent.SectionEntry = re;
                         re.Sections.Add(ent);
                     }
                 }
@@ -107,9 +106,9 @@ namespace CK2Editor
                         return "string";
                     else if (!char.IsWhiteSpace(file[i]))//if there is a visible character before a newline, this must be a non-string single value
                     {
-#pragma warning disable CS0168
+#pragma warning disable 0168
                         int n;
-#pragma warning restore CS0168
+#pragma warning restore 0168
                         if (char.IsDigit(file[i]))//if the first char is a digit, this must is either a number or a date
                         {
                             bool dot = false;
@@ -239,10 +238,10 @@ namespace CK2Editor
             Entry current = start;
             if (sref.Length > 0 && sref[0] == '!')//reference path starting with another '!' means it starts at the root
             {
-                if (start.Editor != null)
+                if (start.SectionEntry != null)
                 {
-                    current = new SectionEntry();//create a temprary wrapper SectionEntry, for convenience
-                    ((SectionEntry)current).Section = start.Editor.Root;
+                    current = new SectionEntry();//create a temporary wrapper SectionEntry, for convenience
+                    ((SectionEntry)current).Section = start.SectionEntry.Root;
                 }
                 sref = sref.Remove(0, 1);
             }

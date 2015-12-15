@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using CK2Editor;
-using CK2Editor.Editors;
 
 namespace CK2EditorGUI
 {
@@ -17,9 +16,9 @@ namespace CK2EditorGUI
     {
         private FormattedReader reader;
         private string path;
-        private IEditor m_resultEditor;
+        private SectionEntry m_resultEditor;
 
-        public IEditor ResultEditor
+        public SectionEntry ResultEditor
         {
             get { return m_resultEditor; }
             private set { m_resultEditor = value; }
@@ -60,7 +59,7 @@ namespace CK2EditorGUI
             else if (ReadingDone != null)
             {
                 ReadingDoneEventArgs args = new ReadingDoneEventArgs();
-                args.ResultEditor = m_resultEditor;
+                args.ResultSection = m_resultEditor;
                 args.Successful = true;
                 ReadingDone(this, args);
             }
@@ -80,7 +79,7 @@ namespace CK2EditorGUI
 
     internal class ReadingDoneEventArgs : EventArgs
     {
-        public IEditor ResultEditor { get; set; }
+        public SectionEntry ResultSection { get; set; }
         public bool Successful { get; set; }
     }
 }

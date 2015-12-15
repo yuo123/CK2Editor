@@ -40,10 +40,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Editors\Editor.cs" />
-    <Compile Include="Editors\EditorList.cs" />
-    <Compile Include="Editors\IEditor.cs" />
-    <Compile Include="Editors\IEditorList.cs" />
     <Compile Include="FormattedReader.cs" />
     <Compile Include="Entry.cs" />
     <Compile Include="SectionEntry.cs" />
