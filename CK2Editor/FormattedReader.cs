@@ -107,9 +107,9 @@ namespace CK2Editor
                         return "string";
                     else if (!char.IsWhiteSpace(file[i]))//if there is a visible character before a newline, this must be a non-string single value
                     {
-#pragma warning disable CS0168
+#pragma warning disable 0168
                         int n;
-#pragma warning restore CS0168
+#pragma warning restore 0168
                         if (char.IsDigit(file[i]))//if the first char is a digit, this must is either a number or a date
                         {
                             bool dot = false;

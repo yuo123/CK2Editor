@@ -19,7 +19,7 @@ namespace Tests
 
             //FormattedReader fr = new FormattedReader(fpath);
             //Editor ed = fr.ReadFile(path);               
-            string text = "0123456789abcdefgho oijwao\t\n \n\tAxawjakl=\"g89\" nweabfgh98=\"\" xdk da={wefamkiwai{c}\t\nf3ds}\t\tawdwd=5\t\n\t\tseries= {\n1 5 3 4 7 }\n";
+            string text = "0123456789abcdefgho oijwao\t\n \n\tAxawjakl=\"g89\" nweabfgh98=\"\" xdk da={wefamkiwai{c}\t\nf3ds}\t\tawdwd=5\t\n\t\tseries={\n1 5 3 4 7 }\n";
             Assert.AreEqual(text, text.ToString());
             Assert.AreEqual(9, text.IndexOf("9"));
             Assert.AreEqual(-1, text.IndexOf("0", 10));
@@ -40,8 +40,12 @@ namespace Tests
             expected.Add(64, "da");
             expected.Add(90, "awdwd");
             expected.Add(101, "series");
-            var result = FormatUtil.ListEntriesWithIndexes(text).ToDictionary(pair => pair.Key, pair => pair.Value);
+            var result = FormatUtil.ListEntriesWithIndexes(text).ToDictionary();
             Assert.IsTrue(result.Count == expected.Count && result.SequenceEqual(expected));
+
+            text = " dsa=b\n\t\t{\n\t}\n\ta=n";
+            var entries = FormatUtil.ListEntriesWithIndexes(text).ToDictionary();
+            Assert.AreEqual(entries[9], "");
         }
     }
 }

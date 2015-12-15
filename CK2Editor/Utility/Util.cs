@@ -171,5 +171,10 @@ namespace CK2Editor.Utility
             sb.Append(new string('\t', indent));
             sb.Append(s + '\n');
         }
+
+        public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> enumurable)
+        {
+            return enumurable.ToDictionary(x => x.Key, x => x.Value);
+        }
     }
 }
