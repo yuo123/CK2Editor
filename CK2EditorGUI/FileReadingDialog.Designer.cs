@@ -70,7 +70,7 @@
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "CK2Editor - Reading File...";
+            this.Text = "CK2EditorEntry - Reading File...";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FileReadingDialog_FormClosing);
             this.Load += new System.EventHandler(this.FileReadingDialog_Load);
             this.ResumeLayout(false);

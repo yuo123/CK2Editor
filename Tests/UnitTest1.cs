@@ -1,7 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using CK2Editor;
-using CK2Editor.Editors;
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;

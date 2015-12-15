@@ -13,8 +13,9 @@ using Aga.Controls;
 using Aga.Controls.Tree;
 using Aga.Controls.Tree.NodeControls;
 
-using CK2Editor.Editors;
 using CK2Editor;
+using CK2Editor.Utility;
+using CK2EditorGUI;
 using CK2EditorGUI.EditorGUIs;
 using CK2EditorGUI.NodeControls;
 
@@ -59,7 +60,7 @@ namespace CK2EditorGUI
         {
             if (e.Successful)
             {
-                editorList.FileEditor = e.ResultEditor;
+                editorList.FileSectionEntry = e.ResultSection;
             }
         }
 
@@ -113,7 +114,7 @@ namespace CK2EditorGUI
         private void saveButton_Click(object sender, EventArgs e)
         {
             if (saveSelector.SelectedText != null && saveSelector.SelectedIndex != 0)
-                File.WriteAllText((string)saveSelector.SelectedItem, editorList.FileEditor.Save());
+                File.WriteAllText((string)saveSelector.SelectedItem, editorList.FileSectionEntry.Save());
         }
     }
 }

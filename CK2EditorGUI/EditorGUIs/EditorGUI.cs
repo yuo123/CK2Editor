@@ -13,7 +13,6 @@ using Aga.Controls.Tree;
 using Aga.Controls.Tree.NodeControls;
 
 using CK2Editor;
-using CK2Editor.Editors;
 using CK2EditorGUI.NodeControls;
 
 namespace CK2EditorGUI.EditorGUIs
@@ -21,16 +20,16 @@ namespace CK2EditorGUI.EditorGUIs
     [System.ComponentModel.DesignerCategory("")]
     public class EditorGUI : Panel, ITreeModel, IToolTipProvider
     {
-        private IEditor m_fileEditor;
-        public IEditor FileEditor
+        private SectionEntry m_fileSectionEntry;
+        public SectionEntry FileSectionEntry
         {
             get
             {
-                return m_fileEditor;
+                return m_fileSectionEntry;
             }
             set
             {
-                m_fileEditor = value;
+                m_fileSectionEntry = value;
 
                 this.StructureChanged(this, new TreePathEventArgs());
             }
@@ -41,19 +40,19 @@ namespace CK2EditorGUI.EditorGUIs
             InitializeComponent();
         }
 
-        //public EditorGUI(IEditor editor)
+        //public SectionEntryGUI(SectionEntry editor)
         //    : base()
         //{
         //    InitializeComponent();
-        //    FileEditor = editor;
+        //    FileSectionEntry = editor;
         //    Tree.Model = this;
         //}
 
         public System.Collections.IEnumerable GetChildren(TreePath treePath)
         {
-            if (this.FileEditor == null)
+            if (this.FileSectionEntry == null)
                 return null;
-            IEditor ed = treePath.IsEmpty() ? this.FileEditor : ((SectionEntry)treePath.LastNode).Section;
+            SectionEntry ed = treePath.IsEmpty() ? this.FileSectionEntry : ((SectionEntry)treePath.LastNode).Section;
             var ret = new List<Entry>(ed.Values.Count + ed.Sections.Count);
             ret.AddRange(ed.Values);
             ret.AddRange(ed.Sections);
@@ -93,7 +92,7 @@ namespace CK2EditorGUI.EditorGUIs
             if (node.Tag == null)//the root node doesn't have a tag
             {//create a temporary wrapper SectionEntry
                 SectionEntry tempEnt = new SectionEntry();
-                tempEnt.Section = this.FileEditor;
+                tempEnt.Section = this.FileSectionEntry;
                 startEnt = tempEnt;
             }
             else
@@ -238,11 +237,11 @@ namespace CK2EditorGUI.EditorGUIs
             pathDisplay.Height = 16;
             pathDisplay.PathClicked += pathDisplay_PathClicked;
             // 
-            // EditorGUI
+            // SectionEntryGUI
             // 
             this.Controls.Add(this.Tree);
             this.Controls.Add(pathDisplay);
-            this.Name = "EditorGUI";
+            this.Name = "SectionEntryGUI";
             this.Size = new System.Drawing.Size(1008, 398);
             this.BorderStyle = BorderStyle.None;
             this.ResumeLayout(true);
