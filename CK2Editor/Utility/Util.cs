@@ -125,7 +125,7 @@ namespace CK2Editor.Utility
                 {
                     if (string.IsNullOrEmpty(values[j]))
                     {
-                        continue;
+                        return startIndex;
                     }
                     else if (s[i] == values[j][curs[j]])//if there's a match
                     {

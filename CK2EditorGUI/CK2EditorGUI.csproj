@@ -81,7 +81,9 @@
     <Compile Include="NodeControls\EntryValueNodeText.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="ObjectPathDisplay.cs" />
+    <Compile Include="ObjectPathDisplay.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="PathDisplay.cs">
       <SubType>Component</SubType>
     </Compile>

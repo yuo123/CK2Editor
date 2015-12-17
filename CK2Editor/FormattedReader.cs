@@ -36,7 +36,8 @@ namespace CK2Editor
         public SectionEntry ReadSection(string file, XmlNode formatNode, SectionEntry root = null)
         {
             SectionEntry re = new SectionEntry();
-            re.Root = root != null ? root : re;//if no root was provided, the current editor is the root
+            root = root != null ? root : re;//if no root was provided, the current editor is the root
+            re.Root = root;
 
             foreach (var pair in FormatUtil.ListEntriesWithIndexes(file))
             {
@@ -51,7 +52,8 @@ namespace CK2Editor
                         ent.Type = childNode.Attributes["type"] != null ? childNode.Attributes["type"].Value : "misc";
                         ent.Value = FormatUtil.ReadValue(file, ent.InternalName, ent.Type, pair.Key);
                         ent.Link = childNode.Attributes["link"] != null ? childNode.Attributes["link"].Value : null;
-                        ent.SectionEntry = re;
+                        ent.Parent = re;
+                        ent.Root = root;
                         re.Values.Add(ent);
                     }
                     else
@@ -59,9 +61,9 @@ namespace CK2Editor
                         SectionEntry ent = new SectionEntry();
                         ent.InternalName = pair.Value;
                         ent.FriendlyName = childNode.Attributes["name"].Value;
-                        ent.Section = ReadSection(FormatUtil.ExtractDelimited(file, pair.Value, pair.Key), childNode, re.Root);
+                        ent = ReadSection(FormatUtil.ExtractDelimited(file, pair.Value, pair.Key), childNode, re.Root);
                         ent.Link = childNode.Attributes["link"] != null ? childNode.Attributes["link"].Value : null;
-                        ent.SectionEntry = re;
+                        ent.Parent = re;
                         re.Sections.Add(ent);
                     }
                 }
@@ -74,15 +76,16 @@ namespace CK2Editor
                         ent.InternalName = pair.Value;
                         ent.Type = type;
                         ent.Value = FormatUtil.ReadValue(file, ent.InternalName, ent.Type, pair.Key);
-                        ent.SectionEntry = re;
+                        ent.Parent = re;
+                        ent.Root = root;
                         re.Values.Add(ent);
                     }
                     else
                     {//the node is a section
                         SectionEntry ent = new SectionEntry();
                         ent.InternalName = pair.Value;
-                        ent.Section = ReadSection(FormatUtil.ExtractDelimited(file, pair.Value, pair.Key), childNode, re.Root);
-                        ent.SectionEntry = re;
+                        ent = ReadSection(FormatUtil.ExtractDelimited(file, pair.Value, pair.Key), childNode, re.Root);
+                        ent.Parent = re;
                         re.Sections.Add(ent);
                     }
                 }
@@ -94,7 +97,7 @@ namespace CK2Editor
         {
             int i;
             bool sawNewline = false;
-            for (i = pair.Key + pair.Value.Length + 1; i < file.Length; i++)//go through the file, starting after the name
+            for (i = pair.Key + pair.Value.Length; i < file.Length; i++)//go through the file, starting after the name
             {
                 if (file[i] == '\n')
                     sawNewline = true;
@@ -121,7 +124,7 @@ namespace CK2Editor
                                         return "date";
                                     else dot = true;
                                 }
-                            } while (!char.IsWhiteSpace(file[i]));
+                            } while (i < file.Length && !char.IsWhiteSpace(file[i]));
                             return "number";//if less than two dots were found before a newline, this is a number
                         }
                         else
@@ -169,8 +172,6 @@ namespace CK2Editor
         {
             if (s == null)
                 return null;
-            if (start.InternalName == "501431")
-                System.Diagnostics.Debugger.Break();
             bool inref = false;
             int refstart = -1;
             for (int i = 0; i < s.Length; i++)
@@ -238,17 +239,18 @@ namespace CK2Editor
             Entry current = start;
             if (sref.Length > 0 && sref[0] == '!')//reference path starting with another '!' means it starts at the root
             {
-                if (start.SectionEntry != null)
-                {
-                    current = new SectionEntry();//create a temporary wrapper SectionEntry, for convenience
-                    ((SectionEntry)current).Section = start.SectionEntry.Root;
-                }
+                current = current.Root;
                 sref = sref.Remove(0, 1);
             }
 
             string[] comps = sref.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
             foreach (string compi in comps)
             {
+                if (compi == "..")
+                {
+                    current = current.Parent;
+                    yield return current;
+                }
                 SectionEntry section = current as SectionEntry;
                 if (section == null)
                     yield break;
@@ -258,7 +260,7 @@ namespace CK2Editor
                     comp = comp.Remove(match.Index, match.Length);
                     comp = comp.Insert(match.Index, ParseSymbol(start, current, match.Value));
                 }
-                current = section.Section.Entries.FirstOrDefault(ent => ent.InternalName == comp);
+                current = section.Entries.FirstOrDefault(ent => ent.InternalName == comp);
                 yield return current;
             }
         }
@@ -267,13 +269,6 @@ namespace CK2Editor
         {
             switch (value)
             {
-                case "[VALUE]":
-                    {
-                        var vent = current as ValueEntry;
-                        if (vent == null)
-                            throw new FileFormatException("Reference in format file could not be parsed: " + value + " (for entry " + current.InternalName + ")");
-                        return vent.Value;
-                    }
                 case "[THISVALUE]":
                     {
                         var vent = start as ValueEntry;
@@ -281,26 +276,12 @@ namespace CK2Editor
                             throw new FileFormatException("Reference in format file could not be parsed: " + value + " (for entry " + start.InternalName + ")");
                         return vent.Value;
                     }
-                case "[NAME]":
-                    {
-                        var vent = current as ValueEntry;
-                        if (vent == null)
-                            throw new FileFormatException("Reference in format file could not be parsed: " + value + " (for entry " + current.InternalName + ")");
-                        return vent.InternalName;
-                    }
                 case "[THISNAME]":
                     {
                         var vent = start as ValueEntry;
                         if (vent == null)
                             throw new FileFormatException("Reference in format file could not be parsed: " + value + " (for entry " + start.InternalName + ")");
                         return vent.InternalName;
-                    }
-                case "[VNAME]":
-                    {
-                        var vent = current as ValueEntry;
-                        if (vent == null)
-                            throw new FileFormatException("Reference in format file could not be parsed: " + value + " (for entry " + current.InternalName + ")");
-                        return vent.FriendlyName;
                     }
                 case "[THISVNAME]":
                     {

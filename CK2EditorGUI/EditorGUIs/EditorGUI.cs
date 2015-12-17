@@ -21,7 +21,7 @@ namespace CK2EditorGUI.EditorGUIs
     public class EditorGUI : Panel, ITreeModel, IToolTipProvider
     {
         private SectionEntry m_fileSectionEntry;
-        public SectionEntry FileSectionEntry
+        public SectionEntry RootSection
         {
             get
             {
@@ -44,15 +44,15 @@ namespace CK2EditorGUI.EditorGUIs
         //    : base()
         //{
         //    InitializeComponent();
-        //    FileSectionEntry = editor;
+        //    RootSection = editor;
         //    Tree.Model = this;
         //}
 
         public System.Collections.IEnumerable GetChildren(TreePath treePath)
         {
-            if (this.FileSectionEntry == null)
+            if (this.RootSection == null)
                 return null;
-            SectionEntry ed = treePath.IsEmpty() ? this.FileSectionEntry : ((SectionEntry)treePath.LastNode).Section;
+            SectionEntry ed = treePath.IsEmpty() ? this.RootSection : ((SectionEntry)treePath.LastNode);
             var ret = new List<Entry>(ed.Values.Count + ed.Sections.Count);
             ret.AddRange(ed.Values);
             ret.AddRange(ed.Sections);
@@ -69,7 +69,7 @@ namespace CK2EditorGUI.EditorGUIs
             if (path.Count() == 0)//special case to go to the root, which scrolls to the top
                 Tree.ScrollTo(Tree.Root.Children[0]);
             TreeNodeAdv node = start != null ? start : Tree.Root;
-            
+
             foreach (Entry ent in path)
             {
                 node.Expand();
@@ -91,14 +91,12 @@ namespace CK2EditorGUI.EditorGUIs
             Entry startEnt;
             if (node.Tag == null)//the root node doesn't have a tag
             {//create a temporary wrapper SectionEntry
-                SectionEntry tempEnt = new SectionEntry();
-                tempEnt.Section = this.FileSectionEntry;
-                startEnt = tempEnt;
+                startEnt = RootSection;
             }
             else
                 startEnt = (Entry)node.Tag;
-                node = Tree.Root;
-                Goto(FormattedReader.ParseRefPath(startEnt, path));
+            node = Tree.Root;
+            Goto(FormattedReader.ParseRefPath(startEnt, path));
         }
 
         private TreeViewAdv m_tree;
