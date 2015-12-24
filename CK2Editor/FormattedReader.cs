@@ -33,6 +33,11 @@ namespace CK2Editor
             return ReadSection(file, xmlDoc.ChildNodes[1]);//nodes 0 and 1 are the root and File tags
         }
 
+        public SectionEntry ReadFileFromString(string file)
+        {
+            return ReadSection(file, xmlDoc.ChildNodes[1]);//nodes 0 and 1 are the root and File tags
+        }
+
         public SectionEntry ReadSection(string file, XmlNode formatNode, SectionEntry root = null)
         {
             SectionEntry re = new SectionEntry();
