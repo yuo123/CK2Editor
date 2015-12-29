@@ -195,13 +195,11 @@ namespace CK2Editor.Utility
                 switch (c)
                 {
                     case '{':
-                        if (brackets < 1 && !identifier)
+                        brackets++;
+                        if (brackets < 2 && !identifier)
                             yield return new KeyValuePair<int, string>(i, "");
                         else
-                        {
-                            brackets++;
                             identifier = false;
-                        }
                         break;
                     case '}':
                         brackets--;
@@ -227,14 +225,13 @@ namespace CK2Editor.Utility
                                 identifier = false;
                                 break;
                             }
-                            int firsti = i++;
+                            int firsti = i++; //intentional post-increment
                             for (; !identifier && i < scope.Length && !char.IsWhiteSpace(scope, i); i++)//go until the first whitespace, or until we discovered this is an identifier
                             {
                                 if (scope[i] == '=')
                                 {
-                                    yield return new KeyValuePair<int, string>(firsti, scope.Substring(firsti, i - firsti));//if it is an equal sign, we found an identifier
-                                    i--;//decrement i, so it isn't incremented from both loops and skips a character
                                     identifier = true;
+                                    yield return new KeyValuePair<int, string>(firsti, scope.Substring(firsti, i - firsti));//if it is an equal sign, we found an identifier
                                 }
                             }
                             if (!identifier)

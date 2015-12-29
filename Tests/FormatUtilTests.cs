@@ -13,11 +13,8 @@ namespace Tests
     public class FormatUtilTests
     {
         [TestMethod]
-        public void UtilTestMethod()
+        public void BasicUtilTest()
         {
-
-            //FormattedReader fr = new FormattedReader(fpath);
-            //Editor ed = fr.ReadFile(path);               
             string text = "0123456789abcdefgho oijwao\t\n \n\tAxawjakl=\"g89\" nweabfgh98=\"\" xdk da={wefamkiwai{c}\t\nf3ds}\t\tawdwd=5\t\n\t\tseries={\n1 5 3 4 7 }\n";
             Assert.AreEqual(text, text.ToString());
             Assert.AreEqual(9, text.IndexOf("9"));
@@ -41,13 +38,35 @@ namespace Tests
             expected.Add(101, "series");
             var result = FormatUtil.ListEntriesWithIndexes(text).ToDictionary();
             Assert.IsTrue(result.Count == expected.Count && result.SequenceEqual(expected));
+        }
 
+        [TestMethod]
+        public void ListEntriesUtilTest()
+        {
+            string text;
             text = " dsa=b\n\t\t{\n\t}\n\ta=n\n\t\tabcdefgh={\n\t\t\tcba=\"3\"\n\t\t}";
             var entries = FormatUtil.ListEntriesWithIndexes(text).ToDictionary();
             Assert.AreEqual(entries[9], "");
             Assert.AreEqual(4, entries.Count);
 
-            text=File.ReadAllText(
+            text = File.ReadAllText(TestsReference.MIN_TEST_PATH).Substring(6);
+            entries = FormatUtil.ListEntriesWithIndexes(text).ToDictionary();
+            Dictionary<int, string> expected = new Dictionary<int, string>();
+            expected.Add(3, "version");
+            expected.Add(23, "date");
+            expected.Add(40, "player");
+            expected.Add(82, "player_realm");
+            expected.Add(111, "dyn_title");
+            expected.Add(221, "dyn_title");
+            expected.Add(286, "dyn_title");
+            expected.Add(353, "rebel");
+            expected.Add(363, "unit");
+            expected.Add(386, "sub_unit");
+            expected.Add(395, "start_date");
+            expected.Add(418, "flags");
+            expected.Add(559, "dynasties");
+            expected.Add(1217, "character");
+            Assert.AreEqual(expected, entries);
         }
     }
 }

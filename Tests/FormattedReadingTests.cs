@@ -12,8 +12,8 @@ namespace Tests
         [TestMethod]
         public void FormattedReaderTest()
         {
-            FormattedReader reader = new FormattedReader("");
-            SectionEntry root = reader.ReadFile("");
+            FormattedReader reader = new FormattedReader(TestsReference.FORMAT_PATH);
+            SectionEntry root = reader.ReadFile(TestsReference.MIN_TEST_PATH);
             SectionEntry player = new SectionEntry("player", "Player", null);
             player.Root = root;
             player.Parent = root;
