@@ -11,7 +11,7 @@ namespace Tests
         const string FULL_TEST_PATH = @"%userprofile%\Desktop\CK2Editor\Full_Test_Save.ck2";
 
         [TestMethod]
-        public void MainTestMethod()
+        public void FormattedReaderTest()
         {
 
         }

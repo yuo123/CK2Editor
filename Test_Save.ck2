@@ -5686,9 +5686,9 @@ CK2txt
 			}
 		}
 	}
-character=
-{
-665369=
+	character=
+	{
+		665369=
 		{
 			birth_name="Iyasu"
 			birth_date="990.3.2"
@@ -15336,4 +15336,4 @@ character=
 			}
 			ambition_date="997.10.2"
 		}
-		}
+	}
