@@ -29,7 +29,7 @@ namespace CK2Editor
 
         public SectionEntry ReadFile(string filename)
         {
-            string file = File.ReadAllText(filename, Encoding.UTF7);//Encoding is important!
+            string file = File.ReadAllText(Environment.ExpandEnvironmentVariables(filename), Encoding.UTF7);//Encoding is important!
             return ReadSection(file, xmlDoc.ChildNodes[1]);//nodes 0 and 1 are the root and File tags
         }
 
@@ -63,10 +63,9 @@ namespace CK2Editor
                     }
                     else
                     {//the node is a section
-                        SectionEntry ent = new SectionEntry();
+                        SectionEntry ent = ReadSection(FormatUtil.ExtractDelimited(file, pair.Value, pair.Key), childNode, re.Root);
                         ent.InternalName = pair.Value;
                         ent.FriendlyName = childNode.Attributes["name"].Value;
-                        ent = ReadSection(FormatUtil.ExtractDelimited(file, pair.Value, pair.Key), childNode, re.Root);
                         ent.Link = childNode.Attributes["link"] != null ? childNode.Attributes["link"].Value : null;
                         ent.Parent = re;
                         re.Sections.Add(ent);

@@ -7,7 +7,7 @@ using CK2Editor.Utility;
 
 namespace CK2Editor
 {
-    public abstract class Entry
+    public abstract class Entry : IEquatable<Entry>
     {
         /// <summary>
         /// A user friendly name, supplied by the format file
@@ -32,6 +32,9 @@ namespace CK2Editor
 
         public SectionEntry Root { get; set; }
 
-
+        public virtual bool Equals(Entry other)
+        {
+            return other.InternalName == this.InternalName && other.FriendlyName == this.FriendlyName && other.Link == this.Link;
+        }
     }
 }

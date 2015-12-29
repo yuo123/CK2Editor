@@ -48,9 +48,10 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
-    <Compile Include="FormattedReadingTest.cs" />
-    <Compile Include="UnitTest1.cs" />
+    <Compile Include="FormattedReadingTests.cs" />
+    <Compile Include="FormatUtilTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestsReference.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CK2Editor\CK2Editor.csproj">

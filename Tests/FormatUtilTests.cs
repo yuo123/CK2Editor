@@ -10,7 +10,7 @@ using CK2Editor.Utility;
 namespace Tests
 {
     [TestClass]
-    public class UnitTest1
+    public class FormatUtilTests
     {
         [TestMethod]
         public void UtilTestMethod()
@@ -42,9 +42,12 @@ namespace Tests
             var result = FormatUtil.ListEntriesWithIndexes(text).ToDictionary();
             Assert.IsTrue(result.Count == expected.Count && result.SequenceEqual(expected));
 
-            text = " dsa=b\n\t\t{\n\t}\n\ta=n";
+            text = " dsa=b\n\t\t{\n\t}\n\ta=n\n\t\tabcdefgh={\n\t\t\tcba=\"3\"\n\t\t}";
             var entries = FormatUtil.ListEntriesWithIndexes(text).ToDictionary();
             Assert.AreEqual(entries[9], "");
+            Assert.AreEqual(4, entries.Count);
+
+            text=File.ReadAllText(
         }
     }
 }

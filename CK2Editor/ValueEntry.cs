@@ -23,13 +23,22 @@ namespace CK2Editor
 
         }
 
-        public ValueEntry(string internalName, string friendlyName, string type, string value, string link)
+        public ValueEntry(string internalName, string friendlyName, string type, string value, string link, SectionEntry parent, SectionEntry root)
+            : this()
         {
             InternalName = internalName;
             FriendlyName = friendlyName;
             Type = type;
             Value = value;
             Link = link;
+            Parent = parent;
+            Root = root;
+        }
+
+        public override bool Equals(Entry other)
+        {
+            ValueEntry otherv = other as ValueEntry;
+            return otherv != null && base.Equals(other) && otherv.Type == this.Type && otherv.Value == this.Value;
         }
     }
 }

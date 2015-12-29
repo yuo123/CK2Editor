@@ -21,6 +21,7 @@ namespace CK2Editor
         }
 
         public SectionEntry(string internalName, string friendlyName, string link)
+            : this()
         {
             InternalName = internalName;
             FriendlyName = friendlyName;
@@ -57,6 +58,20 @@ namespace CK2Editor
                 ret.AddRange(Sections);
                 return ret;
             }
+        }
+
+        public override bool Equals(Entry other)
+        {
+            SectionEntry others = other as SectionEntry;
+            if (others == null || !base.Equals(other))
+                return false;
+            var pairs = this.Entries.Zip(others.Entries, (a, b) => new { A = a, B = b });
+            foreach (var pair in pairs)
+            {
+                if (!pair.A.Equals(pair.B))
+                    return false;
+            }
+            return true;
         }
     }
 }
