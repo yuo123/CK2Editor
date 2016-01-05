@@ -183,6 +183,34 @@ namespace CK2Editor.Utility
             return ListEntriesWithIndexes(scope, 0, filter).Select(pair => pair.Value);
         }
 
+        public static bool IsBrace(this char c)
+        {
+            return c == '{' || c == '}';
+        }
+
+        /// <summary>
+        /// Go to the end of a section from its start
+        /// </summary>
+        /// <param name="str">The string to look in</param>
+        /// <param name="start">The index to start at</param>
+        /// <returns>The index one after the closing brace</returns>
+        public static int GotoSectionEnd(string str, int start)
+        {
+            if (str[start] != '{')
+                throw new ArgumentException("Must start at the opening brace of the section");
+            int bcount = 1; //brace count, the initial 1 is the opening brace
+            int i = start + 1;
+            while (i < str.Length && bcount > 0)//bcount==0 means we hit the end
+            {
+                if (str[i] == '{')
+                    bcount++;
+                else if (str[i] == '}')
+                    bcount--;
+                i++;
+            }
+            return i;
+        }
+
         /// <summary>
         /// Finds the start of the next "word" in a file, according to the CK2txt format
         /// </summary>
@@ -209,14 +237,16 @@ namespace CK2Editor.Utility
         {
             if (str[start] == '"')//strings are easy, just find the second '"'
             {
-                int index = str.IndexOf('"');
-                return index != -1 ? index : str.Length;
+                int index = str.IndexOf('"', start + 1);
+                return index != -1 ? index + 1 : str.Length;
             }
+            else if (str[start] == '{')//sections are whole, single "words"
+                return GotoSectionEnd(str, start);
             else
             {
                 for (int i = start; i < str.Length; i++)
                 {
-                    if (str[i] == '=' || char.IsWhiteSpace(str[i]))//words end at whitespaces or equal signs
+                    if (str[i] == '=' || char.IsWhiteSpace(str[i]) || str[i].IsBrace())//words end at whitespaces, equal signs or braces
                         return i;
                 }
                 return str.Length;
@@ -225,82 +255,26 @@ namespace CK2Editor.Utility
 
         public static IEnumerable<KeyValuePair<int, string>> ListEntriesWithIndexes(string scope, int location = 0, Predicate<string> filter = null)
         {
-            int brackets = 0;
-            int length = scope.Length;
-            bool inString = false;
-            bool identifier = false;
-            for (int i = location; i < length; i++)//go through scope, looking for an equal sign that is not inside curly brackets
+            int i = location;
+            while (i < scope.Length)
             {
-                char c = scope[i];
-                switch (c)
+                int firsti = GotoWordStart(scope, i);
+                i = GotoWordEnd(scope, firsti);
+                string name = null;
+                if (scope[i] == '=')
                 {
-                    case '{':
-                        brackets++;
-                        if (brackets < 2 && !identifier)
-                            yield return new KeyValuePair<int, string>(i, "");
-                        else
-                            identifier = false;
-                        break;
-                    case '}':
-                        brackets--;
-                        if (brackets < 0)
-                            brackets = 0;
-                        break;
-                    case '"':
-                        inString = !inString;
-                        identifier = false;
-                        goto default;
-                    default:
-                        {
-                            if (brackets > 0)//ignore lower scopes
-                                break;
-                            if (inString)//ignore content of strings
-                            {
-                                break;
-                            }
-                            else if (c == '"')
-                                break;
-                            if (char.IsWhiteSpace(c))//ignore whitespaces
-                            {
-                                identifier = false;
-                                break;
-                            }
-                            int firsti = i++; //intentional post-increment
-                            for (; !identifier && i < scope.Length && !char.IsWhiteSpace(scope, i); i++)//go until the first whitespace, or until we discovered this is an identifier
-                            {
-                                if (scope[i] == '=')
-                                {
-                                    identifier = true;
-                                    yield return new KeyValuePair<int, string>(firsti, scope.Substring(firsti, i - firsti));//if it is an equal sign, we found an identifier
-                                }
-                            }
-                            if (!identifier)
-                            {//if no equal sign was found, we found an entry
-                                if (firsti == 0)//if we're at the start of the scope, this is an anonymous entry
-                                {
-                                    yield return new KeyValuePair<int, string>(0, "");
-                                }
-                                else
-                                    for (int i2 = firsti - 1; i2 >= 0; i2--)//find the first non-whitespace backwards
-                                    {
-                                        if (scope[i2] == '=')//if an equal sign was found, we have already found the identifier
-                                        {
-                                            identifier = false;
-                                            break;
-                                        }
-                                        if (!char.IsWhiteSpace(scope, i2) || i2 == 0)//if a non-whitespace was found, or the start of the scope was reached, this is an anonymous entry ("multiple='blank'" in format)
-                                        {
-                                            yield return new KeyValuePair<int, string>(firsti, "");
-                                            break;
-                                        }
-                                    }
-                            }
-                        }
-                        break;
+                    name = scope.Substring(firsti, i - firsti);
+                    i = GotoWordStart(scope, i);
+                    i = GotoWordEnd(scope, i);
                 }
+                else
+                {
+                    name = "";
+                }
+                yield return new KeyValuePair<int, string>(firsti, name);
             }
         }
-
+        
         public static void OutputSectionStart(StringBuilder sb, string name, int indent)
         {
             sb.IndentedAppendLine(indent, name + '=');

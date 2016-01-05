@@ -61,12 +61,12 @@ namespace Tests
             expected.Add(286, "dyn_title");
             expected.Add(353, "rebel");
             expected.Add(363, "unit");
-            expected.Add(386, "sub_unit");
+            expected.Add(377, "sub_unit");
             expected.Add(395, "start_date");
             expected.Add(418, "flags");
             expected.Add(559, "dynasties");
             expected.Add(1217, "character");
-            Assert.AreEqual(expected, entries);
+            Assert.IsTrue(entries.Count == expected.Count && entries.SequenceEqual(expected));
         }
     }
 }
