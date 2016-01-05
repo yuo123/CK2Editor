@@ -183,6 +183,46 @@ namespace CK2Editor.Utility
             return ListEntriesWithIndexes(scope, 0, filter).Select(pair => pair.Value);
         }
 
+        /// <summary>
+        /// Finds the start of the next "word" in a file, according to the CK2txt format
+        /// </summary>
+        /// <param name="str">The string to look in</param>
+        /// <param name="start">The index to start at</param>
+        /// <returns>The index of the word start, or the length of the string if a word was not found</returns>
+        public static int GotoWordStart(string str, int start)
+        {
+            for (int i = start; i < str.Length; i++)
+            {
+                if (!char.IsWhiteSpace(str[i]) && str[i] != '=')//word cannot start with an equal sign
+                    return i;
+            }
+            return str.Length;
+        }
+
+        /// <summary>
+        /// Finds the end of a "word" in a file, according to the CK2txt formats
+        /// </summary>
+        /// <param name="str">The string to look in</param>
+        /// <param name="start">The index to start at</param>
+        /// <returns>The index after the word ends, or the length of the string if the end was not found</returns>
+        public static int GotoWordEnd(string str, int start)
+        {
+            if (str[start] == '"')//strings are easy, just find the second '"'
+            {
+                int index = str.IndexOf('"');
+                return index != -1 ? index : str.Length;
+            }
+            else
+            {
+                for (int i = start; i < str.Length; i++)
+                {
+                    if (str[i] == '=' || char.IsWhiteSpace(str[i]))//words end at whitespaces or equal signs
+                        return i;
+                }
+                return str.Length;
+            }
+        }
+
         public static IEnumerable<KeyValuePair<int, string>> ListEntriesWithIndexes(string scope, int location = 0, Predicate<string> filter = null)
         {
             int brackets = 0;
