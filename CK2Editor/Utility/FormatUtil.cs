@@ -259,6 +259,8 @@ namespace CK2Editor.Utility
             while (i < scope.Length)
             {
                 int firsti = GotoWordStart(scope, i);
+                if (firsti == scope.Length)
+                    break;
                 i = GotoWordEnd(scope, firsti);
                 string name = null;
                 if (scope[i] == '=')

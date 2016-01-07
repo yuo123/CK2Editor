@@ -49,7 +49,7 @@ namespace Tests
             Assert.AreEqual(entries[9], "");
             Assert.AreEqual(4, entries.Count);
 
-            text = File.ReadAllText(TestsReference.MIN_TEST_PATH).Substring(6);
+            text = File.ReadAllText(TestsReference.FULL_TEST_PATH).Substring(6);
             entries = FormatUtil.ListEntriesWithIndexes(text).ToDictionary();
             Dictionary<int, string> expected = new Dictionary<int, string>();
             expected.Add(3, "version");

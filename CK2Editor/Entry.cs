@@ -36,5 +36,10 @@ namespace CK2Editor
         {
             return other.InternalName == this.InternalName && other.FriendlyName == this.FriendlyName && other.Link == this.Link;
         }
+
+        public override string ToString()
+        {
+            return base.ToString() + ":" + InternalName;
+        }
     }
 }

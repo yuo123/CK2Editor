@@ -14,6 +14,8 @@ namespace CK2Editor
 {
     public class FormattedReader
     {
+        public const string SAVE_HEADER = "CK2txt";
+
         protected XmlDocument xmlDoc;
 
         public FormattedReader(string formatFileName)
@@ -30,7 +32,9 @@ namespace CK2Editor
         public SectionEntry ReadFile(string filename)
         {
             string file = File.ReadAllText(Environment.ExpandEnvironmentVariables(filename), Encoding.UTF7);//Encoding is important!
-            return ReadSection(file, xmlDoc.ChildNodes[1]);//nodes 0 and 1 are the root and File tags
+            if (file.StartsWith(SAVE_HEADER))
+                file = file.Substring(SAVE_HEADER.Length);
+            return ReadSection(file, xmlDoc.GetElementsByTagName("File")[0]);//get only the root "File" tag
         }
 
         public SectionEntry ReadFileFromString(string file)
@@ -43,6 +47,9 @@ namespace CK2Editor
             SectionEntry re = new SectionEntry();
             root = root != null ? root : re;//if no root was provided, the current editor is the root
             re.Root = root;
+
+            if (new System.Diagnostics.StackTrace().FrameCount == 14)
+                System.Diagnostics.Debugger.Break();
 
             foreach (var pair in FormatUtil.ListEntriesWithIndexes(file))
             {
@@ -76,6 +83,8 @@ namespace CK2Editor
                     string type = DetectType(file, pair);
                     if (type != "section")
                     {//the node is a value
+                        if (new System.Diagnostics.StackTrace().FrameCount == 14)
+                            System.Diagnostics.Debugger.Break();
                         ValueEntry ent = new ValueEntry();
                         ent.InternalName = pair.Value;
                         ent.Type = type;
