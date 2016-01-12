@@ -15,6 +15,7 @@ namespace CK2Editor
     public class FormattedReader
     {
         public const string SAVE_HEADER = "CK2txt";
+        public const string SAVE_FOOTER = "}";
 
         protected XmlDocument xmlDoc;
 
@@ -32,8 +33,11 @@ namespace CK2Editor
         public SectionEntry ReadFile(string filename)
         {
             string file = File.ReadAllText(Environment.ExpandEnvironmentVariables(filename), Encoding.UTF7);//Encoding is important!
-            if (file.StartsWith(SAVE_HEADER))
+            if (file.StartsWith(SAVE_HEADER)) //the header, specified in the constant above, is not part of the hierarchy
                 file = file.Substring(SAVE_HEADER.Length);
+            file = file.TrimEnd(new char[] { ' ', '\n', '\t', '\r' });
+            if (file.EndsWith(SAVE_FOOTER)) //same for footer
+                file = file.Substring(0, file.Length - SAVE_FOOTER.Length);
             return ReadSection(file, xmlDoc.GetElementsByTagName("File")[0]);//get only the root "File" tag
         }
 
@@ -48,8 +52,8 @@ namespace CK2Editor
             root = root != null ? root : re;//if no root was provided, the current editor is the root
             re.Root = root;
 
-            if (new System.Diagnostics.StackTrace().FrameCount == 14)
-                System.Diagnostics.Debugger.Break();
+            //if (new System.Diagnostics.StackTrace().FrameCount == 14)
+                //System.Diagnostics.Debugger.Break();
 
             foreach (var pair in FormatUtil.ListEntriesWithIndexes(file))
             {
