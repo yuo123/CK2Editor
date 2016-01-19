@@ -10,10 +10,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8A40FF5F-F7B7-47BB-A277-5DC3EFBCA3B9}"
 	ProjectSection(SolutionItems) = preProject
 		FormatSpec.md = FormatSpec.md
-		Performance1.psess = Performance1.psess
-		Performance2.psess = Performance2.psess
-		Performance3.psess = Performance3.psess
-		Performance4.psess = Performance4.psess
 		README.md = README.md
 		Todo.txt = Todo.txt
 	EndProjectSection

@@ -165,7 +165,8 @@ namespace CK2Editor
 
         private Func<string, bool> GetNameComparer(XmlNode node)
         {
-            switch (node.Attributes["multiple"] != null ? node.Attributes["multiple"].Value : null)
+            XmlAttribute att = node.Attributes["multiple"];
+            switch (att != null ? att.Value : null)
             {
                 default:
                 case "same":

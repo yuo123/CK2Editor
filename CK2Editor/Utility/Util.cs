@@ -117,17 +117,21 @@ namespace CK2Editor.Utility
         /// <returns></returns>
         public static int IndexOfAny(this string s, string[] values, int startIndex = 0, int maxIndex = -1)
         {
+            foreach (string val in values)
+            {
+                if (string.IsNullOrEmpty(val))
+                {
+                    return startIndex;
+                }
+            }
             int[] curs = new int[values.Length]; //curs holds the indexes of the character of each string in values we are currently looking for.
             maxIndex = Util.ResolveNegativeIndex(maxIndex, s.Length);
             for (int i = startIndex; i < maxIndex; i++)//main loop, goes through the entire string
             {
                 for (int j = 0; j < curs.Length; j++)//secondary loop, goes through all of curs (and values)
                 {
-                    if (string.IsNullOrEmpty(values[j]))
-                    {
-                        return startIndex;
-                    }
-                    else if (s[i] == values[j][curs[j]])//if there's a match
+
+                    if (s[i] == values[j][curs[j]])//if there's a match
                     {
                         curs[j]++;
                         if (curs[j] == values[j].Length)//if we've reached the end of a value

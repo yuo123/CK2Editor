@@ -41,6 +41,7 @@ namespace CK2EditorGUI
 
         private void bworker_DoWork(object sender, DoWorkEventArgs e)
         {
+            System.Threading.Thread.CurrentThread.Name = "File Reader";
             m_resultEditor = reader.ReadFile(path);
         }
 
