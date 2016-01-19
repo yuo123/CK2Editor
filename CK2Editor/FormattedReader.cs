@@ -32,18 +32,17 @@ namespace CK2Editor
 
         public SectionEntry ReadFile(string filename)
         {
-            string file = File.ReadAllText(Environment.ExpandEnvironmentVariables(filename), Encoding.UTF7);//Encoding is important!
+            return ReadFileFromString(File.ReadAllText(Environment.ExpandEnvironmentVariables(filename), Encoding.UTF7));//Encoding is important!
+        }
+
+        public SectionEntry ReadFileFromString(string file)
+        {
             if (file.StartsWith(SAVE_HEADER)) //the header, specified in the constant above, is not part of the hierarchy
                 file = file.Substring(SAVE_HEADER.Length);
             file = file.TrimEnd(new char[] { ' ', '\n', '\t', '\r' });
             if (file.EndsWith(SAVE_FOOTER)) //same for footer
                 file = file.Substring(0, file.Length - SAVE_FOOTER.Length);
             return ReadSection(file, xmlDoc.GetElementsByTagName("File")[0]);//get only the root "File" tag
-        }
-
-        public SectionEntry ReadFileFromString(string file)
-        {
-            return ReadSection(file, xmlDoc.ChildNodes[1]);//nodes 0 and 1 are the root and File tags
         }
 
         public SectionEntry ReadSection(string file, XmlNode formatNode, SectionEntry root = null)
@@ -53,7 +52,7 @@ namespace CK2Editor
             re.Root = root;
 
             //if (new System.Diagnostics.StackTrace().FrameCount == 14)
-                //System.Diagnostics.Debugger.Break();
+            //System.Diagnostics.Debugger.Break();
 
             foreach (var pair in FormatUtil.ListEntriesWithIndexes(file))
             {
@@ -87,8 +86,6 @@ namespace CK2Editor
                     string type = DetectType(file, pair);
                     if (type != "section")
                     {//the node is a value
-                        if (new System.Diagnostics.StackTrace().FrameCount == 14)
-                            System.Diagnostics.Debugger.Break();
                         ValueEntry ent = new ValueEntry();
                         ent.InternalName = pair.Value;
                         ent.Type = type;

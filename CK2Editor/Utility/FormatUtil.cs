@@ -258,6 +258,9 @@ namespace CK2Editor.Utility
             int i = location;
             while (i < scope.Length)
             {
+                if (new System.Diagnostics.StackTrace().FrameCount == 16)
+                    System.Diagnostics.Debug.WriteLine("The location in the file: " + i);
+                
                 int firsti = GotoWordStart(scope, i);
                 if (firsti == scope.Length)
                     break;
