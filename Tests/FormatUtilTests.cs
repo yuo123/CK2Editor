@@ -49,7 +49,12 @@ namespace Tests
             Assert.AreEqual(entries[9], "");
             Assert.AreEqual(4, entries.Count);
 
-            text = File.ReadAllText(TestsReference.FULL_TEST_PATH).Substring(6);
+            text = File.ReadAllText(TestsReference.MIN_TEST_PATH).Substring(6);
+            if (text.StartsWith(FormattedReader.SAVE_HEADER)) //the header, specified in the constant above, is not part of the hierarchy
+                text = text.Substring(FormattedReader.SAVE_HEADER.Length);
+            text = text.TrimEnd(new char[] { ' ', '\n', '\t', '\r' });
+            if (text.EndsWith(FormattedReader.SAVE_FOOTER)) //same for footer
+                text = text.Substring(0, text.Length - FormattedReader.SAVE_FOOTER.Length);
             entries = FormatUtil.ListEntriesWithIndexes(text).ToDictionary();
             Dictionary<int, string> expected = new Dictionary<int, string>();
             expected.Add(3, "version");

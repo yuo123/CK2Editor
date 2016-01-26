@@ -21,6 +21,10 @@ namespace Tests
             player.Values.Add(new ValueEntry("type", "Type", "number", "66", null, player, root));
             Assert.IsTrue(player.Equals(root.Sections[0]));
             Assert.AreEqual(14, root.Entries.Count);
+
+            Entry start = root.Sections[0].Values[0];
+            string refpath = "..";
+            Assert.AreEqual(start.Parent, FormattedReader.ParseRef(start, refpath));
         }
     }
 }

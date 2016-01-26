@@ -221,6 +221,8 @@ namespace CK2Editor.Utility
         {
             for (int i = start; i < str.Length; i++)
             {
+                if (i > 83369480)
+                    System.Diagnostics.Debug.WriteLine("location: " + i);
                 if (!char.IsWhiteSpace(str[i]) && str[i] != '=')//word cannot start with an equal sign
                     return i;
             }
@@ -257,10 +259,7 @@ namespace CK2Editor.Utility
         {
             int i = location;
             while (i < scope.Length)
-            {/*
-                if (new System.Diagnostics.StackTrace().FrameCount == 16)
-                    System.Diagnostics.Debug.WriteLine("The location in the file: " + i);
-                */
+            {
                 int firsti = GotoWordStart(scope, i);
                 if (firsti == scope.Length)
                     break;

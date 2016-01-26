@@ -1,5 +1,5 @@
 Implement full search
 Implement Adding new Entries
 Improve file loading UX
-Add support for ".." in refrences
 Add support for nested refrences
+Group entries with the "multiple" attribute together

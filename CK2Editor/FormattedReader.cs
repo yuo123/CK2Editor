@@ -224,7 +224,7 @@ namespace CK2Editor
         {
             string[] comps = sref.Split(new char[] { ':' });
             Entry ent = ParseRef(start, comps[0]);
-            if (ent == null)//if the reference wwas not found
+            if (ent == null)//if the reference was not found
                 return null;
             var vent = ent as ValueEntry;
             if (vent == null)
@@ -261,21 +261,25 @@ namespace CK2Editor
             string[] comps = sref.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
             foreach (string compi in comps)
             {
-                if (compi == "..")
-                {
-                    current = current.Parent;
-                    yield return current;
-                }
-                SectionEntry section = current as SectionEntry;
-                if (section == null)
-                    yield break;
                 string comp = compi;
+
                 foreach (Match match in Regex.Matches(comp, "\\[.*\\]"))
                 {
                     comp = comp.Remove(match.Index, match.Length);
                     comp = comp.Insert(match.Index, ParseSymbol(start, current, match.Value));
                 }
-                current = section.Entries.FirstOrDefault(ent => ent.InternalName == comp);
+                if (compi == "..")
+                {
+                    current = current.Parent;
+                    yield return current;
+                }
+                else
+                {
+                    SectionEntry section = current as SectionEntry;
+                    if (section == null)
+                        yield break;
+                    current = section.Entries.FirstOrDefault(ent => ent.InternalName == comp);
+                }
                 yield return current;
             }
         }
