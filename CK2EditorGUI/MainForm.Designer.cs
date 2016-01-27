@@ -35,10 +35,10 @@
             System.Windows.Forms.Label label3;
             this.saveSelector = new System.Windows.Forms.ComboBox();
             this.loadSaveButton = new System.Windows.Forms.Button();
+            this.saveButton = new System.Windows.Forms.Button();
             this.formatSelector = new System.Windows.Forms.ComboBox();
             this.refreshFormatsButton = new System.Windows.Forms.Button();
             this.saveFileChooser = new System.Windows.Forms.OpenFileDialog();
-            this.saveButton = new System.Windows.Forms.Button();
             label1 = new System.Windows.Forms.Label();
             tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             label2 = new System.Windows.Forms.Label();
@@ -99,6 +99,16 @@
             this.loadSaveButton.Text = "Load...";
             this.loadSaveButton.UseVisualStyleBackColor = true;
             this.loadSaveButton.Click += new System.EventHandler(this.loadSaveButton_Click);
+            // 
+            // saveButton
+            // 
+            this.saveButton.Location = new System.Drawing.Point(1209, 3);
+            this.saveButton.Name = "saveButton";
+            this.saveButton.Size = new System.Drawing.Size(42, 21);
+            this.saveButton.TabIndex = 6;
+            this.saveButton.Text = "Save";
+            this.saveButton.UseVisualStyleBackColor = true;
+            this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
             // 
             // label2
             // 
@@ -163,16 +173,6 @@
             // saveFileChooser
             // 
             this.saveFileChooser.Multiselect = true;
-            // 
-            // saveButton
-            // 
-            this.saveButton.Location = new System.Drawing.Point(1209, 3);
-            this.saveButton.Name = "saveButton";
-            this.saveButton.Size = new System.Drawing.Size(42, 21);
-            this.saveButton.TabIndex = 6;
-            this.saveButton.Text = "Save";
-            this.saveButton.UseVisualStyleBackColor = true;
-            this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
             // 
             // MainForm
             // 

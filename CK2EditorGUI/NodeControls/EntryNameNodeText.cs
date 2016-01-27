@@ -12,10 +12,18 @@ namespace CK2EditorGUI.NodeControls
 {
     class EntryNameNodeText : NodeTextBox
     {
+        public EntryNameNodeText()
+            : base()
+        {
+            this.Font = new System.Drawing.Font("Consolas", 14);
+        }
+
         public override object GetValue(Aga.Controls.Tree.TreeNodeAdv node)
         {
             if (node.Tag == null)
-                return "";
+            {//this is the button for adding new entries
+                return "████████████";
+            }
             Entry ent = node.Tag as Entry;
             if (ent == null)
                 throw new ArgumentException("EntryNameNodeText can only be used with entries");
