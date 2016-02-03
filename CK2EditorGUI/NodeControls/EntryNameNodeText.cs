@@ -15,14 +15,14 @@ namespace CK2EditorGUI.NodeControls
         public EntryNameNodeText()
             : base()
         {
-            this.Font = new System.Drawing.Font("Consolas", 14);
+            this.Font = new System.Drawing.Font("Arial", 14);
         }
 
         public override object GetValue(Aga.Controls.Tree.TreeNodeAdv node)
         {
             if (node.Tag == null)
             {//this is the button for adding new entries
-                return "████████████";
+                return "+++Add New+++";
             }
             Entry ent = node.Tag as Entry;
             if (ent == null)

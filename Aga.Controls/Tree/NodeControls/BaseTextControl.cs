@@ -257,7 +257,7 @@ namespace Aga.Controls.Tree.NodeControls
 
 		public string GetLabel(TreeNodeAdv node)
 		{
-			if (node != null && node.Tag != null)
+			if (node != null)
 			{
 				object obj = GetValue(node);
 				if (obj != null)

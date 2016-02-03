@@ -203,7 +203,7 @@ namespace CK2EditorGUI.EditorGUIs
             this.Tree.Columns.Add(this.valueColumn);
             this.Tree.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Tree.DragDropMarkColor = System.Drawing.Color.Black;
-            this.Tree.Font = new System.Drawing.Font("Consolas Bold", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Tree.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Tree.GridLineStyle = ((Aga.Controls.Tree.GridLineStyle)((Aga.Controls.Tree.GridLineStyle.Horizontal | Aga.Controls.Tree.GridLineStyle.Vertical)));
             this.Tree.LineColor = System.Drawing.SystemColors.ControlDarkDark;
             this.Tree.LoadOnDemand = true;
