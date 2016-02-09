@@ -27,7 +27,7 @@ namespace CK2EditorGUI.NodeControls
             }
             else
             {
-                EditorGUI egui = (EditorGUI)this.Parent.Model;
+                FileEditorGUI egui = (FileEditorGUI)this.Parent.Model;
                 egui.GotoLink(ent.Link, args.Node);
             }
         }

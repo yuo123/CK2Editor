@@ -19,7 +19,7 @@ using CK2EditorGUI.Utility;
 namespace CK2EditorGUI.EditorGUIs
 {
     [System.ComponentModel.DesignerCategory("")]
-    public class EditorGUI : Panel, ITreeModel, IToolTipProvider
+    public class FileEditorGUI : EditorGUIBase, ITreeModel, IToolTipProvider
     {
         private SectionEntry m_fileSectionEntry;
         public SectionEntry RootSection
@@ -36,7 +36,7 @@ namespace CK2EditorGUI.EditorGUIs
             }
         }
 
-        public EditorGUI()
+        public FileEditorGUI()
         {
             InitializeComponent();
         }

@@ -23,7 +23,7 @@ namespace CK2EditorGUI
 {
     public partial class MainForm : Form
     {
-        private EditorGUI editorList;
+        private FileEditorGUI editorList;
 
         //The directory containing format xml files
         private static readonly string FormatDir = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + Path.DirectorySeparatorChar + "Formats";
@@ -39,7 +39,7 @@ namespace CK2EditorGUI
             saveSelector.SelectedIndex = 0;
             saveFileChooser.InitialDirectory = DefaultSaveDir;
 
-            editorList = new EditorGUI();
+            editorList = new FileEditorGUI();
             editorList.Dock = DockStyle.Fill;
             this.Controls.Add(editorList);
             editorList.BringToFront();
