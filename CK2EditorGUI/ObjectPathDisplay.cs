@@ -5,6 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Collections.Specialized;
+
+using CK2EditorGUI.Utility;
 
 namespace CK2EditorGUI
 {
@@ -36,7 +39,7 @@ namespace CK2EditorGUI
             last.Tag = obj;
         }
 
-        public virtual void SetPath(IDictionary<string, object> path)
+        public virtual void SetPath(NameObjectCollection path)
         {
             while (this.Controls.Count > 1)
             {

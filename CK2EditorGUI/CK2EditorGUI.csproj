@@ -89,6 +89,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utility\NameObjectCollection.cs" />
     <EmbeddedResource Include="FileReadingDialog.resx">
       <DependentUpon>FileReadingDialog.cs</DependentUpon>
     </EmbeddedResource>

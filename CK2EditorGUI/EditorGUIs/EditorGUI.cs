@@ -14,6 +14,7 @@ using Aga.Controls.Tree.NodeControls;
 
 using CK2Editor;
 using CK2EditorGUI.NodeControls;
+using CK2EditorGUI.Utility;
 
 namespace CK2EditorGUI.EditorGUIs
 {
@@ -39,14 +40,6 @@ namespace CK2EditorGUI.EditorGUIs
         {
             InitializeComponent();
         }
-
-        //public SectionEntryGUI(SectionEntry editor)
-        //    : base()
-        //{
-        //    InitializeComponent();
-        //    RootSection = editor;
-        //    Tree.Model = this;
-        //}
 
         public System.Collections.IEnumerable GetChildren(TreePath treePath)
         {
@@ -118,11 +111,11 @@ namespace CK2EditorGUI.EditorGUIs
         void Tree_SelectionChanged(object sender, EventArgs e)
         {
             TreePath tpath = Tree.GetPath(Tree.SelectedNode);
-            Dictionary<string, object> path = new Dictionary<string, object>(tpath.FullPath.Length);
+            NameObjectCollection path = new NameObjectCollection(tpath.FullPath.Length);
             foreach (var obj in tpath.FullPath)
             {
                 Entry ent = (Entry)obj;
-                path.Add(ent.InternalName, ent);
+                path.Add(ent != null ? ent.InternalName : null, ent);
             }
             pathDisplay.SetPath(path);
         }
@@ -216,6 +209,7 @@ namespace CK2EditorGUI.EditorGUIs
             //nameControl
             //
             var nameControl = new EntryNameNodeText();
+            nameControl.VirtualMode = true;
             nameControl.ToolTipProvider = this;
             nameControl.ParentColumn = nameColumn;
             nameControl.IncrementalSearchEnabled = true;
@@ -225,6 +219,7 @@ namespace CK2EditorGUI.EditorGUIs
             //valueControl
             //
             var valueControl = new EntryValueNodeText();
+            valueControl.VirtualMode = true;
             valueControl.ParentColumn = valueColumn;
             valueControl.Trimming = StringTrimming.EllipsisCharacter;
             Tree.NodeControls.Add(valueControl);

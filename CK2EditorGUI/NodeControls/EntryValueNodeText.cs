@@ -17,11 +17,19 @@ namespace CK2EditorGUI.NodeControls
         public override void MouseDoubleClick(Aga.Controls.Tree.TreeNodeAdvMouseEventArgs args)
         {
             base.MouseDoubleClick(args);
-            ValueEntry ent = args.Node.Tag as ValueEntry;
-            if (ent == null)
+            if (args.Node.Tag != null && !(args.Node.Tag is ValueEntry))
                 return;//if this is not a value entry, value is not relevant
-            EditorGUI egui = (EditorGUI)this.Parent.Model;
-            egui.GotoLink(ent.Link, args.Node);
+
+            ValueEntry ent = (ValueEntry)args.Node.Tag;
+            if (ent == null)
+            {//this is the "add new entry" button
+                this.BeginEdit();
+            }
+            else
+            {
+                EditorGUI egui = (EditorGUI)this.Parent.Model;
+                egui.GotoLink(ent.Link, args.Node);
+            }
         }
 
         public override object GetValue(Aga.Controls.Tree.TreeNodeAdv node)
@@ -41,6 +49,20 @@ namespace CK2EditorGUI.NodeControls
                 return text.Substring(0, 1000) + "...";
             else
                 return text;
+        }
+
+        public EntryValueNodeText()
+        {
+            this.EditEnabled = true;
+            this.ValuePushed += OnValuePushed;
+        }
+
+        void OnValuePushed(object sender, NodeControlValueEventArgs e)
+        {
+            ValueEntry ent = e.Node.Tag as ValueEntry;
+            if (ent == null)
+                return;//if this is not a value entry, value is not relevant
+            ent.Value = (string)e.Value;
         }
     }
 }
