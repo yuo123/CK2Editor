@@ -7,9 +7,8 @@ using System.Windows.Forms;
 
 namespace CK2EditorGUI.EditorGUIs
 {
-    [System.ComponentModel.DesignerCategory("")]
 #if DEBUG
-    public class EditorGUIBase : Panel
+    public class EditorGUIBase : UserControl
 #else
     public abstract class EditorGUIBase : Panel
 #endif

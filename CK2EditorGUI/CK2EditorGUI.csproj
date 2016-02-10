@@ -62,9 +62,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EditorGUIs\EditorGUIBase.cs" />
+    <Compile Include="EditorGUIs\EditorGUIBase.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="EditorGUIs\FileEditorGUI.cs" />
-    <Compile Include="EditorGUIs\GenericEditorGUI.cs" />
+    <Compile Include="EditorGUIs\GenericEditorGUI.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="FileReadingDialog.cs">
       <SubType>Form</SubType>
     </Compile>
