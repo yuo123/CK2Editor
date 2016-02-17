@@ -75,6 +75,7 @@
     <Compile Include="FileReadingDialog.Designer.cs">
       <DependentUpon>FileReadingDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="HorizontalDivider.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

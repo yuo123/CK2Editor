@@ -14,6 +14,7 @@ namespace CK2EditorGUI.EditorGUIs
     public class GenericEditorGUI : EditorGUIBase
     {
         private System.Windows.Forms.Label label1;
+        private ComboBox nameBox;
         private ComboBox typeBox;
         private System.Windows.Forms.ComboBox comboBox1;
     
@@ -25,8 +26,11 @@ namespace CK2EditorGUI.EditorGUIs
         private void InitializeComponent()
         {
             System.Windows.Forms.Label label2;
+            System.Windows.Forms.Label label3;
+            this.nameBox = new System.Windows.Forms.ComboBox();
             this.typeBox = new System.Windows.Forms.ComboBox();
             label2 = new System.Windows.Forms.Label();
+            label3 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label2
@@ -38,21 +42,49 @@ namespace CK2EditorGUI.EditorGUIs
             label2.TabIndex = 0;
             label2.Text = "Name:";
             // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new System.Drawing.Point(3, 36);
+            label3.Name = "label3";
+            label3.Size = new System.Drawing.Size(34, 13);
+            label3.TabIndex = 3;
+            label3.Text = "Type:";
+            // 
+            // nameBox
+            // 
+            this.nameBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.nameBox.FormattingEnabled = true;
+            this.nameBox.Location = new System.Drawing.Point(47, 6);
+            this.nameBox.Name = "nameBox";
+            this.nameBox.Size = new System.Drawing.Size(163, 21);
+            this.nameBox.TabIndex = 1;
+            // 
             // typeBox
             // 
-            this.typeBox.FormattingEnabled = true;
-            this.typeBox.Location = new System.Drawing.Point(47, 6);
+            this.typeBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.typeBox.Items.AddRange(new object[] {
+            "section",
+            "string",
+            "number",
+            "date",
+            "misc"});
+            this.typeBox.Location = new System.Drawing.Point(47, 33);
             this.typeBox.Name = "typeBox";
-            this.typeBox.Size = new System.Drawing.Size(73, 21);
-            this.typeBox.TabIndex = 1;
+            this.typeBox.Size = new System.Drawing.Size(163, 21);
+            this.typeBox.TabIndex = 2;
             // 
             // GenericEditorGUI
             // 
             this.BackColor = System.Drawing.SystemColors.Control;
+            this.Controls.Add(label3);
             this.Controls.Add(this.typeBox);
+            this.Controls.Add(this.nameBox);
             this.Controls.Add(label2);
             this.Name = "GenericEditorGUI";
-            this.Size = new System.Drawing.Size(256, 125);
+            this.Size = new System.Drawing.Size(213, 125);
             this.ResumeLayout(false);
             this.PerformLayout();
 

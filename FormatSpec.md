@@ -23,7 +23,7 @@ I realize there might be confusion between the different terms used in this docu
 The format file must contain a root element called "File". This represents the entire file after the CK2txt header, and all entries should be decendants of this element.  
 before the "File" element, an XML declaration is recommended.  
 
-###Refrences
+###References
 Some attributes allow refrences or value refrences. These are refrences to other entries that are related to the current entry. Normal references refrence an entry itself, and value refrences refrence related strings.
 
 #####Symbols

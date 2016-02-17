@@ -28,7 +28,28 @@
         /// </summary>
         private void InitializeComponent()
         {
+            CK2EditorGUI.HorizontalDivider horizontalDivider1;
+            this.genericEditorGUI1 = new CK2EditorGUI.EditorGUIs.GenericEditorGUI();
+            horizontalDivider1 = new CK2EditorGUI.HorizontalDivider();
             this.SuspendLayout();
+            // 
+            // genericEditorGUI1
+            // 
+            this.genericEditorGUI1.BackColor = System.Drawing.SystemColors.Control;
+            this.genericEditorGUI1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.genericEditorGUI1.Location = new System.Drawing.Point(0, 0);
+            this.genericEditorGUI1.Name = "genericEditorGUI1";
+            this.genericEditorGUI1.Size = new System.Drawing.Size(349, 60);
+            this.genericEditorGUI1.TabIndex = 0;
+            // 
+            // horizontalDivider1
+            // 
+            horizontalDivider1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            horizontalDivider1.Dock = System.Windows.Forms.DockStyle.Top;
+            horizontalDivider1.Location = new System.Drawing.Point(0, 60);
+            horizontalDivider1.Name = "horizontalDivider1";
+            horizontalDivider1.Size = new System.Drawing.Size(349, 2);
+            horizontalDivider1.TabIndex = 1;
             // 
             // ModifyEntryDialog
             // 
@@ -37,6 +58,8 @@
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(349, 228);
+            this.Controls.Add(horizontalDivider1);
+            this.Controls.Add(this.genericEditorGUI1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.Name = "ModifyEntryDialog";
@@ -47,6 +70,8 @@
         }
 
         #endregion
+
+        private EditorGUIs.GenericEditorGUI genericEditorGUI1;
 
 
     }
