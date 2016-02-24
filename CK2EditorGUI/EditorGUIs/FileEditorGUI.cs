@@ -237,7 +237,6 @@ namespace CK2EditorGUI.EditorGUIs
             this.Controls.Add(pathDisplay);
             this.Name = "SectionEntryGUI";
             this.Size = new System.Drawing.Size(1008, 398);
-            this.BorderStyle = BorderStyle.None;
             this.ResumeLayout(true);
         }
 

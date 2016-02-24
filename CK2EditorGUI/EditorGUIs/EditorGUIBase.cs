@@ -7,15 +7,13 @@ using System.Windows.Forms;
 
 namespace CK2EditorGUI.EditorGUIs
 {
-#if DEBUG
-    public class EditorGUIBase : UserControl
-#else
-    public abstract class EditorGUIBase : Panel
-#endif
+    //[Designer("System.Windows.Forms.Design.ParentControlDesigner, System.Design", typeof(IDesigner))]
+    public class EditorGUIBase : GroupBox
     {
         public EditorGUIBase()
         {
-
+            this.Margin = new Padding(3, 10, 3, 3);
+            this.Padding = new Padding(0, 20, 0, 0);
         }
     }
 }

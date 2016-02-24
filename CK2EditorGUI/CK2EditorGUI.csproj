@@ -63,11 +63,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EditorGUIs\EditorGUIBase.cs">
-      <SubType>UserControl</SubType>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="EditorGUIs\FileEditorGUI.cs" />
     <Compile Include="EditorGUIs\GenericEditorGUI.cs">
-      <SubType>UserControl</SubType>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="EditorGUIs\RawEditorGUI.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="EditorGUIs\RawEditorGUI.Designer.cs">
+      <DependentUpon>RawEditorGUI.cs</DependentUpon>
     </Compile>
     <Compile Include="FileReadingDialog.cs">
       <SubType>Form</SubType>
@@ -105,6 +111,9 @@
     <Compile Include="Utility\NameObjectCollection.cs" />
     <EmbeddedResource Include="EditorGUIs\GenericEditorGUI.resx">
       <DependentUpon>GenericEditorGUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditorGUIs\RawEditorGUI.resx">
+      <DependentUpon>RawEditorGUI.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FileReadingDialog.resx">
       <DependentUpon>FileReadingDialog.cs</DependentUpon>
