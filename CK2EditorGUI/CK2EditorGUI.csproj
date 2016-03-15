@@ -63,14 +63,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EditorGUIs\EditorGUIBase.cs">
-      <SubType>Component</SubType>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="EditorGUIs\FileEditorGUI.cs" />
     <Compile Include="EditorGUIs\GenericEditorGUI.cs">
-      <SubType>Component</SubType>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="EditorGUIs\RawEditorGUI.cs">
-      <SubType>Component</SubType>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="EditorGUIs\RawEditorGUI.Designer.cs">
       <DependentUpon>RawEditorGUI.cs</DependentUpon>

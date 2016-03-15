@@ -10,7 +10,6 @@ using System.Windows.Forms.Design;
 
 namespace CK2EditorGUI.EditorGUIs
 {
-    [DesignerCategory("Form")]
     public class GenericEditorGUI : EditorGUIBase
     {
         private ComboBox nameBox;
