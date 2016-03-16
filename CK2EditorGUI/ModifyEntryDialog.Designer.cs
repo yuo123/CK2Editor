@@ -28,53 +28,52 @@
         /// </summary>
         private void InitializeComponent()
         {
-            CK2EditorGUI.HorizontalDivider horizontalDivider1;
-            CK2EditorGUI.HorizontalDivider horizontalDivider2;
             this.rawEditorGUI1 = new CK2EditorGUI.EditorGUIs.RawEditorGUI();
-            this.genericEditorGUI1 = new CK2EditorGUI.EditorGUIs.GenericEditorGUI();
-            horizontalDivider1 = new CK2EditorGUI.HorizontalDivider();
-            horizontalDivider2 = new CK2EditorGUI.HorizontalDivider();
+            this.genericEditor = new CK2EditorGUI.EditorGUIs.GenericEditorGUI();
+            this.saveBtn = new System.Windows.Forms.Button();
+            this.cancelBtn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // rawEditorGUI1
             // 
             this.rawEditorGUI1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.rawEditorGUI1.Location = new System.Drawing.Point(0, 64);
-            this.rawEditorGUI1.Margin = new System.Windows.Forms.Padding(3, 10, 3, 3);
+            this.rawEditorGUI1.Location = new System.Drawing.Point(0, 73);
             this.rawEditorGUI1.Name = "rawEditorGUI1";
-            this.rawEditorGUI1.Padding = new System.Windows.Forms.Padding(0, 10, 0, 0);
-            this.rawEditorGUI1.Size = new System.Drawing.Size(349, 74);
+            this.rawEditorGUI1.Size = new System.Drawing.Size(467, 71);
             this.rawEditorGUI1.TabIndex = 3;
             this.rawEditorGUI1.TabStop = false;
-            this.rawEditorGUI1.Text = "rawEditorGUI1";
+            this.rawEditorGUI1.Text = "Raw Data";
             // 
-            // horizontalDivider1
+            // genericEditor
             // 
-            horizontalDivider1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            horizontalDivider1.Dock = System.Windows.Forms.DockStyle.Top;
-            horizontalDivider1.Location = new System.Drawing.Point(0, 62);
-            horizontalDivider1.Name = "horizontalDivider1";
-            horizontalDivider1.Size = new System.Drawing.Size(349, 2);
-            horizontalDivider1.TabIndex = 1;
+            this.genericEditor.BackColor = System.Drawing.SystemColors.Control;
+            this.genericEditor.Dock = System.Windows.Forms.DockStyle.Top;
+            this.genericEditor.Location = new System.Drawing.Point(0, 0);
+            this.genericEditor.Name = "genericEditor";
+            this.genericEditor.Size = new System.Drawing.Size(467, 73);
+            this.genericEditor.TabIndex = 0;
+            this.genericEditor.TabStop = false;
+            this.genericEditor.Text = "General Data";
             // 
-            // horizontalDivider2
+            // saveBtn
             // 
-            horizontalDivider2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            horizontalDivider2.Dock = System.Windows.Forms.DockStyle.Top;
-            horizontalDivider2.Location = new System.Drawing.Point(0, 60);
-            horizontalDivider2.Name = "horizontalDivider2";
-            horizontalDivider2.Size = new System.Drawing.Size(349, 2);
-            horizontalDivider2.TabIndex = 2;
+            this.saveBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.saveBtn.Location = new System.Drawing.Point(375, 151);
+            this.saveBtn.Name = "saveBtn";
+            this.saveBtn.Size = new System.Drawing.Size(80, 25);
+            this.saveBtn.TabIndex = 4;
+            this.saveBtn.Text = "Save";
+            this.saveBtn.UseVisualStyleBackColor = true;
             // 
-            // genericEditorGUI1
+            // cancelBtn
             // 
-            this.genericEditorGUI1.BackColor = System.Drawing.SystemColors.Control;
-            this.genericEditorGUI1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.genericEditorGUI1.Location = new System.Drawing.Point(0, 0);
-            this.genericEditorGUI1.Name = "genericEditorGUI1";
-            this.genericEditorGUI1.Size = new System.Drawing.Size(349, 60);
-            this.genericEditorGUI1.TabIndex = 0;
-            this.genericEditorGUI1.TabStop = false;
+            this.cancelBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.cancelBtn.Location = new System.Drawing.Point(12, 151);
+            this.cancelBtn.Name = "cancelBtn";
+            this.cancelBtn.Size = new System.Drawing.Size(80, 25);
+            this.cancelBtn.TabIndex = 5;
+            this.cancelBtn.Text = "Cancel";
+            this.cancelBtn.UseVisualStyleBackColor = true;
             // 
             // ModifyEntryDialog
             // 
@@ -82,11 +81,11 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(349, 228);
+            this.ClientSize = new System.Drawing.Size(467, 188);
+            this.Controls.Add(this.cancelBtn);
+            this.Controls.Add(this.saveBtn);
             this.Controls.Add(this.rawEditorGUI1);
-            this.Controls.Add(horizontalDivider1);
-            this.Controls.Add(horizontalDivider2);
-            this.Controls.Add(this.genericEditorGUI1);
+            this.Controls.Add(this.genericEditor);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.Name = "ModifyEntryDialog";
@@ -98,8 +97,10 @@
 
         #endregion
 
-        private EditorGUIs.GenericEditorGUI genericEditorGUI1;
+        private EditorGUIs.GenericEditorGUI genericEditor;
         private EditorGUIs.RawEditorGUI rawEditorGUI1;
+        private System.Windows.Forms.Button saveBtn;
+        private System.Windows.Forms.Button cancelBtn;
 
 
     }

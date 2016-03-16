@@ -22,12 +22,12 @@ namespace CK2EditorGUI.EditorGUIs
             this.wrapper.Controls.Add(this.typeBox);
             this.wrapper.Controls.Add(this.valueBox);
             this.wrapper.Controls.Add(label1);
-            this.wrapper.Size = new System.Drawing.Size(359, 83);
+            this.wrapper.Size = new System.Drawing.Size(328, 75);
             // 
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new System.Drawing.Point(3, 42);
+            label3.Location = new System.Drawing.Point(3, 16);
             label3.Name = "label3";
             label3.Size = new System.Drawing.Size(59, 13);
             label3.TabIndex = 4;
@@ -36,7 +36,7 @@ namespace CK2EditorGUI.EditorGUIs
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new System.Drawing.Point(3, 16);
+            label1.Location = new System.Drawing.Point(3, 43);
             label1.MinimumSize = new System.Drawing.Size(37, 13);
             label1.Name = "label1";
             label1.Size = new System.Drawing.Size(37, 13);
@@ -53,25 +53,25 @@ namespace CK2EditorGUI.EditorGUIs
             "number",
             "date",
             "misc"});
-            this.typeBox.Location = new System.Drawing.Point(68, 39);
+            this.typeBox.Location = new System.Drawing.Point(68, 13);
             this.typeBox.Name = "typeBox";
-            this.typeBox.Size = new System.Drawing.Size(285, 21);
+            this.typeBox.Size = new System.Drawing.Size(254, 21);
             this.typeBox.TabIndex = 3;
             // 
             // valueBox
             // 
             this.valueBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.valueBox.Location = new System.Drawing.Point(46, 13);
+            this.valueBox.Location = new System.Drawing.Point(46, 40);
             this.valueBox.MinimumSize = new System.Drawing.Size(42, 20);
             this.valueBox.Name = "valueBox";
-            this.valueBox.Size = new System.Drawing.Size(307, 20);
+            this.valueBox.Size = new System.Drawing.Size(276, 20);
             this.valueBox.TabIndex = 1;
             // 
             // RawEditorGUI
             // 
             this.Name = "RawEditorGUI";
-            this.Size = new System.Drawing.Size(359, 83);
+            this.Size = new System.Drawing.Size(328, 75);
             this.wrapper.ResumeLayout(false);
             this.wrapper.PerformLayout();
             this.ResumeLayout(false);

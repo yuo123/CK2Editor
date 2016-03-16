@@ -28,12 +28,22 @@ namespace CK2EditorGUI.EditorGUIs
             this.structureBox = new System.Windows.Forms.ComboBox();
             label2 = new System.Windows.Forms.Label();
             label3 = new System.Windows.Forms.Label();
+            this.wrapper.SuspendLayout();
             this.SuspendLayout();
+            // 
+            // wrapper
+            // 
+            this.wrapper.Controls.Add(label3);
+            this.wrapper.Controls.Add(this.structureBox);
+            this.wrapper.Controls.Add(this.nameBox);
+            this.wrapper.Controls.Add(label2);
+            this.wrapper.Size = new System.Drawing.Size(281, 78);
+            this.wrapper.Text = "text";
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new System.Drawing.Point(3, 9);
+            label2.Location = new System.Drawing.Point(6, 16);
             label2.Name = "label2";
             label2.Size = new System.Drawing.Size(38, 13);
             label2.TabIndex = 0;
@@ -42,7 +52,7 @@ namespace CK2EditorGUI.EditorGUIs
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new System.Drawing.Point(3, 36);
+            label3.Location = new System.Drawing.Point(6, 43);
             label3.Name = "label3";
             label3.Size = new System.Drawing.Size(53, 13);
             label3.TabIndex = 3;
@@ -53,9 +63,9 @@ namespace CK2EditorGUI.EditorGUIs
             this.nameBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.nameBox.FormattingEnabled = true;
-            this.nameBox.Location = new System.Drawing.Point(47, 6);
+            this.nameBox.Location = new System.Drawing.Point(50, 13);
             this.nameBox.Name = "nameBox";
-            this.nameBox.Size = new System.Drawing.Size(163, 21);
+            this.nameBox.Size = new System.Drawing.Size(225, 21);
             this.nameBox.TabIndex = 1;
             // 
             // structureBox
@@ -64,22 +74,20 @@ namespace CK2EditorGUI.EditorGUIs
             | System.Windows.Forms.AnchorStyles.Right)));
             this.structureBox.Items.AddRange(new object[] {
             "raw"});
-            this.structureBox.Location = new System.Drawing.Point(62, 33);
+            this.structureBox.Location = new System.Drawing.Point(65, 40);
             this.structureBox.Name = "structureBox";
-            this.structureBox.Size = new System.Drawing.Size(148, 21);
+            this.structureBox.Size = new System.Drawing.Size(210, 21);
             this.structureBox.TabIndex = 2;
             // 
             // GenericEditorGUI
             // 
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.Controls.Add(label3);
-            this.Controls.Add(this.structureBox);
-            this.Controls.Add(this.nameBox);
-            this.Controls.Add(label2);
             this.Name = "GenericEditorGUI";
-            this.Size = new System.Drawing.Size(213, 61);
+            this.Size = new System.Drawing.Size(287, 84);
+            this.Text = "text";
+            this.wrapper.ResumeLayout(false);
+            this.wrapper.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
     }

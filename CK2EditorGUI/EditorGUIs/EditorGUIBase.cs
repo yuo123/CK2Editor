@@ -15,16 +15,40 @@ namespace CK2EditorGUI.EditorGUIs
     {
         protected GroupBox wrapper;
 
+        [EditorBrowsable(EditorBrowsableState.Always)]
+        [Browsable(true)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        [Bindable(true)]
         public override string Text
         {
             get
             {
-                return base.Text;
+                return wrapper.Text;
             }
             set
             {
                 base.Text = value;
                 wrapper.Text = value;
+            }
+        }
+
+        protected override Padding DefaultPadding
+        {
+            get
+            {
+                return new Padding(3);
+            }
+        }
+
+        public new Padding Padding
+        {
+            get
+            {
+                return wrapper.Padding;
+            }
+            set
+            {
+                wrapper.Padding = value;
             }
         }
 
@@ -34,6 +58,8 @@ namespace CK2EditorGUI.EditorGUIs
         {
             this.wrapper = new GroupBox();
             wrapper.Dock = DockStyle.Fill;
+            this.Padding = DefaultPadding;
+            
             base.Controls.Add(wrapper);
         }
 
