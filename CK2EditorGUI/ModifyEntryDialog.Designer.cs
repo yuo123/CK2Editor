@@ -28,32 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.rawEditorGUI1 = new CK2EditorGUI.EditorGUIs.RawEditorGUI();
-            this.genericEditor = new CK2EditorGUI.EditorGUIs.GenericEditorGUI();
             this.saveBtn = new System.Windows.Forms.Button();
             this.cancelBtn = new System.Windows.Forms.Button();
+            this.rawEditor = new CK2EditorGUI.EditorGUIs.RawEditorGUI();
+            this.genericEditor = new CK2EditorGUI.EditorGUIs.GenericEditorGUI();
             this.SuspendLayout();
-            // 
-            // rawEditorGUI1
-            // 
-            this.rawEditorGUI1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.rawEditorGUI1.Location = new System.Drawing.Point(0, 73);
-            this.rawEditorGUI1.Name = "rawEditorGUI1";
-            this.rawEditorGUI1.Size = new System.Drawing.Size(467, 71);
-            this.rawEditorGUI1.TabIndex = 3;
-            this.rawEditorGUI1.TabStop = false;
-            this.rawEditorGUI1.Text = "Raw Data";
-            // 
-            // genericEditor
-            // 
-            this.genericEditor.BackColor = System.Drawing.SystemColors.Control;
-            this.genericEditor.Dock = System.Windows.Forms.DockStyle.Top;
-            this.genericEditor.Location = new System.Drawing.Point(0, 0);
-            this.genericEditor.Name = "genericEditor";
-            this.genericEditor.Size = new System.Drawing.Size(467, 73);
-            this.genericEditor.TabIndex = 0;
-            this.genericEditor.TabStop = false;
-            this.genericEditor.Text = "General Data";
             // 
             // saveBtn
             // 
@@ -64,6 +43,7 @@
             this.saveBtn.TabIndex = 4;
             this.saveBtn.Text = "Save";
             this.saveBtn.UseVisualStyleBackColor = true;
+            this.saveBtn.Click += new System.EventHandler(this.saveBtn_Click);
             // 
             // cancelBtn
             // 
@@ -74,6 +54,30 @@
             this.cancelBtn.TabIndex = 5;
             this.cancelBtn.Text = "Cancel";
             this.cancelBtn.UseVisualStyleBackColor = true;
+            this.cancelBtn.Click += new System.EventHandler(this.cancelBtn_Click);
+            // 
+            // rawEditor
+            // 
+            this.rawEditor.Dock = System.Windows.Forms.DockStyle.Top;
+            this.rawEditor.EditedEntry = null;
+            this.rawEditor.Location = new System.Drawing.Point(0, 73);
+            this.rawEditor.Name = "rawEditor";
+            this.rawEditor.Size = new System.Drawing.Size(467, 71);
+            this.rawEditor.TabIndex = 3;
+            this.rawEditor.TabStop = false;
+            this.rawEditor.Text = "Raw Data";
+            // 
+            // genericEditor
+            // 
+            this.genericEditor.BackColor = System.Drawing.SystemColors.Control;
+            this.genericEditor.Dock = System.Windows.Forms.DockStyle.Top;
+            this.genericEditor.EditedEntry = null;
+            this.genericEditor.Location = new System.Drawing.Point(0, 0);
+            this.genericEditor.Name = "genericEditor";
+            this.genericEditor.Size = new System.Drawing.Size(467, 73);
+            this.genericEditor.TabIndex = 0;
+            this.genericEditor.TabStop = false;
+            this.genericEditor.Text = "General Data";
             // 
             // ModifyEntryDialog
             // 
@@ -84,7 +88,7 @@
             this.ClientSize = new System.Drawing.Size(467, 188);
             this.Controls.Add(this.cancelBtn);
             this.Controls.Add(this.saveBtn);
-            this.Controls.Add(this.rawEditorGUI1);
+            this.Controls.Add(this.rawEditor);
             this.Controls.Add(this.genericEditor);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
@@ -98,7 +102,7 @@
         #endregion
 
         private EditorGUIs.GenericEditorGUI genericEditor;
-        private EditorGUIs.RawEditorGUI rawEditorGUI1;
+        private EditorGUIs.RawEditorGUI rawEditor;
         private System.Windows.Forms.Button saveBtn;
         private System.Windows.Forms.Button cancelBtn;
 

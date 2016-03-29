@@ -8,10 +8,12 @@ using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Windows.Forms.Design;
 
+using CK2Editor;
+
 namespace CK2EditorGUI.EditorGUIs
 {
     [Designer(typeof(ParentControlDesigner), typeof(IDesigner))]
-    public class EditorGUIBase : UserControl
+    public class EditorGUIBase : UserControl //this should be abstract, but it creates problems with the designer of inheriting classes
     {
         protected GroupBox wrapper;
 
@@ -59,7 +61,7 @@ namespace CK2EditorGUI.EditorGUIs
             this.wrapper = new GroupBox();
             wrapper.Dock = DockStyle.Fill;
             this.Padding = DefaultPadding;
-            
+
             base.Controls.Add(wrapper);
         }
 

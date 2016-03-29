@@ -8,13 +8,15 @@ using System.ComponentModel.Design;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
 
+using CK2Editor;
+
 namespace CK2EditorGUI.EditorGUIs
 {
-    public class GenericEditorGUI : EditorGUIBase
+    public class GenericEditorGUI : EditorGUIBase, IEditorGUI
     {
         private ComboBox nameBox;
         private ComboBox structureBox;
-    
+
         public GenericEditorGUI()
         {
             InitializeComponent();
@@ -60,7 +62,7 @@ namespace CK2EditorGUI.EditorGUIs
             // 
             // nameBox
             // 
-            this.nameBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.nameBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.nameBox.FormattingEnabled = true;
             this.nameBox.Location = new System.Drawing.Point(50, 13);
@@ -70,7 +72,7 @@ namespace CK2EditorGUI.EditorGUIs
             // 
             // structureBox
             // 
-            this.structureBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.structureBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.structureBox.Items.AddRange(new object[] {
             "raw"});
@@ -89,6 +91,25 @@ namespace CK2EditorGUI.EditorGUIs
             this.wrapper.PerformLayout();
             this.ResumeLayout(false);
 
+        }
+
+        private Entry edited;
+
+        public Entry EditedEntry
+        {
+            get { return edited; }
+            set
+            {
+                edited = value;
+                if (value != null)
+                    nameBox.Text = value.InternalName;
+            }
+        }
+
+
+        public void Save()
+        {
+            EditedEntry.InternalName = nameBox.Text;
         }
     }
 }

@@ -69,6 +69,7 @@
     <Compile Include="EditorGUIs\GenericEditorGUI.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="EditorGUIs\IEditorGUI.cs" />
     <Compile Include="EditorGUIs\RawEditorGUI.cs">
       <SubType>UserControl</SubType>
     </Compile>
