@@ -32,6 +32,17 @@ namespace CK2Editor
 
         public SectionEntry Root { get; set; }
 
+
+        public Entry() { }
+        public Entry(Entry other)
+        {
+            this.FriendlyName = other.FriendlyName;
+            this.InternalName = other.InternalName;
+            this.Link = other.Link;
+            this.Parent = other.Parent;
+            this.Root = other.Root;
+        }
+
         public virtual bool Equals(Entry other)
         {
             return other.InternalName == this.InternalName && other.FriendlyName == this.FriendlyName && other.Link == this.Link;

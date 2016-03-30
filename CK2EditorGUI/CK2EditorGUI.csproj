@@ -62,6 +62,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EditedEntry.cs" />
     <Compile Include="EditorGUIs\EditorGUIBase.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -75,6 +76,9 @@
     </Compile>
     <Compile Include="EditorGUIs\RawEditorGUI.Designer.cs">
       <DependentUpon>RawEditorGUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EditorGUIs\ValueEditorGUIBase.cs">
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="FileReadingDialog.cs">
       <SubType>Form</SubType>

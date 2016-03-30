@@ -10,36 +10,28 @@ using CK2Editor;
 namespace CK2EditorGUI.EditorGUIs
 {
     [DesignerCategory("Forms")]
-    public partial class RawEditorGUI : EditorGUIBase, IEditorGUI
+    public partial class RawEditorGUI : ValueEditorGUIBase, IEditorGUI
     {
         public RawEditorGUI()
         {
             InitializeComponent();
         }
 
-        private ValueEntry edited;
-
-        public Entry EditedEntry
+        protected override void OnAssignEdited()
         {
-            get { return edited; }
-            set
+            if (this.Value != null)
             {
-                edited = value as ValueEntry;
-                this.Enabled = edited != null;
-                if (this.Enabled)
-                {
-                    valueBox.Text = edited.Value;
-                    typeBox.Text = edited.Type;
-                }
+                valueBox.Text = Value.Value;
+                typeBox.Text = Value.Type;
             }
-        }
+        }
 
         public void Save()
         {
-            if (edited != null)
+            if (Value != null)
             {
-                edited.Value = valueBox.Text;
-                edited.Type = typeBox.Text;
+                Value.Value = valueBox.Text;
+                Value.Type = typeBox.Text;
             }
         }
     }

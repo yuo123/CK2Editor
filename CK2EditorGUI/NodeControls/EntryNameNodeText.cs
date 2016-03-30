@@ -29,10 +29,8 @@ namespace CK2EditorGUI.NodeControls
         public override void MouseDoubleClick(TreeNodeAdvMouseEventArgs args)
         {
             base.MouseDoubleClick(args);
-            Entry ent = args.Node.Tag as Entry;
-            if (ent == null)
-                return;
-
+            EditedEntry ent = new EditedEntry(args.Node.Tag as Entry);
+            
             ModifyEntryDialog diag = new ModifyEntryDialog();
             diag.EditEntry(ent);
             diag.ShowDialog();

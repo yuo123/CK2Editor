@@ -93,23 +93,22 @@ namespace CK2EditorGUI.EditorGUIs
 
         }
 
-        private Entry edited;
+        private EditedEntry edited;
 
-        public Entry EditedEntry
+        public EditedEntry Edited
         {
             get { return edited; }
             set
             {
                 edited = value;
                 if (value != null)
-                    nameBox.Text = value.InternalName;
+                    nameBox.Text = value.Entry.InternalName;
             }
         }
 
-
         public void Save()
         {
-            EditedEntry.InternalName = nameBox.Text;
+            Edited.Entry.InternalName = nameBox.Text;
         }
     }
 }

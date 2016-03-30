@@ -1,6 +1,6 @@
 namespace CK2EditorGUI.EditorGUIs
 {
-    public partial class RawEditorGUI : EditorGUIBase
+    public partial class RawEditorGUI : ValueEditorGUIBase
     {
         private System.Windows.Forms.ComboBox typeBox;
         private System.Windows.Forms.TextBox valueBox;

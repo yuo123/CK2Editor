@@ -1,9 +1,11 @@
-﻿using System;
+﻿using CK2Editor;
+using System;
+
 namespace CK2EditorGUI.EditorGUIs
 {
     interface IEditorGUI
     {
-        CK2Editor.Entry EditedEntry { get; set; }
+        EditedEntry Edited { get; set; }
         void Save();
     }
 }

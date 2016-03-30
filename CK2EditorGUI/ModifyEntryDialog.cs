@@ -25,12 +25,12 @@ namespace CK2EditorGUI
             editors.Add(rawEditor);
         }
 
-        public void EditEntry(Entry ent)
+        public void EditEntry(EditedEntry ent)
         {
             this.edited = ent;
             foreach (IEditorGUI editor in editors)
             {
-                editor.EditedEntry = ent;
+                editor.Edited = ent;
             }
         }
 
