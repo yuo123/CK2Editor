@@ -15,7 +15,19 @@ namespace CK2EditorGUI
 {
     public partial class ModifyEntryDialog : Form
     {
-        protected Entry edited;
+        protected EditedEntry edited;
+        public Entry Edited
+        {
+            get { return edited.Entry; }
+            set
+            {
+                edited = new EditedEntry(value);
+                foreach (IEditorGUI editor in editors)
+                {
+                    editor.Edited = edited;
+                }
+            }
+        }
         List<IEditorGUI> editors = new List<IEditorGUI>();
 
         public ModifyEntryDialog()
@@ -23,15 +35,6 @@ namespace CK2EditorGUI
             InitializeComponent();
             editors.Add(genericEditor);
             editors.Add(rawEditor);
-        }
-
-        public void EditEntry(EditedEntry ent)
-        {
-            this.edited = ent;
-            foreach (IEditorGUI editor in editors)
-            {
-                editor.Edited = ent;
-            }
         }
 
         public void Save()

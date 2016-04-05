@@ -69,7 +69,7 @@ namespace CK2Editor
                         ent.Link = childNode.Attributes["link"] != null ? childNode.Attributes["link"].Value : null;
                         ent.Parent = re;
                         ent.Root = root;
-                        re.Values.Add(ent);
+                        re.Entries.Add(ent);
                     }
                     else
                     {//the node is a section
@@ -78,7 +78,7 @@ namespace CK2Editor
                         ent.FriendlyName = childNode.Attributes["name"].Value;
                         ent.Link = childNode.Attributes["link"] != null ? childNode.Attributes["link"].Value : null;
                         ent.Parent = re;
-                        re.Sections.Add(ent);
+                        re.Entries.Add(ent);
                     }
                 }
                 else //if no format node was found, try to supplement information
@@ -92,7 +92,7 @@ namespace CK2Editor
                         ent.Value = FormatUtil.ReadValue(file, ent.InternalName, ent.Type, pair.Key);
                         ent.Parent = re;
                         ent.Root = root;
-                        re.Values.Add(ent);
+                        re.Entries.Add(ent);
                     }
                     else
                     {//the node is a section
@@ -100,7 +100,7 @@ namespace CK2Editor
                         ent.InternalName = pair.Value;
                         ent = ReadSection(FormatUtil.ExtractDelimited(file, pair.Value, pair.Key), childNode, re.Root);
                         ent.Parent = re;
-                        re.Sections.Add(ent);
+                        re.Entries.Add(ent);
                     }
                 }
             }

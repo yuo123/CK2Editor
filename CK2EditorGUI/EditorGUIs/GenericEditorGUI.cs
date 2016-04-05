@@ -20,6 +20,18 @@ namespace CK2EditorGUI.EditorGUIs
         public GenericEditorGUI()
         {
             InitializeComponent();
+            structureBox.SelectedValueChanged += structureChanged;
+        }
+
+        void structureChanged(object sender, EventArgs e)
+        {
+            if ((string)structureBox.SelectedItem == "raw value")
+                edited.Entry = new ValueEntry();
+            else if ((string)structureBox.SelectedItem == "raw section")
+                edited.Entry = new SectionEntry();
+
+            if (this.EntryChanged != null)
+                this.EntryChanged(this, new EventArgs());
         }
 
         private void InitializeComponent()
@@ -62,7 +74,7 @@ namespace CK2EditorGUI.EditorGUIs
             // 
             // nameBox
             // 
-            this.nameBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.nameBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.nameBox.FormattingEnabled = true;
             this.nameBox.Location = new System.Drawing.Point(50, 13);
@@ -72,10 +84,11 @@ namespace CK2EditorGUI.EditorGUIs
             // 
             // structureBox
             // 
-            this.structureBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.structureBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.structureBox.Items.AddRange(new object[] {
-            "raw"});
+            "raw value",
+            "raw section"});
             this.structureBox.Location = new System.Drawing.Point(65, 40);
             this.structureBox.Name = "structureBox";
             this.structureBox.Size = new System.Drawing.Size(210, 21);
@@ -101,7 +114,7 @@ namespace CK2EditorGUI.EditorGUIs
             set
             {
                 edited = value;
-                if (value != null)
+                if (value.Entry != null)
                     nameBox.Text = value.Entry.InternalName;
             }
         }
@@ -110,5 +123,7 @@ namespace CK2EditorGUI.EditorGUIs
         {
             Edited.Entry.InternalName = nameBox.Text;
         }
+
+        public event EventHandler EntryChanged;
     }
 }

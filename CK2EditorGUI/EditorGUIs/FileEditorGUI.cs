@@ -46,9 +46,7 @@ namespace CK2EditorGUI.EditorGUIs
             if (this.RootSection == null)
                 return null;
             SectionEntry ed = treePath.IsEmpty() ? this.RootSection : ((SectionEntry)treePath.LastNode);
-            var ret = new List<Entry>(ed.Values.Count + ed.Sections.Count);
-            ret.AddRange(ed.Values);
-            ret.AddRange(ed.Sections);
+            var ret = ed.Entries;
             ret.Add(null);//a null entry, which will be the button for adding new entries
             return ret;
         }
@@ -151,6 +149,36 @@ namespace CK2EditorGUI.EditorGUIs
             }
 
             return null;
+        }
+
+        public void OnModifyEntry(Entry ent, TreeNodeAdv node)
+        {
+            ModifyEntryDialog diag = new ModifyEntryDialog();
+            diag.Edited = ent;
+            diag.ShowDialog();
+
+            TreePath path = node.Tree.GetPath(node);
+            SectionEntry parent = (SectionEntry)node.Parent.Tag;
+
+            if (diag.Edited != ent) //if the entry wasn't replaced with another instance, we don't need to do anything.
+            {
+                if (ent != null)
+                {
+                    parent.Entries.Remove(ent);
+                    this.NodesRemoved(this, new TreeModelEventArgs(path, new int[] { node.Index }, new object[] { ent }));
+                }
+                if (diag.Edited != null)
+                {
+                    parent.Entries.Add(diag.Edited);
+                    this.NodesInserted(this, new TreeModelEventArgs(path, new int[] { node.Index }, new object[] { diag.Edited }));
+                }
+
+                ent = diag.Edited;
+            }
+            else
+            {
+                this.NodesChanged(this, new TreeModelEventArgs(path, new int[] { node.Index }, new object[] { ent }));
+            }
         }
 
 #pragma warning disable 67

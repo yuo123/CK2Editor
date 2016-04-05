@@ -8,6 +8,7 @@ using Aga.Controls.Tree.NodeControls;
 using Aga.Controls.Tree;
 
 using CK2Editor;
+using CK2EditorGUI.EditorGUIs;
 
 namespace CK2EditorGUI.NodeControls
 {
@@ -29,11 +30,9 @@ namespace CK2EditorGUI.NodeControls
         public override void MouseDoubleClick(TreeNodeAdvMouseEventArgs args)
         {
             base.MouseDoubleClick(args);
-            EditedEntry ent = new EditedEntry(args.Node.Tag as Entry);
-            
-            ModifyEntryDialog diag = new ModifyEntryDialog();
-            diag.EditEntry(ent);
-            diag.ShowDialog();
+            Entry ent = args.Node.Tag as Entry;
+
+            ((FileEditorGUI)this.Parent.Model).OnModifyEntry(ent, args.Node);
         }
 
         public EntryNameNodeText()
