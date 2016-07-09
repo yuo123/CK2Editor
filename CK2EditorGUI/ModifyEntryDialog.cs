@@ -35,6 +35,13 @@ namespace CK2EditorGUI
             InitializeComponent();
             editors.Add(genericEditor);
             editors.Add(rawEditor);
+
+            genericEditor.StructureChanged += EditedStructureChanged;
+        }
+
+        private void EditedStructureChanged(object sender, EventArgs e)
+        {
+            rawEditor.OnAssignEdited();
         }
 
         public void Save()

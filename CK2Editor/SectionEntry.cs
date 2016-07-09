@@ -23,6 +23,11 @@ namespace CK2Editor
             Link = link;
         }
 
+        /// <summary>
+        /// Outputs the text representation of this section, as it would appear in a save file
+        /// </summary>
+        /// <param name="sb">The string builder to append to</param>
+        /// <param name="indent">the base indent of this section inside the parent section</param>
         public void Save(StringBuilder sb, int indent = 0)
         {
             foreach (Entry entry in Entries)
@@ -40,6 +45,9 @@ namespace CK2Editor
             }
         }
 
+        /// <summary>
+        /// Returns the text representation of this section, as it would appear in a save file
+        /// </summary>
         public string Save()
         {
             StringBuilder sb = new StringBuilder();

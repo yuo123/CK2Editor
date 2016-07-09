@@ -17,6 +17,29 @@ namespace CK2EditorGUI.EditorGUIs
         private ComboBox nameBox;
         private ComboBox structureBox;
 
+        public string SelectedStructure
+        {
+            get
+            {
+                return (string)structureBox.SelectedItem;
+            }
+        }
+
+        private EditedEntry edited;
+
+        public EditedEntry Edited
+        {
+            get { return edited; }
+            set
+            {
+                edited = value;
+                if (value.Entry != null)
+                {
+                    nameBox.Text = value.Entry.InternalName;
+                }
+            }
+        }
+
         public GenericEditorGUI()
         {
             InitializeComponent();
@@ -30,9 +53,15 @@ namespace CK2EditorGUI.EditorGUIs
             else if ((string)structureBox.SelectedItem == "raw section")
                 edited.Entry = new SectionEntry();
 
-            if (this.EntryChanged != null)
-                this.EntryChanged(this, new EventArgs());
+            this.StructureChanged?.Invoke(this, new EventArgs());
         }
+
+        public void Save()
+        {
+            Edited.Entry.InternalName = nameBox.Text;
+        }
+
+        public event EventHandler StructureChanged;
 
         private void InitializeComponent()
         {
@@ -86,6 +115,7 @@ namespace CK2EditorGUI.EditorGUIs
             // 
             this.structureBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.structureBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.structureBox.Items.AddRange(new object[] {
             "raw value",
             "raw section"});
@@ -105,25 +135,5 @@ namespace CK2EditorGUI.EditorGUIs
             this.ResumeLayout(false);
 
         }
-
-        private EditedEntry edited;
-
-        public EditedEntry Edited
-        {
-            get { return edited; }
-            set
-            {
-                edited = value;
-                if (value.Entry != null)
-                    nameBox.Text = value.Entry.InternalName;
-            }
-        }
-
-        public void Save()
-        {
-            Edited.Entry.InternalName = nameBox.Text;
-        }
-
-        public event EventHandler EntryChanged;
     }
 }

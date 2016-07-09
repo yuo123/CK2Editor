@@ -9,7 +9,7 @@ using CK2Editor;
 
 namespace CK2EditorGUI.EditorGUIs
 {
-    [DesignerCategory("Forms")]
+    [DesignerCategory("UserControl")]
     public partial class RawEditorGUI : ValueEditorGUIBase, IEditorGUI
     {
         public RawEditorGUI()
@@ -17,14 +17,15 @@ namespace CK2EditorGUI.EditorGUIs
             InitializeComponent();
         }
 
-        protected override void OnAssignEdited()
+        public override void OnAssignEdited()
         {
+            base.OnAssignEdited();
             if (this.Value != null)
             {
                 valueBox.Text = Value.Value;
                 typeBox.Text = Value.Type;
             }
-        }
+        }
 
         public void Save()
         {

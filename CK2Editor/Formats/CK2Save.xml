@@ -38,12 +38,12 @@
     <NUMBER name="NUMBER" multiple="number">
       <name name="Name" type="string" />
       <culture name="Culture" type="string" />
-      <religion name="Religion" type="string" link="!/religion/THISVALUE:[VNAME]" />
+      <religion name="Religion" type="string" link="!/religion/THISVALUE" />
       <coat_of_arms name="Coat Of Arms">
         <data name="Data">
           <ENTRY name="Entry" multiple="blank" type="number" />
         </data>
-        <religion name="Religion" type="string" link="!/religion/THISVALUE:[VNAME]" />
+        <religion name="Religion" type="string" link="!/religion/THISVALUE" />
       </coat_of_arms>
     </NUMBER>
   </dynasties>
@@ -57,7 +57,7 @@
       <traits name="Traits">
         <ENTRY name="Entry" multiple="blank" type="number" />
       </traits>
-      <religion name="Religion" type="string" link="!/religion/THISVALUE:[VNAME]" />
+      <religion name="Religion" type="string" link="!/religion/THISVALUE" />
       <culture name="Culture" type="string" />
       <dna name="Dna" type="string" />
       <properties name="Properties" type="string" />
@@ -167,7 +167,7 @@
   </delayed_event>
   <relation name="Realtions">
     <RELATION name="Relation">
-      <OPINION_WITH name="Opinion With [!!/character/[THISNAME]:[VNAME]!]" multiple="number">
+      <OPINION_WITH name="Opinion With [!!/character/[THISVALUE]:[VNAME]!]" multiple="number">
         <OPINION name="Opinion Modifier">
           <modifier name="Modifier" type="string" />
           <date name="Expiration Date" type="string" />
@@ -273,7 +273,7 @@
     <PROVINCE name="NUMBER" multiple="number">
       <name name="Name" type="string" />
       <culture name="Culture" type="misc" />
-      <religion name="Religion" type="misc" link="!/religion/THISVALUE:[VNAME]" />
+      <religion name="Religion" type="misc" link="!/religion/THISVALUE" />
       <max_settlements name="Maximum Holdings" type="number" />
       <b_reykjavik name="B Reykjavik">
         <type name="Type" type="misc" />
@@ -335,7 +335,7 @@
         <data name="Data">
           <ENTRY name="Entry" multiple="blank" type="number" />
         </data>
-        <religion name="Religion" type="string" link="!/religion/THISVALUE:[VNAME]" />
+        <religion name="Religion" type="string" link="!/religion/THISVALUE" />
       </coat_of_arms>
       <de_jure_law_changer name="De Jure Law Changer" type="number" link="!/character/[THISVALUE]" />
       <de_jure_law_changes name="De Jure Law Changes" type="number" />

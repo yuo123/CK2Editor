@@ -18,7 +18,7 @@ using CK2EditorGUI.Utility;
 
 namespace CK2EditorGUI.EditorGUIs
 {
-    [System.ComponentModel.DesignerCategory("")]
+    [DesignerCategory("")]
     public class FileEditorGUI : EditorGUIBase, ITreeModel, IToolTipProvider
     {
         private SectionEntry m_fileSectionEntry;
@@ -41,12 +41,12 @@ namespace CK2EditorGUI.EditorGUIs
             InitializeComponent();
         }
 
-        public System.Collections.IEnumerable GetChildren(TreePath treePath)
+        public IEnumerable GetChildren(TreePath treePath)
         {
             if (this.RootSection == null)
                 return null;
             SectionEntry ed = treePath.IsEmpty() ? this.RootSection : ((SectionEntry)treePath.LastNode);
-            var ret = ed.Entries;
+            List<Entry> ret = new List<Entry>(ed.Entries);
             ret.Add(null);//a null entry, which will be the button for adding new entries
             return ret;
         }
@@ -160,24 +160,25 @@ namespace CK2EditorGUI.EditorGUIs
             TreePath path = node.Tree.GetPath(node);
             SectionEntry parent = (SectionEntry)node.Parent.Tag;
 
-            if (diag.Edited != ent) //if the entry wasn't replaced with another instance, we don't need to do anything.
+            if (diag.Edited != ent) //was the entry replaced with a different instance, or just changed?
             {
+                int nodeIndex = node.Index;
                 if (ent != null)
-                {
+                {//if the entry is different, we need to remove the old one
                     parent.Entries.Remove(ent);
-                    this.NodesRemoved(this, new TreeModelEventArgs(path, new int[] { node.Index }, new object[] { ent }));
+                    this.NodesRemoved(this, new TreeModelEventArgs(path.Up(), new int[] { node.Index }, new object[] { ent }));
                 }
                 if (diag.Edited != null)
-                {
-                    parent.Entries.Add(diag.Edited);
-                    this.NodesInserted(this, new TreeModelEventArgs(path, new int[] { node.Index }, new object[] { diag.Edited }));
+                {//if the new entry exists (this was not just a deletion), we need to add it to the tree
+                    parent.Entries.Insert(nodeIndex, diag.Edited);
+                    this.NodesInserted(this, new TreeModelEventArgs(path.Up(), new int[] { nodeIndex }, new object[] { diag.Edited }));
                 }
 
                 ent = diag.Edited;
             }
             else
-            {
-                this.NodesChanged(this, new TreeModelEventArgs(path, new int[] { node.Index }, new object[] { ent }));
+            {//if the entry was changed in place, all we need to do is notify the TreeView
+                this.NodesChanged(this, new TreeModelEventArgs(path.Up(), new int[] { node.Index }, new object[] { ent }));
             }
         }
 

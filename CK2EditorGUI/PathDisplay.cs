@@ -91,8 +91,7 @@ namespace CK2EditorGUI
 
         protected virtual void OnPathClicked(PathClickEventArgs args)
         {
-            if (this.PathClicked != null)
-                this.PathClicked(this, args);
+            this.PathClicked?.Invoke(this, args);
         }
 
         protected virtual string GetPathForLabel(Control lab)

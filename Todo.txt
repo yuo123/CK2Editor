@@ -3,3 +3,5 @@ Implement Adding new Entries
 Improve file loading UX
 Add support for nested refrences
 Group entries with the "multiple" attribute together
+Fix saving
+Add support for non-basic structures

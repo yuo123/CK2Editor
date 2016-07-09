@@ -17,12 +17,12 @@ namespace Tests
             SectionEntry player = new SectionEntry("player", "Player", null);
             player.Root = root;
             player.Parent = root;
-            player.Values.Add(new ValueEntry("id", "Id", "number", "665369", null, player, root));
-            player.Values.Add(new ValueEntry("type", "Type", "number", "66", null, player, root));
-            Assert.IsTrue(player.Equals(root.Sections[0]));
+            player.Entries.Add(new ValueEntry("id", "Id", "number", "665369", null, player, root));
+            player.Entries.Add(new ValueEntry("type", "Type", "number", "66", null, player, root));
+            Assert.IsTrue(player.Equals(root.Entries[0]));
             Assert.AreEqual(14, root.Entries.Count);
 
-            Entry start = root.Sections[0].Values[0];
+            Entry start = root.Entries[0];
             string refpath = "..";
             Assert.AreEqual(start.Parent, FormattedReader.ParseRef(start, refpath));
         }

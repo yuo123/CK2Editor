@@ -19,11 +19,13 @@ namespace CK2EditorGUI.EditorGUIs
             set
             {
                 edited = value;
-                this.Enabled = value.Entry is ValueEntry;
                 OnAssignEdited();
             }
         }
 
-        protected virtual void OnAssignEdited() { }
+        public virtual void OnAssignEdited()
+        {
+            this.Enabled = edited.Entry is ValueEntry;
+        }
     }
 }
