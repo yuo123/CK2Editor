@@ -1,7 +1,6 @@
 Implement full search
-Implement Adding new Entries
 Improve file loading UX
-Add support for nested refrences
+Add support for nested references
 Group entries with the "multiple" attribute together
 Fix saving
 Add support for non-basic structures
