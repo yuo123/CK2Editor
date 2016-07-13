@@ -127,7 +127,7 @@ namespace FormatStubGenerator
                             break;
                         default:
                             name = childPair.Value;
-                            grouperName.Value = Util.UppercaseWords(childPair.Value + "s");
+                            grouperName.Value = Util.UppercaseWords("(" + childPair.Value + "s)");
                             break;
                     }
                 }
