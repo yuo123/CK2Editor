@@ -191,3 +191,6 @@ ModelManifest.xml
 
 #CK2 saves, for testing
 *.ck2
+
+#vim swap files
+*.swp
