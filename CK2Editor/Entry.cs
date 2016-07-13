@@ -22,13 +22,24 @@ namespace CK2Editor
         /// </summary>
         public string Link { get; set; }
         /// <summary>
-        /// The editor that edits this entry. Can be null if not part of an editors' tree
-        /// </summary>
-        //public SectionEntry SectionEntry { get; set; }
-        /// <summary>
         /// The parent SectionEntry of this entry
         /// </summary>
         public SectionEntry Parent { get; set; }
+        /// <summary>
+        /// The first parent of this entry that is present in the file (i.e. not a grouper)
+        /// </summary>
+        public SectionEntry RealParent
+        {
+            get
+            {
+                SectionEntry cur = Parent;
+                while (cur.IsGrouper)
+                {
+                    cur = cur.Parent;
+                }
+                return cur;
+            }
+        }
 
         public SectionEntry Root { get; set; }
 

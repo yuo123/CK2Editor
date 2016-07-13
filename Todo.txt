@@ -1,7 +1,6 @@
 Implement full search
-Implement Adding new Entries
 Improve file loading UX
-Add support for nested refrences
-Group entries with the "multiple" attribute together
+Add support for nested references
 Fix saving
 Add support for non-basic structures
+Add support for recursive structures (like the "from" structure inside opinion modifiers)

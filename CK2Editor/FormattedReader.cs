@@ -51,14 +51,16 @@ namespace CK2Editor
             root = root != null ? root : re;//if no root was provided, the current editor is the root
             re.Root = root;
 
-            //if (new System.Diagnostics.StackTrace().FrameCount == 14)
-            //System.Diagnostics.Debugger.Break();
-
+            Dictionary<string, EntryGrouper> multiples = null;
             foreach (var pair in FormatUtil.ListEntriesWithIndexes(file))
             {
+                SectionEntry parent = re;
+
                 XmlNode childNode = FindNode(formatNode, pair.Value);//look for a format node that can describe this entry
                 if (childNode != null)
                 {
+                    parent = HandleMultiples(childNode, ref multiples, re);
+
                     if (!childNode.HasChildNodes)
                     {//the node is a value
                         ValueEntry ent = new ValueEntry();
@@ -67,9 +69,9 @@ namespace CK2Editor
                         ent.Type = childNode.Attributes["type"] != null ? childNode.Attributes["type"].Value : "misc";
                         ent.Value = FormatUtil.ReadValue(file, ent.InternalName, ent.Type, pair.Key);
                         ent.Link = childNode.Attributes["link"] != null ? childNode.Attributes["link"].Value : null;
-                        ent.Parent = re;
+                        ent.Parent = parent;
                         ent.Root = root;
-                        re.Entries.Add(ent);
+                        parent.Entries.Add(ent);
                     }
                     else
                     {//the node is a section
@@ -77,8 +79,8 @@ namespace CK2Editor
                         ent.InternalName = pair.Value;
                         ent.FriendlyName = childNode.Attributes["name"].Value;
                         ent.Link = childNode.Attributes["link"] != null ? childNode.Attributes["link"].Value : null;
-                        ent.Parent = re;
-                        re.Entries.Add(ent);
+                        ent.Parent = parent;
+                        parent.Entries.Add(ent);
                     }
                 }
                 else //if no format node was found, try to supplement information
@@ -92,19 +94,49 @@ namespace CK2Editor
                         ent.Value = FormatUtil.ReadValue(file, ent.InternalName, ent.Type, pair.Key);
                         ent.Parent = re;
                         ent.Root = root;
-                        re.Entries.Add(ent);
+                        parent.Entries.Add(ent);
                     }
                     else
                     {//the node is a section
                         SectionEntry ent = new SectionEntry();
                         ent.InternalName = pair.Value;
                         ent = ReadSection(FormatUtil.ExtractDelimited(file, pair.Value, pair.Key), childNode, re.Root);
-                        ent.Parent = re;
-                        re.Entries.Add(ent);
+                        ent.Parent = parent;
+                        parent.Entries.Add(ent);
                     }
                 }
             }
             return re;
+        }
+
+        /// <summary>
+        /// Checks if the node has the "multiple" attribute, and if so, initializes a dictionary entry for its grouper if one does not yet exist
+        /// </summary>
+        /// <param name="node">The xml node that describes the current entry</param>
+        /// <param name="multiples">The dictionary holding the multiples groupers for the current section</param>
+        /// <param name="parent">The parent of the current entry</param>
+        /// <returns><paramref name="parent"/> if the "multiple" attribute was not found, and the grouper otherwise</returns>
+        private SectionEntry HandleMultiples(XmlNode node, ref Dictionary<string, EntryGrouper> multiples, SectionEntry parent)
+        {
+            XmlAttribute multAtt = node.Attributes["multiple"];
+            if (multAtt == null)
+                return parent;
+            else
+            {
+                EntryGrouper grouper = null;
+
+                if (multiples == null)
+                    multiples = new Dictionary<string, EntryGrouper>();
+                if (!multiples.TryGetValue(multAtt.Value, out grouper))
+                {
+                    grouper = new EntryGrouper();
+                    grouper.InternalName = node.LocalName;
+                    grouper.FriendlyName = node.Attributes["grouper-name"].Value;
+                    multiples[multAtt.Value] = grouper;
+                    parent.Entries.Add(grouper);
+                }
+                return grouper;
+            }
         }
 
         public static string DetectType(string file, KeyValuePair<int, string> pair)

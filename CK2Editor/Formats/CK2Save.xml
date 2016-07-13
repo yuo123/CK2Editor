@@ -7,7 +7,7 @@
     <type name="Type" type="number" />
   </player>
   <player_realm name="Player Realm" type="string" />
-  <dyn_title name="Dyn Title" multiple="same">
+  <dyn_title name="Dyn Title" multiple="same" grouper-name="(Dynamic Titles)">
     <title name="Title" type="string" />
     <base_title name="Base Title" type="string" />
     <is_custom name="Is Custom" type="misc" />
@@ -35,27 +35,27 @@
     <sabuktigin_spawned_by_event name="Sabuktigin Spawned By Event" type="date" />
   </flags>
   <dynasties name="Dynasties">
-    <NUMBER name="NUMBER" multiple="number">
+    <DYNASTY name="[!/name:[VALUE]!]" multiple="number" grouper-name="(Dynsaties)">
       <name name="Name" type="string" />
       <culture name="Culture" type="string" />
       <religion name="Religion" type="string" link="!/religion/THISVALUE" />
       <coat_of_arms name="Coat Of Arms">
         <data name="Data">
-          <ENTRY name="Entry" multiple="blank" type="number" />
+          <ENTRY name="Entry" multiple="blank" type="number" grouper-name="(Data)" />
         </data>
         <religion name="Religion" type="string" link="!/religion/THISVALUE" />
       </coat_of_arms>
-    </NUMBER>
+    </DYNASTY>
   </dynasties>
   <character name="Character">
-    <CHARACTER name="NUMBER" multiple="number">
+    <CHARACTER name="[!/birth_name:[VALUE]!]" multiple="number" grouper-name="(Characters)">
       <birth_name name="Birth Name" type="string" />
       <birth_date name="Birth Date" type="string" />
       <attributes name="Attributes">
-        <ENTRY name="Entry" multiple="blank" type="number" />
+        <ENTRY name="Entry" multiple="blank" type="number" grouper-name="(Data)" />
       </attributes>
       <traits name="Traits">
-        <ENTRY name="Entry" multiple="blank" type="number" />
+        <ENTRY name="Entry" multiple="blank" type="number" grouper-name="(Data)" />
       </traits>
       <religion name="Religion" type="string" link="!/religion/THISVALUE" />
       <culture name="Culture" type="string" />
@@ -72,16 +72,16 @@
         <capital name="Capital" type="string" />
         <liege_troops name="Liege Troops">
           <light_infantry_f name="Light Infantry F">
-            <ENTRY name="Entry" multiple="blank" type="number" />
+            <ENTRY name="Entry" multiple="blank" type="number" grouper-name="(Data)" />
           </light_infantry_f>
           <heavy_infantry_f name="Heavy Infantry F">
-            <ENTRY name="Entry" multiple="blank" type="number" />
+            <ENTRY name="Entry" multiple="blank" type="number" grouper-name="(Data)" />
           </heavy_infantry_f>
           <archers_f name="Archers F">
-            <ENTRY name="Entry" multiple="blank" type="number" />
+            <ENTRY name="Entry" multiple="blank" type="number" grouper-name="(Data)" />
           </archers_f>
           <galleys_f name="Galleys F">
-            <ENTRY name="Entry" multiple="blank" type="number" />
+            <ENTRY name="Entry" multiple="blank" type="number" grouper-name="(Data)" />
           </galleys_f>
         </liege_troops>
         <my_liegelevy_contribution name="My Liegelevy Contribution" type="number" />
@@ -89,7 +89,7 @@
         <economy_techpoints name="Economy Techpoints" type="number" />
         <culture_techpoints name="Culture Techpoints" type="number" />
         <liegelevy_reinforcements name="Liegelevy Reinforcements">
-          <ENTRY name="Entry" multiple="blank" type="misc" />
+          <ENTRY name="Entry" multiple="blank" type="misc" grouper-name="(Data)" />
         </liegelevy_reinforcements>
       </demesne>
       <title name="Title" type="string" />
@@ -104,16 +104,16 @@
       <averaged_income name="Averaged Income" type="number" />
       <ledger name="Ledger">
         <income name="Income">
-          <ENTRY name="Entry" multiple="blank" type="number" />
+          <ENTRY name="Entry" multiple="blank" type="number" grouper-name="(Data)" />
         </income>
         <lastmonthincometable name="Last Month Income Table">
-          <ENTRY name="Entry" multiple="blank" type="misc" />
+          <ENTRY name="Entry" multiple="blank" type="number" grouper-name="(Data)" />
         </lastmonthincometable>
         <expense name="Expense">
-          <ENTRY name="Entry" multiple="blank" type="misc" />
+          <ENTRY name="Entry" multiple="blank" type="number" grouper-name="(Data)" />
         </expense>
         <lastmonthexpensetable name="Last Month Expense Table">
-          <ENTRY name="Entry" multiple="blank" type="misc" />
+          <ENTRY name="Entry" multiple="blank" type="number" grouper-name="(Data)" />
         </lastmonthexpensetable>
         <lastmonthincome name="Last Month Income" type="number" />
         <lastmonthexpense name="Last Month Expense" type="number" />
@@ -131,7 +131,7 @@
       <ambition_date name="Ambition Date" type="string" />
     </CHARACTER>
   </character>
-  <delayed_event name="Delayed Event" multiple="same">
+  <delayed_event name="Delayed Event" multiple="same" grouper-name="(Delayed Events)" >
     <event name="Event" type="string" />
     <days name="Days" type="number" />
     <scope name="Scope">
@@ -167,7 +167,7 @@
   </delayed_event>
   <relation name="Realtions">
     <RELATION name="Relation">
-      <OPINION_WITH name="Opinion With [!!/character/[THISVALUE]:[VNAME]!]" multiple="number">
+      <OPINION_WITH name="Opinion With [!!/character/[THISVALUE]:[VNAME]!]" multiple="number" grouper-name="(Opinions)">
         <OPINION name="Opinion Modifier">
           <modifier name="Modifier" type="string" />
           <date name="Expiration Date" type="string" />
@@ -175,7 +175,7 @@
       </OPINION_WITH>
     </RELATION>
   </relation>
-  <active_ambition name="Active Ambition" multiple="same">
+  <active_ambition name="Active Ambition" multiple="same" grouper-name="(Active Ambitions)">
     <type name="Type" type="string" />
     <scope name="Scope">
       <char name="Char" type="number" />
@@ -193,7 +193,7 @@
       <random name="Random" type="number" />
     </parent_scope>
   </active_ambition>
-  <active_focus name="Active Focus" multiple="same">
+  <active_focus name="Active Focus" multiple="same" grouper-name="(Active Foci)">
     <type name="Type" type="string" />
     <scope name="Scope">
       <char name="Char" type="number" />
@@ -211,7 +211,7 @@
       <random name="Random" type="number" />
     </parent_scope>
   </active_focus>
-  <active_plot name="Active Plot" multiple="same">
+  <active_plot name="Active Plot" multiple="same" grouper-name="(Active Plots)">
     <type name="Type" type="string" />
     <scope name="Scope">
       <char name="Char" type="number" />
@@ -230,7 +230,7 @@
     </parent_scope>
     <auto_invite name="Auto Invite" type="misc" />
   </active_plot>
-  <active_faction name="Active Faction" multiple="same">
+  <active_faction name="Active Faction" multiple="same" grouper-name="(Active Factions)" >
     <type name="Type" type="string" />
     <scope name="Scope">
       <new_char name="Proposed Character" type="number" />
@@ -256,21 +256,21 @@
     <type name="Type" type="number" />
   </id>
   <religion name="Religion">
-    <RELIGION name="Catholic" multiple="different">
+    <RELIGION name="Catholic" multiple="different" grouper-name="(Religions)">
       <last_crusade name="Last Crusade/Jihad/Great Holy War" type="string" />
       <parent name="Parent" type="string" />
       <original_parent name="Original Parent" type="string" />
       <was_heresy name="Was Heresy" type="misc" />
       <reformed name="Reformed Religion" type="string" />
       <original_reformed name="Original Reformed Religion" type="string" />
-      <authority name="Authority Modifier" multiple="same">
+      <authority name="Authority Modifier" multiple="same" grouper-name="(Authority Modifiers)">
         <modifier name="Modifier" type="string" />
         <date name="Expiration Date" type="string" />
       </authority>
     </RELIGION>
   </religion>
   <provinces name="Provinces">
-    <PROVINCE name="NUMBER" multiple="number">
+    <PROVINCE name="NUMBER" multiple="number" grouper-name="(Provinces)">
       <name name="Name" type="string" />
       <culture name="Culture" type="misc" />
       <religion name="Religion" type="misc" link="!/religion/THISVALUE" />
@@ -292,28 +292,28 @@
         <ca_stable_2 name="Ca Stable 2" type="misc" />
         <levy name="Levy">
           <light_infantry_f name="Light Infantry F">
-            <ENTRY name="Entry" multiple="blank" type="number" />
+            <ENTRY name="Entry" multiple="blank" type="number" grouper-name="(Data)" />
           </light_infantry_f>
           <heavy_infantry_f name="Heavy Infantry F">
-            <ENTRY name="Entry" multiple="blank" type="number" />
+            <ENTRY name="Entry" multiple="blank" type="number" grouper-name="(Data)" />
           </heavy_infantry_f>
           <pikemen_f name="Pikemen F">
-            <ENTRY name="Entry" multiple="blank" type="number" />
+            <ENTRY name="Entry" multiple="blank" type="number" grouper-name="(Data)" />
           </pikemen_f>
           <light_cavalry_f name="Light Cavalry F">
-            <ENTRY name="Entry" multiple="blank" type="number" />
+            <ENTRY name="Entry" multiple="blank" type="number" grouper-name="(Data)" />
           </light_cavalry_f>
           <archers_f name="Archers F">
-            <ENTRY name="Entry" multiple="blank" type="number" />
+            <ENTRY name="Entry" multiple="blank" type="number" grouper-name="(Data)" />
           </archers_f>
           <galleys_f name="Galleys F">
-            <ENTRY name="Entry" multiple="blank" type="misc" />
+            <ENTRY name="Entry" multiple="blank" type="number" grouper-name="(Data)" />
           </galleys_f>
         </levy>
       </b_reykjavik>
       <technology name="Technology">
         <tech_levels name="Tech Levels">
-          <ENTRY name="Entry" multiple="blank" type="misc" />
+          <ENTRY name="Entry" multiple="blank" type="number" grouper-name="(data)" />
         </tech_levels>
       </technology>
       <lootable_gold name="Lootable Gold" type="number" />
@@ -330,10 +330,10 @@
       <holder name="Current Holder" type="number" link="!/character/[THISVALUE]" />
       <succession name="Succession Law" type="misc" />
       <gender name="Gender Law" type="misc" />
-      <law name="Law" type="string" multiple="same" />
+      <law name="Law" type="string" multiple="same" grouper-name="(Laws)" />
       <coat_of_arms name="Coat Of Arms">
         <data name="Data">
-          <ENTRY name="Entry" multiple="blank" type="number" />
+          <ENTRY name="Entry" multiple="blank" type="number" grouper-name="(Data)" />
         </data>
         <religion name="Religion" type="string" link="!/religion/THISVALUE" />
       </coat_of_arms>
@@ -341,14 +341,14 @@
       <de_jure_law_changes name="De Jure Law Changes" type="number" />
       <last_change name="Last De Jure Law Change" type="string" />
       <previous name="Previous Holders">
-        <HOLDER name="Holder" multiple="blank" type="number" link="!/character/[THISVALUE]" />
+        <HOLDER name="Holder" multiple="blank" type="number" link="!/character/[THISVALUE]" grouper-name="(Holders)" />
       </previous>
       <set_the_kings_peace name="Set The Kings Peace" type="misc" />
       <set_protected_inheritance name="Set Protected Inheritance" type="misc" />
       <set_allow_title_revokation name="Allow Title Revokation" type="misc" />
       <set_allow_free_infidel_revokation name="Allow Free Title Revokation From Infidel" type="misc" />
       <history name="History">
-        <DATE name="[!THISNAME!]" multiple="date">
+        <DATE name="[!THISNAME!]" multiple="date" grouper-name="(Holders)">
           <holder name="Holder" type="number" link="!/character/[THISVALUE]" />
         </DATE>
       </history>
@@ -356,8 +356,8 @@
   </title>
   <diplomacy name="Diplomacy" />
   <combat name="Combat">
-    <siege_combat name="Siege" multiple="same">
-      <attackers name="Attacker" type="number" multiple="same" link="!/character/[THISVALUE]" />
+    <siege_combat name="Siege" multiple="same"  grouper-name="(Sieges)">
+      <attackers name="Attacker" type="number" multiple="same" link="!/character/[THISVALUE]" grouper-name="(Attackers)" />
       <location name="Location" type="number" link="!/provinces/[THISVALUE]" />
       <day name="Day" type="number" />
       <attacker name="Attacker">
@@ -370,27 +370,27 @@
           <last_leader name="Last Leader" type="number" link="!/character/[THISVALUE]" />
           <losses name="Losses">
             <light_infantry_f name="Light Infantry">
-              <ENTRY name="Entry" multiple="blank" type="misc" />
+              <ENTRY name="Entry" multiple="blank" type="number" grouper-name="(Data)" />
             </light_infantry_f>
             <heavy_infantry_f name="Heavy Infantry">
-              <ENTRY name="Entry" multiple="blank" type="misc" />
+              <ENTRY name="Entry" multiple="blank" type="number" grouper-name="(Data)" />
             </heavy_infantry_f>
             <pikemen_f name="Pikemen F">
-              <ENTRY name="Entry" multiple="blank" type="misc" />
+              <ENTRY name="Entry" multiple="blank" type="number" grouper-name="(Data)" />
             </pikemen_f>
             <light_cavalry_f name="Light Cavalry">
-              <ENTRY name="Entry" multiple="blank" type="misc" />
+              <ENTRY name="Entry" multiple="blank" type="number" grouper-name="(Data)" />
             </light_cavalry_f>
             <archers_f name="Archers">
-              <ENTRY name="Entry" multiple="blank" type="misc" />
+              <ENTRY name="Entry" multiple="blank" type="number" grouper-name="(Data)" />
             </archers_f>
             <horse_archers name="Horse Archers">
-              <ENTRY name="Entry" multiple="blank" type="misc" />
+              <ENTRY name="Entry" multiple="blank" type="number" grouper-name="(Data)" />
             </horse_archers>
           </losses>
           <target name="Target Flank" type="number" />
           <sub_unit name="Sub Units">
-            <ENTRY name="Entry" multiple="blank" type="number" />
+            <ENTRY name="Entry" multiple="blank" type="number" grouper-name="(Data)" />
           </sub_unit>
           <tactic name="Tactic" type="number" />
           <tactic_day name="Tactic Day" type="number" />
@@ -403,19 +403,19 @@
           <last_leader name="Last Leader" type="number" link="!/character/[THISVALUE]" />
           <losses name="Losses">
             <light_infantry_f name="Light Infantry">
-              <ENTRY name="Entry" multiple="blank" type="misc" />
+              <ENTRY name="Entry" multiple="blank" type="number" grouper-name="(Data)" />
             </light_infantry_f>
             <heavy_infantry_f name="Heavy Infantry">
-              <ENTRY name="Entry" multiple="blank" type="misc" />
+              <ENTRY name="Entry" multiple="blank" type="number" grouper-name="(Data)" />
             </heavy_infantry_f>
             <pikemen_f name="Pikemen">
-              <ENTRY name="Entry" multiple="blank" type="misc" />
+              <ENTRY name="Entry" multiple="blank" type="number" grouper-name="(Data)" />
             </pikemen_f>
             <light_cavalry_f name="Light Cavalry">
-              <ENTRY name="Entry" multiple="blank" type="misc" />
+              <ENTRY name="Entry" multiple="blank" type="number" grouper-name="(Data)" />
             </light_cavalry_f>
             <archers_f name="Archers">
-              <ENTRY name="Entry" multiple="blank" type="misc" />
+              <ENTRY name="Entry" multiple="blank" type="number" grouper-name="(Data)" />
             </archers_f>
           </losses>
           <target name="Target" type="number" />
@@ -427,13 +427,13 @@
       <event name="Event" type="number" />
       <adjacencies name="Adjacencies" type="number" />
     </siege_combat>
-    <land_combat name="Land Combat" multiple="same">
-      <attackers name="Attacker" type="number" multiple="same" link="!/character/[THISVALUE]" />
-      <defenders name="Defender" type="number" multiple="same" link="!/character/[THISVALUE]" />
+    <land_combat name="Land Combat" multiple="same"  grouper-name="(Land Battles)">
+      <attackers name="Attacker" type="number" multiple="same" link="!/character/[THISVALUE]" grouper-name="(Attackers)" />
+      <defenders name="Defender" type="number" multiple="same" link="!/character/[THISVALUE]" grouper-name="(Defenders)" />
       <location name="Location" type="number" link="!/provinces/[THISVALUE]" />
       <day name="Day" type="number" />
       <attacker name="Attacker">
-        <unit name="Unit" multiple="same">
+        <unit name="Unit" multiple="same" grouper-name="(Units)">
           <id name="Id" type="number" />
           <type name="Type" type="number" />
         </unit>
@@ -444,18 +444,18 @@
           <last_leader name="Last Leader" type="number" />
           <losses name="Losses">
             <light_infantry_f name="Light Infantry">
-              <ENTRY name="Entry" multiple="blank" type="number" />
+              <ENTRY name="Entry" multiple="blank" type="number" grouper-name="(Data)" />
             </light_infantry_f>
             <heavy_infantry_f name="Heavy Infantry">
-              <ENTRY name="Entry" multiple="blank" type="number" />
+              <ENTRY name="Entry" multiple="blank" type="number" grouper-name="(Data)" />
             </heavy_infantry_f>
             <archers_f name="Archers">
-              <ENTRY name="Entry" multiple="blank" type="number" />
+              <ENTRY name="Entry" multiple="blank" type="number" grouper-name="(Data)" />
             </archers_f>
           </losses>
           <target name="Target" type="number" />
           <sub_unit name="Sub Units">
-            <ENTRY name="Entry" multiple="blank" type="number" />
+            <ENTRY name="Entry" multiple="blank" type="number" grouper-name="(Data)" />
           </sub_unit>
           <tactic name="Tactic" type="number" />
           <tactic_day name="Tactic Day" type="number" />
@@ -464,7 +464,7 @@
         </flank_center>
       </attacker>
       <defender name="Defender">
-        <unit name="Unit" multiple="same">
+        <unit name="Unit" multiple="same" grouper-name="(Units)">
           <id name="Id" type="number" />
           <type name="Type" type="number" />
         </unit>
@@ -473,24 +473,24 @@
           <last_leader name="Last Leader" type="number" link="!/character/[THISVALUE]" />
           <losses name="Losses">
             <light_infantry_f name="Light Infantry">
-              <ENTRY name="Entry" multiple="blank" type="misc" />
+              <ENTRY name="Entry" multiple="blank" type="number" grouper-name="(Data)" />
             </light_infantry_f>
             <heavy_infantry_f name="Heavy Infantry">
-              <ENTRY name="Entry" multiple="blank" type="misc" />
+              <ENTRY name="Entry" multiple="blank" type="number" grouper-name="(Data)" />
             </heavy_infantry_f>
             <pikemen_f name="Pikemen">
-              <ENTRY name="Entry" multiple="blank" type="misc" />
+              <ENTRY name="Entry" multiple="blank" type="number" grouper-name="(Data)" />
             </pikemen_f>
             <light_cavalry_f name="Light Cavalry">
-              <ENTRY name="Entry" multiple="blank" type="misc" />
+              <ENTRY name="Entry" multiple="blank" type="number" grouper-name="(Data)" />
             </light_cavalry_f>
             <archers_f name="Archers">
-              <ENTRY name="Entry" multiple="blank" type="misc" />
+              <ENTRY name="Entry" multiple="blank" type="number" grouper-name="(Data)" />
             </archers_f>
           </losses>
           <target name="Target" type="number" />
           <sub_unit name="Sub Unit">
-            <ENTRY name="Entry" multiple="blank" type="number" />
+            <ENTRY name="Entry" multiple="blank" type="number" grouper-name="(Data)" />
           </sub_unit>
           <tactic name="Tactic" type="number" />
           <tactic_day name="Tactic Day" type="number" />
@@ -502,24 +502,24 @@
           <last_leader name="Last Leader" type="number" link="!/character/[THISVALUE]" />
           <losses name="Losses">
             <light_infantry_f name="Light Infantry">
-              <ENTRY name="Entry" multiple="blank" type="misc" />
+              <ENTRY name="Entry" multiple="blank" type="number" grouper-name="(Data)" />
             </light_infantry_f>
             <heavy_infantry_f name="Heavy Infantry">
-              <ENTRY name="Entry" multiple="blank" type="misc" />
+              <ENTRY name="Entry" multiple="blank" type="number" grouper-name="(Data)" />
             </heavy_infantry_f>
             <pikemen_f name="Pikemen">
-              <ENTRY name="Entry" multiple="blank" type="misc" />
+              <ENTRY name="Entry" multiple="blank" type="number" grouper-name="(Data)" />
             </pikemen_f>
             <light_cavalry_f name="Light Cavalry">
-              <ENTRY name="Entry" multiple="blank" type="misc" />
+              <ENTRY name="Entry" multiple="blank" type="number" grouper-name="(Data)" />
             </light_cavalry_f>
             <archers_f name="Archers">
-              <ENTRY name="Entry" multiple="blank" type="misc" />
+              <ENTRY name="Entry" multiple="blank" type="number" grouper-name="(Data)" />
             </archers_f>
           </losses>
           <target name="Target" type="number" />
           <sub_unit name="Sub Unit">
-            <ENTRY name="Entry" multiple="blank" type="number" />
+            <ENTRY name="Entry" multiple="blank" type="number" grouper-name="(Data)" />
           </sub_unit>
           <tactic name="Tactic" type="number" />
           <tactic_day name="Tactic Day" type="number" />
@@ -531,24 +531,24 @@
           <last_leader name="Last Leader" type="number" link="!/character/[THISVALUE]" />
           <losses name="Losses">
             <light_infantry_f name="Light Infantry F">
-              <ENTRY name="Entry" multiple="blank" type="misc" />
+              <ENTRY name="Entry" multiple="blank" type="number" grouper-name="(Data)" />
             </light_infantry_f>
             <heavy_infantry_f name="Heavy Infantry F">
-              <ENTRY name="Entry" multiple="blank" type="misc" />
+              <ENTRY name="Entry" multiple="blank" type="number" grouper-name="(Data)" />
             </heavy_infantry_f>
             <pikemen_f name="Pikemen F">
-              <ENTRY name="Entry" multiple="blank" type="misc" />
+              <ENTRY name="Entry" multiple="blank" type="number" grouper-name="(Data)" />
             </pikemen_f>
             <light_cavalry_f name="Light Cavalry F">
-              <ENTRY name="Entry" multiple="blank" type="misc" />
+              <ENTRY name="Entry" multiple="blank" type="number" grouper-name="(Data)" />
             </light_cavalry_f>
             <archers_f name="Archers F">
-              <ENTRY name="Entry" multiple="blank" type="misc" />
+              <ENTRY name="Entry" multiple="blank" type="number" grouper-name="(Data)" />
             </archers_f>
           </losses>
           <target name="Target" type="number" />
           <sub_unit name="Sub Unit">
-            <ENTRY name="Entry" multiple="blank" type="number" />
+            <ENTRY name="Entry" multiple="blank" type="number" grouper-name="(Data)" />
           </sub_unit>
           <tactic name="Tactic" type="number" />
           <tactic_day name="Tactic Day" type="number" />
@@ -564,10 +564,10 @@
     <name name="Name" type="string" />
     <history name="History" />
   </war>
-  <active_war name="Active War" multiple="same">
+  <active_war name="Active War" multiple="same" grouper-name="(Active Wars)">
     <name name="Name" type="string" />
-    <attacker name="Attacker" type="number" multiple="same" link="!/character/[THISVALUE]" />
-    <defender name="Defender" type="number" multiple="same" link="!/character/[THISVALUE]" />
+    <attacker name="Attacker" type="number" multiple="same" link="!/character/[THISVALUE]" grouper-name="(Attackers)" />
+    <defender name="Defender" type="number" multiple="same" link="!/character/[THISVALUE]"  grouper-name="(Defenders)" />
     <casus_belli name="Casus Belli">
       <casus_belli name="Casus Belli Name" type="string" />
       <actor name="Actor" type="number" />
@@ -575,7 +575,7 @@
       <date name="Date" type="string" />
     </casus_belli>
     <history name="War History">
-      <EVENT name="DATE" multiple="date">
+      <EVENT name="Event" multiple="date"  grouper-name="(War Events)">
         <add_defender name="Defender Joined" type="number" link="!/character/[THISVALUE]" />
         <add_attacker name="Attacker Joined" type="number" link="!/character/[THISVALUE]" />
       </EVENT>
@@ -590,7 +590,7 @@
     </defender_participation>
   </active_war>
   <previous_war name="Previous Wars">
-    <ENTRY name="Entry" multiple="blank" type="number" />
+    <ENTRY name="Entry" multiple="blank" type="number" grouper-name="(Data)" />
   </previous_war>
   <next_outbreak_id name="Next Outbreak Id" type="number" />
   <disease name="Disease">
@@ -619,7 +619,7 @@
   <income_statistics name="Income Statistics" />
   <nation_size_statistics name="Nation Size Statistics" />
   <character_history name="Played Character History">
-    <CHARACTER name="Past Character" multiple="blank" link="!/character/[THISVALUE]">
+    <CHARACTER name="Past Character" multiple="blank" link="!/character/[THISVALUE]" grouper-name="(Past Characters)">
       <identity name="Character" type="number" link="!/character/[THISVALUE]" />
       <date name="Play Start Date" type="string" />
       <score name="Score" type="number" />

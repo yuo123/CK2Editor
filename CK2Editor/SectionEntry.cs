@@ -10,6 +10,11 @@ namespace CK2Editor
 {
     public class SectionEntry : Entry
     {
+        /// <summary>
+        /// Specifies whether this section is only an abstract part of the tree and does not have a physical presence in the save file
+        /// </summary>
+        public virtual bool IsGrouper { get { return false; } }
+
         public SectionEntry()
         {
             Entries = new List<Entry>();
@@ -38,9 +43,15 @@ namespace CK2Editor
                 }
                 else if (entry is SectionEntry)
                 {
-                    FormatUtil.OutputSectionStart(sb, entry.InternalName, indent);
-                    ((SectionEntry)entry).Save(sb, indent + 1);
-                    FormatUtil.OutputSectionEnd(sb, indent);
+                    SectionEntry sEntry = ((SectionEntry)entry);
+                    if (sEntry.IsGrouper)
+                        sEntry.Save(sb, indent);
+                    else
+                    {
+                        FormatUtil.OutputSectionStart(sb, entry.InternalName, indent);
+                        sEntry.Save(sb, indent + 1);
+                        FormatUtil.OutputSectionEnd(sb, indent);
+                    }
                 }
             }
         }
@@ -55,6 +66,9 @@ namespace CK2Editor
             return sb.ToString();
         }
 
+        /// <summary>
+        /// The collection of all the entries which are contained within this section
+        /// </summary>
         public List<Entry> Entries { get; private set; }
 
         public override bool Equals(Entry other)

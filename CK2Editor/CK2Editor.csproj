@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EntryEventArgs.cs" />
+    <Compile Include="EntryGrouper.cs" />
     <Compile Include="FormattedReader.cs" />
     <Compile Include="Entry.cs" />
     <Compile Include="SectionEntry.cs" />
