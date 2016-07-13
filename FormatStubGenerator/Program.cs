@@ -109,8 +109,11 @@ namespace FormatStubGenerator
 
                 string type = FormattedReader.DetectType(scope, childPair);
                 string name;
+                XmlAttribute grouperName = null;
                 if (multiple != null)
                 {
+                    grouperName = doc.CreateAttribute("grouper-name");
+                    grouperName.Value = "";
                     switch (multiple.Value)
                     {
                         case "number":
@@ -124,6 +127,7 @@ namespace FormatStubGenerator
                             break;
                         default:
                             name = childPair.Value;
+                            grouperName.Value = Util.UppercaseWords(childPair.Value + "s");
                             break;
                     }
                 }
@@ -135,7 +139,10 @@ namespace FormatStubGenerator
                 natt.Value = Util.UppercaseWords(name.Replace('_', ' '));
                 node.Attributes.Append(natt);
                 if (multiple != null)
+                {
                     node.Attributes.Append(multiple);
+                    node.Attributes.Append(grouperName);
+                }
                 parent.AppendChild(node);
                 if (type == "section")
                 {

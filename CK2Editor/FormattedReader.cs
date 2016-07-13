@@ -131,7 +131,7 @@ namespace CK2Editor
                 {
                     grouper = new EntryGrouper();
                     grouper.InternalName = node.LocalName;
-                    grouper.FriendlyName = node.Attributes["name"].Value;
+                    grouper.FriendlyName = node.Attributes["grouper-name"].Value;
                     multiples[multAtt.Value] = grouper;
                     parent.Entries.Add(grouper);
                 }
