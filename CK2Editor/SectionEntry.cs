@@ -8,12 +8,11 @@ using CK2Editor.Utility;
 
 namespace CK2Editor
 {
+    public enum SeriesType { None, Normal, Compact }
+
     public class SectionEntry : Entry
     {
-        /// <summary>
-        /// Specifies whether this section is only an abstract part of the tree and does not have a physical presence in the save file
-        /// </summary>
-        public virtual bool IsGrouper { get { return false; } }
+        public SeriesType SeriesFormatting { get; set; }
 
         public SectionEntry()
         {
@@ -33,36 +32,77 @@ namespace CK2Editor
         /// </summary>
         /// <param name="sb">The string builder to append to</param>
         /// <param name="indent">the base indent of this section inside the parent section</param>
-        public void Save(StringBuilder sb, int indent = 0)
+        public override void Save(StringBuilder sb, int indent = 0)
         {
-            foreach (Entry entry in Entries)
+            //the identifier
+            SaveIdentifier(sb, indent);
+            //line break between the identifier and header
+            if (SeriesFormatting != SeriesType.Compact)
+                sb.Append('\n');
+            //header
+            SaveHeader(sb, indent);
+            //line break between the header and content
+            if (SeriesFormatting != SeriesType.Compact)
+                sb.Append('\n');
+            //content
+            SaveContent(sb, indent + 1);
+            //footer
+            SaveFooter(sb, indent);
+        }
+
+        /// <summary>
+        /// Saves the child entries of this section
+        /// </summary>
+        /// <param name="indent">The indent level of the children</param>
+        protected virtual void SaveContent(StringBuilder sb, int indent)
+        {
+            foreach (Entry child in Entries)
             {
-                if (entry is ValueEntry)
+                if (SeriesFormatting == SeriesType.None)
                 {
-                    FormatUtil.OutputValueFull(sb, (ValueEntry)entry, indent);
+                    child.Save(sb, indent);
+                    sb.Append('\n');
                 }
-                else if (entry is SectionEntry)
+                else
                 {
-                    SectionEntry sEntry = ((SectionEntry)entry);
-                    if (sEntry.IsGrouper)
-                        sEntry.Save(sb, indent);
-                    else
-                    {
-                        FormatUtil.OutputSectionStart(sb, entry.InternalName, indent);
-                        sEntry.Save(sb, indent + 1);
-                        FormatUtil.OutputSectionEnd(sb, indent);
-                    }
+                    child.Save(sb);
+                    sb.Append(' ');
+
+                    if (SeriesFormatting == SeriesType.Normal)
+                        sb.IndentedAppend(indent);
                 }
             }
         }
 
         /// <summary>
-        /// Returns the text representation of this section, as it would appear in a save file
+        /// Saves the the string the appears before the contents of this section
         /// </summary>
-        public string Save()
+        /// <param name="indent">The indent level of this section</param>
+        protected virtual void SaveHeader(StringBuilder sb, int indent)
+        {
+            sb.IndentedAppend(indent, "{");
+        }
+
+        /// <summary>
+        /// Saves the the string the appears after the contents of this section
+        /// </summary>
+        /// <param name="indent">The indent level of this section</param>
+        protected virtual void SaveFooter(StringBuilder sb, int indent)
+        {
+            sb.IndentedAppend(indent, "}");
+        }
+
+        /// <summary>
+        /// Returns the string representation of this section as if it was the root section of a save file
+        /// </summary>
+        /// <returns></returns>
+        public string SaveAsRoot()
         {
             StringBuilder sb = new StringBuilder();
-            Save(sb);
+            sb.Append(FormattedReader.SAVE_HEADER);
+            sb.Append('\n');
+            SaveContent(sb, 1);
+            sb.Append(FormattedReader.SAVE_FOOTER);
             return sb.ToString();
         }
 

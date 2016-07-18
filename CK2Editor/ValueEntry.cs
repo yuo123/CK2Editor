@@ -10,11 +10,11 @@ namespace CK2Editor
     public class ValueEntry : Entry
     {
         /// <summary>
-        /// The value type, string, number, series or null (misc.)
+        /// The value type, as defined by the spec. null assumes misc
         /// </summary>
         public string Type { get; set; }
         /// <summary>
-        /// The stores value
+        /// The stored value
         /// </summary>
         public string Value { get; set; }
 
@@ -39,6 +39,37 @@ namespace CK2Editor
         {
             ValueEntry otherv = other as ValueEntry;
             return otherv != null && base.Equals(other) && otherv.Type == this.Type && otherv.Value == this.Value;
+        }
+
+        public override void Save(StringBuilder sb, int indent = 0)
+        {
+            if (RealParent != null && RealParent.InternalName == "data")
+                System.Diagnostics.Debugger.Break();
+            SaveCompleteValue(sb, indent);
+        }
+
+        public void SaveStringValue(StringBuilder sb)
+        {
+            sb.Append('"' + Value + '"');
+        }
+
+        public void SaveMiscValue(StringBuilder sb)
+        {
+            sb.Append(Value);
+        }
+
+        public void SaveCompleteValue(StringBuilder sb, int indent = 0)
+        {
+            SaveIdentifier(sb, indent);
+            switch (Type)
+            {
+                case "string":
+                    SaveStringValue(sb);
+                    break;
+                default:
+                    SaveMiscValue(sb);
+                    break;
+            }
         }
     }
 }

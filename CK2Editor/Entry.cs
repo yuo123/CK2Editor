@@ -33,7 +33,7 @@ namespace CK2Editor
             get
             {
                 SectionEntry cur = Parent;
-                while (cur.IsGrouper)
+                while (cur is EntryGrouper)
                 {
                     cur = cur.Parent;
                 }
@@ -52,6 +52,29 @@ namespace CK2Editor
             this.Link = other.Link;
             this.Parent = other.Parent;
             this.Root = other.Root;
+        }
+
+        /// <summary>
+        /// Outputs the text representation of this entry to a StringBuilder, as it would appear in a save file
+        /// </summary>
+        /// <param name="sb">The string builder to append to</param>
+        /// <param name="indent">the base indent of this entry inside the parent section</param>
+        public abstract void Save(StringBuilder sb, int indent = 0);
+
+        /// <summary>
+        /// Returns the text representation of this entry, as it would appear in a save file
+        /// </summary>
+        public string Save()
+        {
+            StringBuilder sb = new StringBuilder();
+            Save(sb);
+            return sb.ToString();
+        }
+
+        public virtual void SaveIdentifier(StringBuilder sb, int indent)
+        {
+            if (!string.IsNullOrEmpty(InternalName))
+                sb.IndentedAppend(indent, InternalName + '=');
         }
 
         public virtual bool Equals(Entry other)

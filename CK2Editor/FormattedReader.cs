@@ -47,8 +47,14 @@ namespace CK2Editor
 
         public SectionEntry ReadSection(string file, XmlNode formatNode, SectionEntry root = null)
         {
-            SectionEntry re = new SectionEntry();
-            root = root != null ? root : re;//if no root was provided, the current editor is the root
+            SectionEntry re;
+            if (root == null)
+            {
+                re = new EntryGrouper();
+                root = re; //if no root was provided, the current editor is the root
+            }
+            else
+                re = new SectionEntry();
             re.Root = root;
 
             Dictionary<string, EntryGrouper> multiples = null;
@@ -130,7 +136,7 @@ namespace CK2Editor
                 if (!multiples.TryGetValue(multAtt.Value, out grouper))
                 {
                     grouper = new EntryGrouper();
-                    grouper.InternalName = node.LocalName;
+                    grouper.InternalName = null;
                     grouper.FriendlyName = node.Attributes["grouper-name"].Value;
                     multiples[multAtt.Value] = grouper;
                     parent.Entries.Add(grouper);

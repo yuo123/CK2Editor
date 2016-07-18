@@ -114,7 +114,7 @@ namespace CK2EditorGUI
         private void saveButton_Click(object sender, EventArgs e)
         {
             if (saveSelector.SelectedText != null && saveSelector.SelectedIndex != 0)
-                File.WriteAllText((string)saveSelector.SelectedItem, editorList.RootSection.Save());
+                File.WriteAllText((string)(saveSelector.SelectedItem), editorList.RootSection.SaveAsRoot());
         }
     }
 }

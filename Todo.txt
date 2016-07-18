@@ -4,3 +4,4 @@ Add support for nested references
 Fix saving
 Add support for non-basic structures
 Add support for recursive structures (like the "from" structure inside opinion modifiers)
+Make FormatStubGenerator more exhaustive

@@ -1,3 +1,5 @@
+[comment]: # (Good markdown editor, that actually looks like github: https://jbt.github.io/markdown-editor)
+
 # CK2Editor XML Format File Specification
   
   
@@ -78,7 +80,7 @@ In addition, the following attributes can be present:
 
 ### Value Entry Syntax
 Elements describing value entries should have no children.
-Value entries can have the additional attributes:  
+Value entries may have the additional attributes:  
 + `type` - Recommended - the type of this value. Can have the following values:  
   * `string` - The value is delimited by quotation marks ('"'). This is the only type the matters for the base program.  
   * `number` - The value is a number (can be fractional)  
@@ -88,4 +90,20 @@ Value entries can have the additional attributes:
 
 ### Section Entry Syntax
 Elements describing section entries should have children.
-Sections currently do not have special attributes.  
+Sections may have these additional attributes:  
++ `series` - Optional - Specifies that this section should be formatted in the file as a series of values. Can have the following values:  
+  * `normal` - The values are on their own line, with the closing brace of this section on that same line.  
+    Example (from a `dynasty` section):  
+    ```
+    	    			data=
+    	    			{
+        0 1 0 4 10 13 0 				}
+    ```
+    Note that the indent is *after* the values. This is how it appears in original saves, and the program replicates this behaviour.  
+  * `compact` - The entire section is on the same line as its identifier.  
+  Example (from a `character` section):  
+    ```
+    traits={18 101 88 85 84 }
+    ```
+     
+

@@ -164,16 +164,17 @@ namespace CK2Editor.Utility
             return -1;
         }
 
-        public static void IndentedAppend(this StringBuilder sb, int indent, string s)
+        public static void IndentedAppend(this StringBuilder sb, int indent, string s = null)
         {
-            sb.Append(new string('\t', indent));
-            sb.Append(s);
+            sb.Append('\t', indent);
+            if (s != null)
+                sb.Append(s);
         }
 
-        public static void IndentedAppendLine(this StringBuilder sb, int indent, string s)
+        public static void IndentedAppendLine(this StringBuilder sb, int indent, string s = null)
         {
-            sb.Append(new string('\t', indent));
-            sb.Append(s + '\n');
+            IndentedAppend(sb, indent, s);
+            sb.Append('\n');
         }
 
         public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> enumurable)
