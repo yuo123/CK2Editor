@@ -19,8 +19,8 @@ namespace Tests
             player.Parent = root;
             player.Entries.Add(new ValueEntry("id", "Id", "number", "665369", null, player, root));
             player.Entries.Add(new ValueEntry("type", "Type", "number", "66", null, player, root));
-            Assert.IsTrue(player.Equals(root.Entries[0]));
-            Assert.AreEqual(14, root.Entries.Count);
+            Assert.IsTrue(player.Equals(root.Entries[2]));
+            Assert.AreEqual(12, root.Entries.Count);
 
             Entry start = root.Entries[0];
             string refpath = "..";

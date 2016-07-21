@@ -9,6 +9,16 @@ namespace CK2Editor.Utility
     public static class FormatUtil
     {
         /// <summary>
+        /// Extracts a "word" from scope
+        /// </summary>
+        public static string ExtractWord(string scope, int startIndex = 0)
+        {
+            int i1 = GotoWordStart(scope, startIndex);
+            int i2 = GotoWordEnd(scope, i1);
+            return scope.Substring(i1, i2 - i1);
+        }
+
+        /// <summary>
         /// Extracts a string of the file delimited by curly brackets and identified by <paramref name="identifier"/>
         /// </summary>
         /// <param name="scope">The string to search</param>
@@ -151,7 +161,10 @@ namespace CK2Editor.Utility
                 case "series":
                     return ExtractDelimited(scope, name + '=', startIndex).Trim(new char[] { '\n', '\t', '\r' });
                 default:
-                    return FormatUtil.ExtractValue(scope, name + '=', startIndex);
+                    if (!string.IsNullOrWhiteSpace(name))
+                        return FormatUtil.ExtractValue(scope, name + '=', startIndex);
+                    else
+                        return ExtractWord(scope, startIndex);
             }
         }
 
@@ -183,6 +196,11 @@ namespace CK2Editor.Utility
             return ListEntriesWithIndexes(scope, 0, filter).Select(pair => pair.Value);
         }
 
+        /// <summary>
+        /// Determines wether this character is a curly brace ('{' or '}')
+        /// </summary>
+        /// <param name="c"></param>
+        /// <returns></returns>
         public static bool IsBrace(this char c)
         {
             return c == '{' || c == '}';
@@ -275,7 +293,8 @@ namespace CK2Editor.Utility
                 {
                     name = "";
                 }
-                yield return new KeyValuePair<int, string>(firsti, name);
+                if (filter == null || filter.Invoke(name))
+                    yield return new KeyValuePair<int, string>(firsti, name);
             }
         }
     }

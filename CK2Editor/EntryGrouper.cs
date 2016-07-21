@@ -14,6 +14,7 @@ namespace CK2Editor
         public override void Save(StringBuilder sb, int indent = 0)
         {
             SaveContent(sb, indent);
+            sb.Length--;//get rid of the trailing line break
         }
 
         protected override void SaveHeader(StringBuilder sb, int indent)

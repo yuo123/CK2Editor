@@ -40,7 +40,7 @@
       <culture name="Culture" type="string" />
       <religion name="Religion" type="string" link="!/religion/THISVALUE" />
       <coat_of_arms name="Coat Of Arms">
-        <data name="Data">
+        <data name="Data" series="normal">
           <ENTRY name="Entry" multiple="blank" type="number" grouper-name="(Data)" />
         </data>
         <religion name="Religion" type="string" link="!/religion/THISVALUE" />
@@ -54,7 +54,7 @@
       <attributes name="Attributes">
         <ENTRY name="Entry" multiple="blank" type="number" grouper-name="(Data)" />
       </attributes>
-      <traits name="Traits">
+      <traits name="Traits" series="compact">
         <ENTRY name="Entry" multiple="blank" type="number" grouper-name="(Data)" />
       </traits>
       <religion name="Religion" type="string" link="!/religion/THISVALUE" />
@@ -71,16 +71,16 @@
       <demesne name="Demesne">
         <capital name="Capital" type="string" />
         <liege_troops name="Liege Troops">
-          <light_infantry_f name="Light Infantry F">
+          <light_infantry_f name="Light Infantry F" series="normal">
             <ENTRY name="Entry" multiple="blank" type="number" grouper-name="(Data)" />
           </light_infantry_f>
-          <heavy_infantry_f name="Heavy Infantry F">
+          <heavy_infantry_f name="Heavy Infantry F" series="normal">
             <ENTRY name="Entry" multiple="blank" type="number" grouper-name="(Data)" />
           </heavy_infantry_f>
-          <archers_f name="Archers F">
+          <archers_f name="Archers F" series="normal">
             <ENTRY name="Entry" multiple="blank" type="number" grouper-name="(Data)" />
           </archers_f>
-          <galleys_f name="Galleys F">
+          <galleys_f name="Galleys F" series="normal">
             <ENTRY name="Entry" multiple="blank" type="number" grouper-name="(Data)" />
           </galleys_f>
         </liege_troops>

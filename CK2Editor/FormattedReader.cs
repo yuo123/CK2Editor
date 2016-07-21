@@ -134,10 +134,18 @@ namespace CK2Editor
                 if (multiples == null)
                     multiples = new Dictionary<string, EntryGrouper>();
                 if (!multiples.TryGetValue(multAtt.Value, out grouper))
-                {
+                {//grouper initialization
                     grouper = new EntryGrouper();
                     grouper.InternalName = null;
                     grouper.FriendlyName = node.Attributes["grouper-name"].Value;
+
+                    XmlAttribute series = node.ParentNode.Attributes["series"];
+                    if (series != null)
+                    {
+                        grouper.SeriesFormatting = SectionEntry.ParseSeriesType(series.Value);
+                        parent.SeriesFormatting = grouper.SeriesFormatting;
+                    }
+
                     multiples[multAtt.Value] = grouper;
                     parent.Entries.Add(grouper);
                 }

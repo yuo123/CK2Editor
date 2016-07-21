@@ -40,14 +40,23 @@ namespace CK2Editor
             if (SeriesFormatting != SeriesType.Compact)
                 sb.Append('\n');
             //header
-            SaveHeader(sb, indent);
+            SaveHeader(sb, SeriesFormatting != SeriesType.Compact ? indent : 0);
             //line break between the header and content
             if (SeriesFormatting != SeriesType.Compact)
                 sb.Append('\n');
             //content
-            SaveContent(sb, indent + 1);
+            if (SeriesFormatting == SeriesType.None)
+                SaveContent(sb, indent + 1);
+            else try
+                {
+                    ((EntryGrouper)this.Entries[0]).SaveContent(sb, indent + 1);
+                }
+                catch (Exception e) when (e is InvalidCastException || e is IndexOutOfRangeException)
+                {
+                    throw new InvalidOperationException("The 'series' attribute was used in an invalid case", e);
+                }
             //footer
-            SaveFooter(sb, indent);
+            SaveFooter(sb, SeriesFormatting != SeriesType.Compact ? indent : 0);
         }
 
         /// <summary>
@@ -67,11 +76,11 @@ namespace CK2Editor
                 {
                     child.Save(sb);
                     sb.Append(' ');
-
-                    if (SeriesFormatting == SeriesType.Normal)
-                        sb.IndentedAppend(indent);
                 }
             }
+
+            if (SeriesFormatting == SeriesType.Normal)
+                sb.IndentedAppend(indent);
         }
 
         /// <summary>
@@ -104,6 +113,17 @@ namespace CK2Editor
             SaveContent(sb, 1);
             sb.Append(FormattedReader.SAVE_FOOTER);
             return sb.ToString();
+        }
+
+        public static SeriesType ParseSeriesType(string s)
+        {
+            switch (s)
+            {
+                case "none": return SeriesType.None;
+                case "normal": return SeriesType.Normal;
+                case "compact": return SeriesType.Compact;
+                default: throw new ArgumentException("Unknown SeriesType value", "s");
+            }
         }
 
         /// <summary>
