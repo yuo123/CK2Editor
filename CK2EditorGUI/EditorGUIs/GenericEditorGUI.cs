@@ -135,5 +135,10 @@ namespace CK2EditorGUI.EditorGUIs
             this.ResumeLayout(false);
 
         }
+
+        public static bool CanEdit(Entry entry)
+        {
+            return true;
+        }
     }
 }

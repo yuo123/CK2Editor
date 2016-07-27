@@ -17,6 +17,11 @@ namespace CK2EditorGUI.EditorGUIs
             InitializeComponent();
         }
 
+        public static bool CanEdit(Entry entry)
+        {
+            return true;
+        }
+
         public override void OnAssignEdited()
         {
             base.OnAssignEdited();

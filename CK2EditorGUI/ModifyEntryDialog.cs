@@ -10,11 +10,14 @@ using System.Windows.Forms;
 
 using CK2Editor;
 using CK2EditorGUI.EditorGUIs;
+using CK2EditorGUI.Utility;
 
 namespace CK2EditorGUI
 {
     public partial class ModifyEntryDialog : Form
     {
+        List<IEditorGUI> editors = new List<IEditorGUI>();
+
         protected EditedEntry edited;
         public Entry Edited
         {
@@ -22,13 +25,25 @@ namespace CK2EditorGUI
             set
             {
                 edited = new EditedEntry(value);
-                foreach (IEditorGUI editor in editors)
-                {
-                    editor.Edited = edited;
-                }
+                UpdateEditors();
             }
         }
-        List<IEditorGUI> editors = new List<IEditorGUI>();
+
+        private void UpdateEditors()
+        {
+            List<IEditorGUI> specialEditors = EditorsInfo.FindEditors(Edited);
+            foreach (IEditorGUI editor in specialEditors)
+            {
+                editor.Control.Dock = DockStyle.Top;
+                this.Controls.Add(editor.Control);
+            }
+            editors.AddRange(specialEditors);
+
+            foreach (IEditorGUI editor in editors)
+            {
+                editor.Edited = edited;
+            }
+        }
 
         public ModifyEntryDialog()
         {

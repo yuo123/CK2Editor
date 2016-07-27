@@ -77,6 +77,9 @@
     <Compile Include="EditorGUIs\RawEditorGUI.Designer.cs">
       <DependentUpon>RawEditorGUI.cs</DependentUpon>
     </Compile>
+    <Compile Include="EditorGUIs\SectionEditorGUIBase.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="EditorGUIs\ValueEditorGUIBase.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -113,6 +116,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utility\EditorsInfo.cs" />
     <Compile Include="Utility\Extensions.cs" />
     <Compile Include="Utility\NameObjectCollection.cs" />
     <EmbeddedResource Include="EditorGUIs\GenericEditorGUI.resx">
