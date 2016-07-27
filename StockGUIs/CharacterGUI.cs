@@ -18,7 +18,24 @@ namespace StockGUIs
             InitializeComponent();
         }
 
-        public static bool CanEdit(Entry entry)
+        public override void OnAssignEdited()
+        {
+            base.OnAssignEdited();
+
+            m_nameText.Text = Section.FriendlyName;
+        }
+
+        public void Save()
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class CharacterGUIProvider : IEditorGUIProvider
+    {
+        public string StructureName { get { return "Character"; } }
+
+        public bool CanEdit(Entry entry)
         {
             SectionEntry ent = entry as SectionEntry;
             if (ent == null)
@@ -29,14 +46,12 @@ namespace StockGUIs
             return true;
         }
 
-        public override void OnAssignEdited()
+        public IEditorGUI CreateEditor()
         {
-            base.OnAssignEdited();
-
-            m_nameText.Text = Section.FriendlyName;
+            return new CharacterGUI();
         }
 
-        public void Save()
+        public Entry GenerateDefault()
         {
             throw new NotImplementedException();
         }

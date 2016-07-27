@@ -31,13 +31,14 @@ namespace CK2EditorGUI
 
         private void UpdateEditors()
         {
-            List<IEditorGUI> specialEditors = EditorsInfo.FindEditors(Edited);
-            foreach (IEditorGUI editor in specialEditors)
+            List<IEditorGUIProvider> specialEditors = EditorsInfo.FindEditors(Edited);
+            foreach (IEditorGUIProvider provider in specialEditors)
             {
+                IEditorGUI editor = provider.CreateEditor();
                 editor.Control.Dock = DockStyle.Top;
                 this.Controls.Add(editor.Control);
+                editors.Add(editor);
             }
-            editors.AddRange(specialEditors);
 
             foreach (IEditorGUI editor in editors)
             {

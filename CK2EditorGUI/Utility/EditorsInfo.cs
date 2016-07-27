@@ -15,8 +15,8 @@ namespace CK2EditorGUI.Utility
     {
         public static readonly string EditorsPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "GUIProviders");
 
-        private static List<Type> m_editorTypes;
-        public static IEnumerable<Type> EditorTypes
+        private static List<IEditorGUIProvider> m_editorTypes;
+        public static IEnumerable<IEditorGUIProvider> EditorTypes
         {
             get
             {
@@ -31,7 +31,7 @@ namespace CK2EditorGUI.Utility
         /// <param name="type">The class of the editor</param>
         public static void RegisterEditor(Type type)
         {
-            if (IsEditorGUI(type))
+            if (IsEditorGUIProvider(type))
                 RegisterEditorUnsafe(type);
             else
                 throw new ArgumentException("EditorGUI's must implement IEditorGUI, and include a static CanEdit(Entry) method", "type");
@@ -39,27 +39,26 @@ namespace CK2EditorGUI.Utility
 
         private static void RegisterEditorUnsafe(Type type)
         {
-            m_editorTypes.Add(type);
+            m_editorTypes.Add((IEditorGUIProvider)Activator.CreateInstance(type));
         }
 
         /// <summary>
-        /// Checks if the given Type is a valid EditorGUI.
-        /// Type must be a class, implement IEditorGUI, and have a static method CanEdit(Entry)
+        /// Checks if the given Type is a valid EditorGUIProvider
+        /// Type must be a class and implement IEditorGUIProvider
         /// </summary>
         /// <param name="type"></param>
-        public static bool IsEditorGUI(Type type)
+        public static bool IsEditorGUIProvider(Type type)
         {
-            if (!type.IsClass || type.GetInterface(nameof(IEditorGUI)) == null)
+            if (!type.IsClass || type.GetInterface(nameof(IEditorGUIProvider)) == null)
                 return false;
-            MethodInfo canEdit = type.GetMethod("CanEdit", new Type[] { typeof(Entry) });
-            return canEdit != null && canEdit.IsStatic;
+            return true;
         }
-        
+
         static EditorsInfo()
         {
             //code based on http://stackoverflow.com/a/18362459
             //looks for available GUI's and adds them to the list
-            m_editorTypes = new List<Type>();
+            m_editorTypes = new List<IEditorGUIProvider>();
             string[] guiProviders = Directory.GetFiles(EditorsPath, "*.dll");
             foreach (string dllPath in guiProviders)
             {
@@ -68,7 +67,7 @@ namespace CK2EditorGUI.Utility
                     Assembly dll = Assembly.LoadFile(dllPath);
                     foreach (Type type in dll.GetExportedTypes())
                     {
-                        if (IsEditorGUI(type))
+                        if (IsEditorGUIProvider(type))
                             RegisterEditorUnsafe(type);
                     }
                 }
@@ -79,13 +78,13 @@ namespace CK2EditorGUI.Utility
             }
         }
 
-        public static List<IEditorGUI> FindEditors(Entry entry)
+        public static List<IEditorGUIProvider> FindEditors(Entry entry)
         {
-            List<IEditorGUI> ret = new List<IEditorGUI>();
-            foreach (Type type in m_editorTypes)
+            List<IEditorGUIProvider> ret = new List<IEditorGUIProvider>();
+            foreach (IEditorGUIProvider type in m_editorTypes)
             {
-                if ((bool)type.GetMethod("CanEdit", new Type[] { typeof(Entry) }).Invoke(null, new object[] { entry }))//this calls type.CanEdit(entry)
-                    ret.Add((IEditorGUI)Activator.CreateInstance(type));//instantiate the type and add the instance to the list
+                if (type.CanEdit(entry))
+                    ret.Add(type);
             }
             return ret;
         }

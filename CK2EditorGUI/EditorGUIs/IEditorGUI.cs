@@ -9,7 +9,7 @@ namespace CK2EditorGUI.EditorGUIs
         /// </summary>
         EditedEntry Edited { get; set; }
         /// <summary>
-        /// Modifies <c>Edited</c> to reflect the changes made through the gui
+        /// Modifies <c>Edited</c> to reflect the changes made through the GUI
         /// </summary>
         void Save();
         /// <summary>
