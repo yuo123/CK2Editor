@@ -171,6 +171,7 @@ namespace CK2EditorGUI.EditorGUIs
                 if (diag.Edited != null)
                 {//if the new entry exists (this was not just a deletion), we need to add it to the tree
                     parent.Entries.Insert(nodeIndex, diag.Edited);
+                    diag.Edited.Parent = parent;
                     this.NodesInserted(this, new TreeModelEventArgs(path.Up(), new int[] { nodeIndex }, new object[] { diag.Edited }));
                 }
 

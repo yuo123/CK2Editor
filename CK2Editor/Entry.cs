@@ -86,5 +86,23 @@ namespace CK2Editor
         {
             return base.ToString() + ":" + InternalName;
         }
+
+        /// <summary>
+        /// Creates a fully deep clone of this Entry, except for Parent and Root
+        /// </summary>
+        public virtual Entry Clone()
+        {
+            Entry ret = CreateClone();
+            ret.InternalName = this.InternalName;
+            ret.FriendlyName = this.FriendlyName;
+            ret.Link = this.Link;
+            return ret;
+        }
+
+        /// <summary>
+        /// Creates a fully deep clone of this entry, excluding members defined in the base Entry class
+        /// </summary>
+        /// <returns></returns>
+        protected abstract Entry CreateClone();
     }
 }

@@ -20,7 +20,7 @@ namespace CK2EditorGUI.Utility
         {
             get
             {
-                return EditorTypes.AsEnumerable();
+                return m_editorTypes.AsEnumerable();
             }
         }
         public static int EditorTypesCount { get { return m_editorTypes.Count; } }
@@ -87,6 +87,11 @@ namespace CK2EditorGUI.Utility
                     ret.Add(type);
             }
             return ret;
+        }
+
+        public static IEditorGUIProvider FindEditorByName(string name)
+        {
+            return m_editorTypes.Find(provider => provider.StructureName == name);
         }
     }
 }

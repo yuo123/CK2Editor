@@ -19,7 +19,8 @@ namespace CK2EditorGUI.EditorGUIs
             set
             {
                 edited = value;
-                OnAssignEdited();
+                if (value != null)
+                    OnAssignEdited();
             }
         }
 

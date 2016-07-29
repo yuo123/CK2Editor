@@ -35,6 +35,9 @@ namespace StockGUIs
     {
         public string StructureName { get { return "Character"; } }
 
+        //default character structure cache
+        private static SectionEntry m_default = null;
+
         public bool CanEdit(Entry entry)
         {
             SectionEntry ent = entry as SectionEntry;
@@ -53,7 +56,19 @@ namespace StockGUIs
 
         public Entry GenerateDefault()
         {
-            throw new NotImplementedException();
+            if (m_default == null)
+            {
+                m_default = new SectionEntry();
+                m_default.InternalName = "";
+                m_default.FriendlyName = "[!/birth_name:[VALUE]!]";
+                ValueEntry bname = new ValueEntry();
+                bname.InternalName = "birth_name";
+                bname.FriendlyName = "Birth Name";
+                bname.Parent = m_default;
+                m_default.Entries.Add(bname);
+            }
+
+            return m_default.Clone();
         }
     }
 }
