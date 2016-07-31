@@ -48,7 +48,7 @@ namespace CK2EditorGUI
                 IEditorGUI editor = provider.CreateEditor();
                 editor.Control.Dock = DockStyle.Top;
                 this.Controls.Add(editor.Control);
-                this.MinimumSize = new Size(MinimumSize.Width, MinimumSize.Height + editor.Control.Height);.
+                this.MinimumSize = new Size(MinimumSize.Width, MinimumSize.Height + editor.Control.Height);
 
                 m_editors.Add(editor);
             }
