@@ -59,7 +59,6 @@
             // rawEditor
             // 
             this.rawEditor.Dock = System.Windows.Forms.DockStyle.Top;
-            this.rawEditor.Edited = null;
             this.rawEditor.Location = new System.Drawing.Point(0, 73);
             this.rawEditor.Name = "rawEditor";
             this.rawEditor.Size = new System.Drawing.Size(467, 71);
@@ -71,7 +70,6 @@
             // 
             this.genericEditor.BackColor = System.Drawing.SystemColors.Control;
             this.genericEditor.Dock = System.Windows.Forms.DockStyle.Top;
-            this.genericEditor.Edited = null;
             this.genericEditor.Location = new System.Drawing.Point(0, 0);
             this.genericEditor.Name = "genericEditor";
             this.genericEditor.Size = new System.Drawing.Size(467, 73);

@@ -88,7 +88,7 @@ namespace CK2Editor
         }
 
         /// <summary>
-        /// Creates a fully deep clone of this Entry, except for Parent and Root
+        /// Creates a fully deep clone of this Entry, except for <see cref="Parent"/> and <see cref="Root"/>
         /// </summary>
         public virtual Entry Clone()
         {

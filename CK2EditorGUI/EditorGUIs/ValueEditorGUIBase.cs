@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel;
 
 using CK2Editor;
 
@@ -12,6 +13,8 @@ namespace CK2EditorGUI.EditorGUIs
     {
         public ValueEntry Value { get { return Edited.Entry as ValueEntry; } }
 
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         private EditedEntry edited;
         public virtual EditedEntry Edited
         {

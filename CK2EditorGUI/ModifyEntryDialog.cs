@@ -17,6 +17,11 @@ namespace CK2EditorGUI
     public partial class ModifyEntryDialog : Form
     {
         /// <summary>
+        /// Gets whether the user has confirmed the modifications or canceled them. Do not apply any changes if this is false.
+        /// </summary>
+        public bool Confirmed { get; private set; }
+
+        /// <summary>
         /// The height of the Save/Cancel buttons strip, including margins
         /// </summary>
         private static readonly Size DEFAULT_MINSIZE = new Size(483, 227);
@@ -52,7 +57,7 @@ namespace CK2EditorGUI
 
                 m_editors.Add(editor);
             }
-
+            
             foreach (IEditorGUI editor in m_editors)
             {
                 editor.Edited = edited;
@@ -62,13 +67,14 @@ namespace CK2EditorGUI
 
         private void ResetEditors()
         {
-            while (m_editors.Count > 2) //remove all editors from index 2, and keep the generic editor
+            while (m_editors.Count > 2) //remove all editors from index 2, and keep the generic editors
             {
                 this.Controls.Remove(m_editors[2].Control);
                 m_editors.RemoveAt(2);
             }
             this.MinimumSize = DEFAULT_MINSIZE;
-            this.Size = DEFAULT_MINSIZE;
+            this.MaximumSize = DEFAULT_MINSIZE;
+            UpdateBounds();
             Invalidate();
         }
 
@@ -77,6 +83,8 @@ namespace CK2EditorGUI
             InitializeComponent();
             m_editors.Add(genericEditor);
             m_editors.Add(rawEditor);
+            Confirmed = false;
+            this.Edited = null;
 
             genericEditor.StructureChanged += EditedStructureChanged;
         }
@@ -98,6 +106,7 @@ namespace CK2EditorGUI
         private void saveBtn_Click(object sender, EventArgs e)
         {
             Save();
+            Confirmed = true;
             Close();
         }
 

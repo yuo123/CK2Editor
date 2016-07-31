@@ -28,6 +28,8 @@ namespace CK2EditorGUI.EditorGUIs
 
         private EditedEntry m_edited;
 
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public EditedEntry Edited
         {
             get { return m_edited; }
