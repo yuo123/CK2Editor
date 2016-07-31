@@ -154,14 +154,15 @@ namespace CK2EditorGUI.EditorGUIs
         public void OnModifyEntry(Entry ent, TreeNodeAdv node)
         {
             ModifyEntryDialog diag = new ModifyEntryDialog();
-            diag.Edited = ent;
+            if (ent != null)
+                diag.Edited = ent.Clone();
             diag.ShowDialog();
 
-            TreePath path = node.Tree.GetPath(node);
-            SectionEntry parent = (SectionEntry)node.Parent.Tag;
-
-            if (diag.Edited != ent) //was the entry replaced with a different instance, or just changed?
+            if (diag.Confirmed)
             {
+                TreePath path = node.Tree.GetPath(node);
+                SectionEntry parent = (SectionEntry)node.Parent.Tag;
+
                 int nodeIndex = node.Index;
                 if (ent != null)
                 {//if the entry is different, we need to remove the old one
@@ -171,14 +172,9 @@ namespace CK2EditorGUI.EditorGUIs
                 if (diag.Edited != null)
                 {//if the new entry exists (this was not just a deletion), we need to add it to the tree
                     parent.Entries.Insert(nodeIndex, diag.Edited);
+                    diag.Edited.Parent = parent;
                     this.NodesInserted(this, new TreeModelEventArgs(path.Up(), new int[] { nodeIndex }, new object[] { diag.Edited }));
                 }
-
-                ent = diag.Edited;
-            }
-            else
-            {//if the entry was changed in place, all we need to do is notify the TreeView
-                this.NodesChanged(this, new TreeModelEventArgs(path.Up(), new int[] { node.Index }, new object[] { ent }));
             }
         }
 

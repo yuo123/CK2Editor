@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using System.Windows.Forms.Design;
 
 using CK2Editor;
+using CK2EditorGUI.Utility;
 
 namespace CK2EditorGUI.EditorGUIs
 {
@@ -25,15 +26,17 @@ namespace CK2EditorGUI.EditorGUIs
             }
         }
 
-        private EditedEntry edited;
+        private EditedEntry m_edited;
 
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public EditedEntry Edited
         {
-            get { return edited; }
+            get { return m_edited; }
             set
             {
-                edited = value;
-                if (value.Entry != null)
+                m_edited = value;
+                if (value != null && value.Entry != null)
                 {
                     nameBox.Text = value.Entry.InternalName;
                 }
@@ -43,15 +46,31 @@ namespace CK2EditorGUI.EditorGUIs
         public GenericEditorGUI()
         {
             InitializeComponent();
+            if (LicenseManager.UsageMode != LicenseUsageMode.Designtime)//detects DesignMode in constructor, as per http://stackoverflow.com/a/1166547
+                InitStructures();
+        }
+
+        private void InitStructures()
+        {
+            foreach (IEditorGUIProvider editor in EditorsInfo.EditorTypes)
+            {
+                structureBox.Items.Add(editor.StructureName);
+            }
             structureBox.SelectedValueChanged += structureChanged;
         }
 
         void structureChanged(object sender, EventArgs e)
         {
-            if ((string)structureBox.SelectedItem == "raw value")
-                edited.Entry = new ValueEntry();
-            else if ((string)structureBox.SelectedItem == "raw section")
-                edited.Entry = new SectionEntry();
+            string selected = (string)structureBox.SelectedItem;
+            if (selected == "raw value")
+                m_edited.Entry = new ValueEntry();
+            else if (selected == "raw section")
+                m_edited.Entry = new SectionEntry();
+            else
+            {
+                IEditorGUIProvider prov = EditorsInfo.FindEditorByName(selected);
+                m_edited.Entry = prov.GenerateDefault();
+            }
 
             this.StructureChanged?.Invoke(this, new EventArgs());
         }
@@ -88,9 +107,9 @@ namespace CK2EditorGUI.EditorGUIs
             label2.AutoSize = true;
             label2.Location = new System.Drawing.Point(6, 16);
             label2.Name = "label2";
-            label2.Size = new System.Drawing.Size(38, 13);
+            label2.Size = new System.Drawing.Size(76, 13);
             label2.TabIndex = 0;
-            label2.Text = "Name:";
+            label2.Text = "Internal Name:";
             // 
             // label3
             // 
@@ -103,17 +122,17 @@ namespace CK2EditorGUI.EditorGUIs
             // 
             // nameBox
             // 
-            this.nameBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.nameBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.nameBox.FormattingEnabled = true;
-            this.nameBox.Location = new System.Drawing.Point(50, 13);
+            this.nameBox.Location = new System.Drawing.Point(82, 13);
             this.nameBox.Name = "nameBox";
-            this.nameBox.Size = new System.Drawing.Size(225, 21);
+            this.nameBox.Size = new System.Drawing.Size(193, 21);
             this.nameBox.TabIndex = 1;
             // 
             // structureBox
             // 
-            this.structureBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.structureBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.structureBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.structureBox.Items.AddRange(new object[] {

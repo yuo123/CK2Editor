@@ -3,18 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.ComponentModel;
 
 using CK2Editor;
 
 namespace CK2EditorGUI.EditorGUIs
 {
-    public class ValueEditorGUIBase : EditorGUIBase
+    public class SectionEditorGUIBase : EditorGUIBase
     {
-        public ValueEntry Value { get { return Edited.Entry as ValueEntry; } }
+        public SectionEntry Section { get { return Edited.Entry as SectionEntry; } }
 
-        [Browsable(false)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         private EditedEntry edited;
         public virtual EditedEntry Edited
         {
@@ -22,14 +19,13 @@ namespace CK2EditorGUI.EditorGUIs
             set
             {
                 edited = value;
-                if (value != null)
-                    OnAssignEdited();
+                OnAssignEdited();
             }
         }
 
         public virtual void OnAssignEdited()
         {
-            this.Enabled = edited.Entry is ValueEntry;
+            this.Enabled = edited.Entry is SectionEntry;
         }
     }
 }

@@ -16,15 +16,15 @@ I realize there might be confusion between the different terms used in this docu
 + "The (base) program" - The non-graphical part of CK2Editor  
 + "The GUI" - The graphical editing program  
 + "Value" - An identifier-value pair in the file, like `type=66`  
-+ "Section" - A section of the file delimited by curly brakcets (`{ }`), also with an identifier (`player={...}`)  
++ "Section" - A section of the file delimited by curly brackets (`{ }`), also with an identifier (`player={...}`)  
 + "Entry" - A value or section  
 + "Element" - an XML element in the format file  
 + "Attribute" - an XML attribute of an element  
 
-This terminology is also applied in the documentation and inline code comments.
+This terminology is also applied in the documentation and in-line code comments.
 
 ### Top Structure
-The format file must contain a root element called `File`. This represents the entire file after the CK2txt header, and all entries should be decendants of this element.  
+The format file must contain a root element called `File`. This represents the entire file after the CK2txt header, and all entries should be descendants of this element.  
 before the `File` element, an XML declaration is recommended.  
 
 ### References
@@ -38,15 +38,15 @@ references can contain symbols, which are strings related to the entries the ref
 
 ##### Normal References
 The syntax of normal references is as follows:  
-+ The path starts from the current entry, unless it starts with a `!` in which case it jumps to the the root (the `file` element in the format file)
-+ A forward slash (`/`) seperates entries in the path
++ The path starts from the current entry, unless it starts with a `!` in which case it jumps to the root (the `file` element in the format file)
++ A forward slash (`/`) separates entries in the path
 + An entry name takes the path into that entry
 + two dots (`..`) take the path to the current entry's parent
 
 ##### Value References
 Value references are based on normal references, but evaluate to strings. The syntax of value references is as follows:  
 + The reference is delimited by the sequences `[!` and `!]`  
-+ The reference contains a notmal reference  
++ The reference contains a normal reference  
 + At the end of the normal references, there will be a colon (':') followed by one of the following special symbols:  
   * `[NAME]` - The internal name of the current entry  
   * `[VNAME]` - The user-friendly ("visual") name of the current entry  
@@ -55,7 +55,7 @@ Value references are based on normal references, but evaluate to strings. The sy
 Multiple and nested value references are supported.
 
 ##### Example
-For example, the following value reference, as the `name` attribute of a value conataining a character id:
+For example, the following value reference, as the `name` attribute of a value containing a character id:
 >`[!!/character/[THISVALUE]:[VNAME]!]`  
 
 will evaluate to the user-friendly name of the character, because:  
@@ -85,7 +85,7 @@ Value entries may have the additional attributes:
   * `string` - The value is delimited by quotation marks ('"'). This is the only type the matters for the base program.  
   * `number` - The value is a number (can be fractional)  
   * `date` - The value is a date, in a year.month.day format  
-  * `misc` - the value is of a miscellanous type. If none of the above are specified, this is assumed  
+  * `misc` - the value is of a miscellaneous type. If none of the above are specified, this is assumed  
 + `link` - Optional - A link containing a reference to another entry, which is related to this one  
 
 ### Section Entry Syntax
@@ -99,7 +99,7 @@ Sections may have these additional attributes:
     	    			{
         0 1 0 4 10 13 0 				}
     ```
-    Note that the indent is *after* the values. This is how it appears in original saves, and the program replicates this behaviour.  
+    Note that the indent is *after* the values. This is how it appears in original saves, and the program replicates this behavior.  
   * `compact` - The entire section is on the same line as its identifier.  
   Example (from a `character` section):  
     ```

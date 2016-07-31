@@ -59,6 +59,7 @@
             // rawEditor
             // 
             this.rawEditor.Dock = System.Windows.Forms.DockStyle.Top;
+            this.rawEditor.Edited = null;
             this.rawEditor.Location = new System.Drawing.Point(0, 73);
             this.rawEditor.Name = "rawEditor";
             this.rawEditor.Size = new System.Drawing.Size(467, 71);
@@ -89,7 +90,7 @@
             this.Controls.Add(this.rawEditor);
             this.Controls.Add(this.genericEditor);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.MaximizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(483, 227);
             this.Name = "ModifyEntryDialog";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Modify/Add Entry";
@@ -100,10 +101,8 @@
         #endregion
 
         private EditorGUIs.GenericEditorGUI genericEditor;
-        private EditorGUIs.RawEditorGUI rawEditor;
         private System.Windows.Forms.Button saveBtn;
         private System.Windows.Forms.Button cancelBtn;
-
-
+        private EditorGUIs.RawEditorGUI rawEditor;
     }
 }

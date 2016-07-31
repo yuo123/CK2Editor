@@ -14,6 +14,17 @@ namespace CK2Editor
     {
         public SeriesType SeriesFormatting { get; set; }
 
+        /// <summary>
+        /// Gets the child entry of this section with the specified internal name
+        /// </summary>
+        public Entry this[string name]
+        {
+            get
+            {
+                return Entries.Find(ent => ent.InternalName == name);
+            }
+        }
+
         public SectionEntry()
         {
             Entries = new List<Entry>();
@@ -84,7 +95,7 @@ namespace CK2Editor
         }
 
         /// <summary>
-        /// Saves the the string the appears before the contents of this section
+        /// Saves the string the appears before the contents of this section
         /// </summary>
         /// <param name="indent">The indent level of this section</param>
         protected virtual void SaveHeader(StringBuilder sb, int indent)
@@ -93,7 +104,7 @@ namespace CK2Editor
         }
 
         /// <summary>
-        /// Saves the the string the appears after the contents of this section
+        /// Saves the string the appears after the contents of this section
         /// </summary>
         /// <param name="indent">The indent level of this section</param>
         protected virtual void SaveFooter(StringBuilder sb, int indent)
@@ -143,6 +154,17 @@ namespace CK2Editor
                     return false;
             }
             return true;
+        }
+
+        protected override Entry CreateClone()
+        {
+            SectionEntry ret = new SectionEntry();
+            ret.SeriesFormatting = this.SeriesFormatting;
+            foreach (Entry child in this.Entries)
+            {
+                ret.Entries.Add(child.Clone());
+            }
+            return ret;
         }
     }
 }

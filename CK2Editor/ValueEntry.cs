@@ -71,5 +71,13 @@ namespace CK2Editor
                     break;
             }
         }
+
+        protected override Entry CreateClone()
+        {
+            ValueEntry ret = new ValueEntry();
+            ret.Type = this.Type;
+            ret.Value = this.Value;
+            return ret;
+        }
     }
 }

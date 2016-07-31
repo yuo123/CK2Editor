@@ -54,6 +54,8 @@ namespace CK2EditorGUI.EditorGUIs
             }
         }
 
+        public Control Control { get { return this; } }
+
         public new ControlCollection Controls { get { return wrapper.Controls; } }
 
         public EditorGUIBase()
