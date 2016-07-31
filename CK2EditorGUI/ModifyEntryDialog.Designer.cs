@@ -59,6 +59,7 @@
             // rawEditor
             // 
             this.rawEditor.Dock = System.Windows.Forms.DockStyle.Top;
+            this.rawEditor.Edited = null;
             this.rawEditor.Location = new System.Drawing.Point(0, 73);
             this.rawEditor.Name = "rawEditor";
             this.rawEditor.Size = new System.Drawing.Size(467, 71);

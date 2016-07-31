@@ -22,7 +22,7 @@ namespace CK2EditorGUI.EditorGUIs
             this.wrapper.Controls.Add(this.typeBox);
             this.wrapper.Controls.Add(this.valueBox);
             this.wrapper.Controls.Add(label1);
-            this.wrapper.Size = new System.Drawing.Size(328, 75);
+            this.wrapper.Size = new System.Drawing.Size(322, 69);
             // 
             // label3
             // 
@@ -48,14 +48,13 @@ namespace CK2EditorGUI.EditorGUIs
             this.typeBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.typeBox.Items.AddRange(new object[] {
-            "section",
             "string",
             "number",
             "date",
             "misc"});
             this.typeBox.Location = new System.Drawing.Point(68, 13);
             this.typeBox.Name = "typeBox";
-            this.typeBox.Size = new System.Drawing.Size(254, 21);
+            this.typeBox.Size = new System.Drawing.Size(248, 21);
             this.typeBox.TabIndex = 3;
             // 
             // valueBox
@@ -65,7 +64,7 @@ namespace CK2EditorGUI.EditorGUIs
             this.valueBox.Location = new System.Drawing.Point(46, 40);
             this.valueBox.MinimumSize = new System.Drawing.Size(42, 20);
             this.valueBox.Name = "valueBox";
-            this.valueBox.Size = new System.Drawing.Size(276, 20);
+            this.valueBox.Size = new System.Drawing.Size(270, 20);
             this.valueBox.TabIndex = 1;
             // 
             // RawEditorGUI
