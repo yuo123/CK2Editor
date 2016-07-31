@@ -1,6 +1,7 @@
 Implement full search
-Improve file loading UX
 Add support for nested references
-Add support for non-basic structures
 Add support for recursive structures (like the "from" structure inside opinion modifiers)
+Allow EditorGUIs to use game assets
+Finish CharacterGUI and add more stock GUIs
 Make FormatStubGenerator more exhaustive
+Improve file loading UX
