@@ -1,4 +1,3 @@
-Implement full search
 Add support for nested references
 Add support for recursive structures (like the "from" structure inside opinion modifiers)
 Allow EditorGUIs to use game assets
