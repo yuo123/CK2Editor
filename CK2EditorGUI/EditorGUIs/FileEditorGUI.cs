@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Collections;
-using System.ComponentModel.Design;
 using System.Drawing;
 using System.ComponentModel;
 
@@ -13,6 +10,7 @@ using Aga.Controls.Tree;
 using Aga.Controls.Tree.NodeControls;
 
 using CK2Editor;
+using CK2Editor.Utility;
 using CK2EditorGUI.NodeControls;
 using CK2EditorGUI.Utility;
 
@@ -36,9 +34,42 @@ namespace CK2EditorGUI.EditorGUIs
             }
         }
 
+        private SearchDialog activeSearch;
+
         public FileEditorGUI()
         {
             InitializeComponent();
+
+            this.ParentChanged += (sender, e) =>
+            {
+                this.FindForm().KeyPreview = true;
+                this.FindForm().KeyDown += OnKeyDown;
+            };
+        }
+
+        protected void OnKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Control && e.KeyCode == Keys.F)
+                OpenSearch();
+        }
+
+        private void OpenSearch()
+        {
+            if (RootSection == null) //don't allow searches before a save is loaded
+                return;
+
+            if (activeSearch != null)
+                activeSearch.Focus();
+            else
+            {
+                this.activeSearch = new SearchDialog();
+                activeSearch.FormClosed += (s, e) => activeSearch = null;
+                activeSearch.Editor = this; //lets SearchDialog call FindNext()
+                activeSearch.Owner = this.ParentForm; //prevents SearchDialog from getting behind the main form
+                activeSearch.Location = this.PointToScreen(Point.Empty); //align the dialog with the top left corner of this control
+                activeSearch.Left += this.Width - activeSearch.Width; //move it to the top right
+                activeSearch.Show();
+            }
         }
 
         public IEnumerable GetChildren(TreePath treePath)
@@ -56,10 +87,30 @@ namespace CK2EditorGUI.EditorGUIs
             return !(treePath.LastNode is SectionEntry);
         }
 
+        public void Goto(Entry entry)
+        {
+            if (entry == null)
+            {
+                Goto((IEnumerable<Entry>)null);
+                return;
+            }
+
+            var path = new Stack<Entry>();
+            while (entry.Parent != null)
+            {
+                path.Push(entry);
+                entry = entry.Parent;
+            }
+            Goto(path);
+        }
+
         public void Goto(IEnumerable<Entry> path, TreeNodeAdv start = null)
         {
-            if (path.Count() == 0)//special case to go to the root, which scrolls to the top
+            if (path == null || path.Count() == 0)//special case to go to the root, which scrolls to the top
+            {
                 Tree.ScrollTo(Tree.Root.Children[0]);
+                return;
+            }
             TreeNodeAdv node = start != null ? start : Tree.Root;
 
             foreach (Entry ent in path)
@@ -89,6 +140,29 @@ namespace CK2EditorGUI.EditorGUIs
                 startEnt = (Entry)node.Tag;
             node = Tree.Root;
             Goto(FormattedReader.ParseRefPath(startEnt, path));
+        }
+
+        public void FindNext(SearchOptions options)
+        {
+            Entry cur = GetSelectedEntry();
+            if (cur != null)
+                cur = cur.Step(); //start one after the selected
+            else
+                cur = RootSection.Entries[0];
+
+            while (cur != null && !options.Matches(cur))
+            {
+                cur = cur.Step(); //most of the magic is in the Step() method
+            }
+            Goto(cur);
+        }
+
+        public Entry GetSelectedEntry()
+        {
+            if (m_tree == null || m_tree.SelectedNode == null)
+                return null;
+
+            return (Entry)m_tree.SelectedNode.Tag;
         }
 
         private TreeViewAdv m_tree;
@@ -230,6 +304,7 @@ namespace CK2EditorGUI.EditorGUIs
             this.Tree.ShowNodeToolTips = true;
             this.Tree.Size = new System.Drawing.Size(1254, 318);
             this.Tree.UseColumns = true;
+            this.Tree.DrawControl += Tree_DrawControl;
             //
             //nameControl
             //
@@ -254,6 +329,7 @@ namespace CK2EditorGUI.EditorGUIs
             pathDisplay = new ObjectPathDisplay();
             pathDisplay.Dock = DockStyle.Top;
             pathDisplay.Height = 16;
+            pathDisplay.RootSymbol = "!";
             pathDisplay.PathClicked += pathDisplay_PathClicked;
             // 
             // SectionEntryGUI
@@ -265,6 +341,15 @@ namespace CK2EditorGUI.EditorGUIs
             this.ResumeLayout(true);
         }
 
+        private void Tree_DrawControl(object sender, DrawEventArgs e)
+        {
+            if (e.Node.IsSelected)
+            {
+                e.BackgroundBrush = SystemBrushes.Highlight;
+                e.TextColor = ((SolidBrush)SystemBrushes.HighlightText).Color;
+            }
+        }
+
         void pathDisplay_PathClicked(object sender, PathClickEventArgs e)
         {
             this.Goto(((ObjectPathClickEventArgs)e).ObjectPath.Cast<Entry>());
@@ -272,5 +357,43 @@ namespace CK2EditorGUI.EditorGUIs
         private TreeColumn nameColumn;
         private TreeColumn valueColumn;
         private ObjectPathDisplay pathDisplay;
+    }
+
+    public class SearchOptions
+    {
+        public SearchType Type { get; set; }
+        public string Identifier { get; set; }
+        public string FriendlyName { get; set; }
+        public string Value { get; set; }
+
+        public enum SearchType { Any, Section, Value };
+        public static SearchType ParseType(string name)
+        {
+            switch (name)
+            {
+                case "Any": return SearchType.Any;
+                case "Section": return SearchType.Section;
+                case "Value": return SearchType.Value;
+
+                default: throw new ArgumentException("Unknown SearchType name", "name");
+            }
+        }
+
+        public bool Matches(Entry entry)
+        {
+            if (Type == SearchType.Section && entry is ValueEntry)
+                return false;
+            if (Type == SearchType.Value && entry is SectionEntry)
+                return false;
+            if (!string.IsNullOrEmpty(Identifier) && (entry.InternalName == null || !entry.InternalName.Contains(Identifier)))
+                return false;
+            if (entry is ValueEntry)
+                if (!string.IsNullOrEmpty(Value) && !((ValueEntry)entry).Value.Contains(Value))
+                    return false;
+            if (!string.IsNullOrEmpty(FriendlyName) && (entry.FriendlyName == null || !(FormattedReader.ParseValueRefs(entry, entry.FriendlyName)).Contains(FriendlyName)))
+                return false;
+
+            return true;
+        }
     }
 }

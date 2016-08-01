@@ -30,8 +30,12 @@ namespace CK2Editor
             Entries = new List<Entry>();
         }
 
-        public SectionEntry(string internalName, string friendlyName, string link)
-            : this()
+        public SectionEntry(string internalName) : this()
+        {
+            this.InternalName = internalName;
+        }
+
+        public SectionEntry(string internalName, string friendlyName, string link) : this()
         {
             InternalName = internalName;
             FriendlyName = friendlyName;

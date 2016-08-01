@@ -148,6 +148,7 @@ namespace CK2Editor
 
                     multiples[multAtt.Value] = grouper;
                     parent.Entries.Add(grouper);
+                    grouper.Parent = parent;
                 }
                 return grouper;
             }

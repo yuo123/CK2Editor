@@ -23,8 +23,12 @@ namespace CK2Editor
 
         }
 
-        public ValueEntry(string internalName, string friendlyName, string type, string value, string link, SectionEntry parent, SectionEntry root)
-            : this()
+        public ValueEntry(string internalName) : this()
+        {
+            this.InternalName = internalName;
+        }
+
+        public ValueEntry(string internalName, string friendlyName, string type, string value, string link, SectionEntry parent, SectionEntry root) : this()
         {
             InternalName = internalName;
             FriendlyName = friendlyName;

@@ -22,6 +22,14 @@ namespace CK2EditorGUI
             }
         }
 
+        [System.ComponentModel.Browsable(true)]
+        [System.ComponentModel.DefaultValue("/")]
+        public string RootSymbol
+        {
+            get { return rlab.Text; }
+            set { rlab.Text = value; }
+        }
+
 
         //the root label
         private Label rlab;
@@ -30,7 +38,7 @@ namespace CK2EditorGUI
         {
             m_seperator = "/";
             rlab = new Label();
-            rlab.Text = Seperator;
+            RootSymbol = Seperator;
             rlab.Font = new System.Drawing.Font(rlab.Font, FontStyle.Underline);
             rlab.ForeColor = Color.Blue;
             FormatClickableLabel(rlab);

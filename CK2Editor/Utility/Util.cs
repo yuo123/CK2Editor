@@ -48,9 +48,9 @@ namespace CK2Editor.Utility
         {
             if (index < 0)
             {
-                //check valadity
+                //check validity
                 if (-index > length)
-                    throw new IndexOutOfRangeException("The index was negative and it's absuloute value was greater than the length");
+                    throw new IndexOutOfRangeException("The index was negative and it's absolute value was greater than the length");
                 //since index is negative, this is like length - Math.Abs(index)
                 return length + index;
             }
@@ -64,7 +64,7 @@ namespace CK2Editor.Utility
         /// <param name="value">The string to find</param>
         /// <param name="startIndex">The starting index.</param>
         /// <param name="ignoreCase">if set to <c>true</c> it will ignore case</param>
-        /// <returns>The first index of the first occurance of <paramref name="value"/>, or -1 if not found</returns>
+        /// <returns>The first index of the first occurrence of <paramref name="value"/>, or -1 if not found</returns>
         public static int IndexOf(this StringBuilder sb, string value, int startIndex = 0, int maxIndex = -1, bool ignoreCase = false)
         {
             int index;
@@ -180,6 +180,63 @@ namespace CK2Editor.Utility
         public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> enumurable)
         {
             return enumurable.ToDictionary(x => x.Key, x => x.Value);
+        }
+
+        public static IEnumerable<Entry> DepthFirstTraversal(this SectionEntry start)
+        {
+            // adapted from http://stackoverflow.com/a/5806795
+            var visited = new HashSet<Entry>();
+            var stack = new Stack<Entry>();
+
+            stack.Push(start);
+
+            while (stack.Count != 0)
+            {
+                var current = stack.Pop();
+
+                if (!visited.Add(current))
+                    continue;
+
+                yield return current;
+
+                var section = current as SectionEntry;
+                if (section != null)
+                {
+                    var children = section.Entries.Where(n => !visited.Contains(n));
+
+                    foreach (var neighbour in children.Reverse())
+                        stack.Push(neighbour);
+                }
+            }
+        }
+
+        public static Entry Step(this Entry current)
+        {
+            //if this is a section with children, go into it
+            var section = current as SectionEntry;
+            if (section != null && section.Entries.Count > 0)
+                return section.Entries[0];
+
+            int index = current.Parent.Entries.FindIndex(ent => ReferenceEquals(ent, current)); //using FindIndex and ReferenceEquals because the Entry class overrides Equals
+            while (index == current.Parent.Entries.Count - 1) //if we've hit the end of the parent section
+            {
+                if (current.Parent.Parent == null) //if this is a child of the root, we've found nothing
+                    return null;
+                current = current.Parent; //else, we go up one level and see if we can continue
+                index = current.Parent.Entries.FindIndex(ent => ReferenceEquals(ent, current));
+            }
+
+            //if we can continue in the parent section, DO IT
+            return current.Parent.Entries[index + 1];
+        }
+
+        public static void AddMany(this SectionEntry parent, params Entry[] items)
+        {
+            foreach (var item in items)
+            {
+                parent.Entries.Add(item);
+                item.Parent = parent;
+            }
         }
     }
 }
