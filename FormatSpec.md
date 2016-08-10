@@ -52,7 +52,8 @@ Value references are based on normal references, but evaluate to strings. The sy
   * `[VNAME]` - The user-friendly ("visual") name of the current entry  
   * `[VALUE]` - The value of the current entry  
   
-Multiple and nested value references are supported.
+Multiple references in the same field are supported.
+References inside other references will not be evaluated, but references that reference a `[VNAME]` that in itself contains a reference will be evaluated recursively.
 
 ##### Example
 For example, the following value reference, as the `name` attribute of a value containing a character id:

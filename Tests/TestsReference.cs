@@ -8,7 +8,7 @@ using System.IO;
 
 namespace Tests
 {
-    class TestsReference
+    internal static class TestsReference
     {
         internal static readonly string BASE_PATH = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "..", "..", "..");
         internal static readonly string MIN_TEST_PATH = Path.Combine(BASE_PATH, "Min_Test_Save.ck2");

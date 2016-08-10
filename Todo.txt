@@ -1,6 +1,13 @@
-Add support for nested references
 Add support for recursive structures (like the "from" structure inside opinion modifiers)
 Allow EditorGUIs to use game assets
 Finish CharacterGUI and add more stock GUIs
 Make FormatStubGenerator more exhaustive
+Create a complete CK2Save.xml
+Re-think the entry editing UI (possibly display it alongside the tree, instead of a new window)
+--release initial version--
 Improve file loading UX
+
+Possible:
+Allow truly nested references, e.g. name="[!!/some_category/[!/my_child:[NAME]!]/his_name:[VNAME]!]"
+Allow "include" tags in the XML, that include different files in the format specified by another file
+Create utility methods to create a default tree from format XML, similar to android's "inflating"

@@ -10,7 +10,7 @@ namespace Tests
     public class TraversalTest
     {
         [TestMethod]
-        public void TestTraversal()
+        public void CompleteTraversalTest()
         {
             SectionEntry root = CreateTestTree();
             Entry cur = root.Entries[0];

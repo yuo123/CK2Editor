@@ -230,63 +230,93 @@ namespace CK2Editor
             }
         }
 
+        /// <summary>
+        /// Fully parses a string containing value references by replacing the references with the referenced values
+        /// </summary>
+        /// <param name="start">The entry that contains the reference</param>
+        /// <param name="s">The string to be parsed</param>
+        /// <returns>The fully parsed string</returns>
         public static string ParseValueRefs(Entry start, string s)
         {
             if (s == null)
                 return null;
+
             bool inref = false;
             int refstart = -1;
             for (int i = 0; i < s.Length; i++)
             {
                 if (!inref)
                 {
-                    if (s[i] == '[' && s[i + 1] == '!')
+                    if (s[i] == '[' && s[i + 1] == '!') //detect the start of a reference
                     {
                         inref = true;
                         refstart = i;
-                        i++;
+                        i++; //increment i because the reference start is 2 characters
                     }
                 }
                 else
                 {
-                    if (s[i] == '!' && s[i + 1] == ']')
+                    if (s[i] == '!' && s[i + 1] == ']') //detect the end of a reference
                     {
                         inref = false;
                         int reflength = i - refstart + 2;
-                        string parsed = ParseValueRef(start, s.Substring(refstart + 2, reflength - 4));
+                        //compute the value of the reference
+                        string parsed = ParseValueRefRecursive(start, s.Substring(refstart + 2, reflength - 4));
                         if (parsed == null)
                             parsed = "";
+                        //replace the reference with its value
                         s = s.Remove(refstart, reflength);
                         i -= reflength;
                         s = s.Insert(refstart, parsed);
                         i += parsed.Length;
-                        i++;
+                        i++; //increment i because the reference end is 2 characters
                     }
                 }
             }
             return s;
         }
 
+        /// <summary>
+        /// Parses a single reference into the string that it represents, and parses the result string if it contains references too
+        /// </summary>
+        /// <param name="start">The entry that contains the reference</param>
+        /// <param name="sref">The reference, NOT enclosed by the reference markers ("[!" and "!]")</param>
+        /// <returns>The recursively referenced string</returns>
+        public static string ParseValueRefRecursive(Entry start, string sref)
+        {
+            Entry end;
+            string ret = ParseValueRef(start, sref, out end);
+            return ParseValueRefs(end, ret);
+        }
+
+        /// <summary>
+        /// Parses a single reference into the string that it represents
+        /// </summary>
+        /// <param name="start">The entry that contains the reference</param>
+        /// <param name="sref">The reference, NOT enclosed by the reference markers ("[!" and "!]")</param>
+        /// <returns>The referenced string</returns>
         public static string ParseValueRef(Entry start, string sref)
         {
+            Entry tmp;
+            return ParseValueRef(start, sref, out tmp);
+        }
+
+        /// <summary>
+        /// Parses a single reference into the string that it represents
+        /// </summary>
+        /// <param name="start">The entry that contains the reference</param>
+        /// <param name="sref">The reference, NOT enclosed by the reference markers ("[!" and "!]")</param>
+        /// <param name="end">The last entry in the reference</param>
+        /// <returns>The referenced string</returns>
+        public static string ParseValueRef(Entry start, string sref, out Entry end)
+        {
             string[] comps = sref.Split(new char[] { ':' });
-            Entry ent = ParseRef(start, comps[0]);
-            if (ent == null)//if the reference was not found
+            if (comps.Length != 2)
+                throw new ArgumentException("Value reference must contain exactly one colon", sref);
+            end = ParseRef(start, comps[0]);
+            if (end == null)//if the reference was not found
                 return null;
-            var vent = ent as ValueEntry;
-            if (vent == null)
-                throw new FileFormatException("Reference in format file could not be parsed: " + comps[1] + " (for entry " + ent.InternalName + ")");
-            switch (comps[1])
-            {
-                case "[VALUE]":
-                    return vent.Value;
-                case "[NAME]":
-                    return vent.InternalName;
-                case "[VNAME]":
-                    return vent.FriendlyName;
-                default:
-                    throw new FileFormatException("Reference in format file could not be parsed:  unknown symbol " + comps[1]);
-            }
+            return ParseSymbol(start, end, comps[1]);
         }
 
         public static Entry ParseRef(Entry start, string sref)
@@ -331,34 +361,41 @@ namespace CK2Editor
             }
         }
 
-        public static string ParseSymbol(Entry start, Entry current, string value)
+        /// <summary>
+        /// Parses a reference symbol into the string it represents for the given entry and start entry. More info in FormatSpec.md
+        /// </summary>
+        /// <param name="start">The entry that contains the reference</param>
+        /// <param name="current">The entry for which the symbol should be evaluated</param>
+        /// <returns>The string which the symbol was parsed into</returns>
+        /// <exception cref="FileFormatException">Thrown when a value symbol was used on a section entry</exception>
+        public static string ParseSymbol(Entry start, Entry current, string symbol)
         {
-            switch (value)
+            switch (symbol)
             {
                 case "[THISVALUE]":
                     {
                         var vent = start as ValueEntry;
                         if (vent == null)
-                            throw new FileFormatException("Reference in format file could not be parsed: " + value + " (for entry " + start.InternalName + ")");
+                            throw new FileFormatException("Reference in format file could not be parsed: " + symbol + " (for entry " + start.InternalName + "): used [THISVALUE] for a section");
                         return vent.Value;
                     }
                 case "[THISNAME]":
-                    {
-                        var vent = start as ValueEntry;
-                        if (vent == null)
-                            throw new FileFormatException("Reference in format file could not be parsed: " + value + " (for entry " + start.InternalName + ")");
-                        return vent.InternalName;
-                    }
+                    return start.InternalName;
                 case "[THISVNAME]":
+                    return start.FriendlyName;
+                case "[VALUE]":
                     {
-                        var vent = start as ValueEntry;
+                        var vent = current as ValueEntry;
                         if (vent == null)
-                            throw new FileFormatException("Reference in format file could not be parsed: " + value + " (for entry " + start.InternalName + ")");
-                        return vent.FriendlyName;
+                            throw new FileFormatException("Reference in format file could not be parsed: " + symbol + " (for entry " + start.InternalName + "): used [VALUE] for a section");
+                        return vent.Value;
                     }
-
+                case "[NAME]":
+                    return current.InternalName;
+                case "[VNAME]":
+                    return current.FriendlyName;
             }
-            throw new FileFormatException("Reference in format file could not be parsed:  unknown symbol " + value);
+            throw new FileFormatException("Reference in format file could not be parsed:  unknown symbol " + symbol);
         }
     }
 
