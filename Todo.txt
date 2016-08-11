@@ -1,4 +1,3 @@
-Add support for recursive structures (like the "from" structure inside opinion modifiers)
 Allow EditorGUIs to use game assets
 Finish CharacterGUI and add more stock GUIs
 Make FormatStubGenerator more exhaustive
@@ -9,5 +8,6 @@ Improve file loading UX
 
 Possible:
 Allow truly nested references, e.g. name="[!!/some_category/[!/my_child:[NAME]!]/his_name:[VNAME]!]"
-Allow "include" tags in the XML, that include different files in the format specified by another file
+Allow "include" tags in the XML, that include different snippet files in the format specified by another file
+Create utility methods to check if an Entry matches a format snippet (mainly for checking editor eligibility)
 Create utility methods to create a default tree from format XML, similar to android's "inflating"

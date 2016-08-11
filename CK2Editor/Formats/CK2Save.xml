@@ -136,32 +136,14 @@
     <days name="Days" type="number" />
     <scope name="Scope">
       <char name="Char" type="number" />
+      <province name="Province" type="number" />
       <seed name="Seed" type="number" />
       <random name="Random" type="number" />
-      <from name="From">
+      <from name="From" recursive="0">
         <char name="Char" type="number" />
+        <province name="Province" type="number" />
         <seed name="Seed" type="number" />
         <random name="Random" type="number" />
-        <from name="From">
-          <province name="Province" type="number" />
-          <seed name="Seed" type="number" />
-          <random name="Random" type="number" />
-          <from name="From">
-            <char name="Char" type="number" />
-            <seed name="Seed" type="number" />
-            <random name="Random" type="number" />
-            <from name="From">
-              <char name="Char" type="number" />
-              <seed name="Seed" type="number" />
-              <random name="Random" type="number" />
-              <from name="From">
-                <char name="Char" type="number" />
-                <seed name="Seed" type="number" />
-                <random name="Random" type="number" />
-              </from>
-            </from>
-          </from>
-        </from>
       </from>
     </scope>
   </delayed_event>
@@ -256,7 +238,7 @@
     <type name="Type" type="number" />
   </id>
   <religion name="Religion">
-    <RELIGION name="Catholic" multiple="different" grouper-name="(Religions)">
+    <RELIGION name="[!:[THISNAME]!]" multiple="different" grouper-name="(Religions)">
       <last_crusade name="Last Crusade/Jihad/Great Holy War" type="string" />
       <parent name="Parent" type="string" />
       <original_parent name="Original Parent" type="string" />
@@ -323,7 +305,7 @@
     </PROVINCE>
   </provinces>
   <title name="Titles">
-    <TITLE name="[![THISNAME]!]">
+    <TITLE name="[!:[THISNAME]!]">
       <liege name="Liege Title">
         <title name="Title" type="string" />
       </liege>

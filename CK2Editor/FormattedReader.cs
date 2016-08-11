@@ -201,12 +201,24 @@ namespace CK2Editor
         {
             if (parentNode == null)
                 return null;
+
+            //check for the "Recursive" attribute
+            var rec = parentNode.Attributes["recursive"];
+            int recNum;
+            if (rec != null && int.TryParse(rec.Value, out recNum))
+            {
+                XmlNode recPar = parentNode.NthParent(recNum);
+                if (GetNameComparer(recPar).Invoke(name))
+                    return recPar;
+            }
+
+            //check for children
             foreach (XmlNode child in parentNode.ChildNodes)
             {
-                Func<string, bool> comparer = GetNameComparer(child);
-                if (comparer.Invoke(name))
+                if (GetNameComparer(child).Invoke(name))
                     return child;
             }
+
             return null;
         }
 

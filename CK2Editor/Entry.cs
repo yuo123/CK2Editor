@@ -43,7 +43,6 @@ namespace CK2Editor
 
         public SectionEntry Root { get; set; }
 
-
         public Entry() { }
         public Entry(Entry other)
         {

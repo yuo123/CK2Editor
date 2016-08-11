@@ -106,5 +106,6 @@ Sections may have these additional attributes:
     ```
     traits={18 101 88 85 84 }
     ```
-     
++ `recursive` - Optional - Specifies that inside this section can be another copy of this section or a parent section. 
+The value of this attribute should be a number, with '0' meaning the section itself can repeat recursively, '1' meaning this section's parent can appear within it, and so on.   
 

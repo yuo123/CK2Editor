@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Xml;
 
 namespace CK2Editor.Utility
 {
@@ -237,6 +237,17 @@ namespace CK2Editor.Utility
                 parent.Entries.Add(item);
                 item.Parent = parent;
             }
+        }
+
+        public static XmlNode NthParent(this XmlNode cur, int n)
+        {
+            for (int i = 0; i < n; i++)
+            {
+                if (cur.ParentNode == null)
+                    return null;
+                cur = cur.ParentNode;
+            }
+            return cur;
         }
     }
 }
